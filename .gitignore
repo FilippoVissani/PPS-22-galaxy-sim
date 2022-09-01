@@ -1,0 +1,13 @@
+bin
+.idea/workspace.xml
+.idea/libraries
+out
+project/target
+project/project
+target
+classes
+build
+.gradle
+.idea
+.bsp/
+/codecov
