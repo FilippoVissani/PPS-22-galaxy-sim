@@ -8,7 +8,7 @@ lazy val root = (project in file("."))
     libraryDependencies += "org.scala-lang" %% "scala3-library" % "3.2.0",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12" % Test,
     assembly / mainClass := Some("it.unibo.test.Main"),
-    assembly / assemblyJarName := "ci-test.jar",
+    assembly / assemblyJarName := "galaxy-sim.jar",
     assembly / test := (Test / test).value,
   )
 
