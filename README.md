@@ -1,1 +1,0 @@
-# PPS-22-galaxy-sim
