@@ -5,7 +5,6 @@ ThisBuild / scalaVersion := "3.2.0"
 lazy val root = (project in file("."))
   .settings(
     name := "PPS-22-galaxy-sim",
-    libraryDependencies += "org.scala-lang" %% "scala3-library" % "3.2.0",
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.12" % Test,
     assembly / mainClass := Some("it.unibo.test.Main"),
     assembly / assemblyJarName := "galaxy-sim.jar",
