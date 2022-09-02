@@ -16,6 +16,7 @@
 <tr><td>2.1.2</td><td>Rappresentazione dell'orbita degli elementi della simulazione, se presente.</td></tr>
 <tr><td>2.1.3</td><td>Rappresentazione del tempo della simulazione.</td></tr>
 <tr><td>2.2</td><td>Passaggio di parametri tramite file di configurazione.</td></tr>
+<tr><td>2.2</td><td>Log dettagliato della simulazione in tempo reale e su file.</td></tr>
 </table>
 
 ## Requisiti funzionali
@@ -26,7 +27,7 @@
 <tr><td>3.2</td><td>Nel momento in cui le nuvole di gas si concentrano in dei punti ad elevata densità causano un'esplosione che genera una stella.</td></tr>
 <tr><td>3.3</td><td>In base al punto 3.2, la simulazione deve supportare diverse tipologie di elementi: idrogeno, elio, polvere e metalli.
 </td></tr>
-<tr><td>3.2</td><td>La creazione du una nuova stella comporta il rilascio di gas residuo, che viene liberato nello spazio.</td></tr>
+<tr><td>3.2</td><td>La creazione di una nuova stella comporta il rilascio di gas residuo, che viene liberato nello spazio.</td></tr>
 <tr><td>3.2</td><td>Nel momento in cui si genera una stella, viene anche creato un nuovo sistema di entità che le orbitano attorno.</td></tr>
 <tr><td>3.4</td><td>Le entità che possono essere generate da quelle definite nel punto 3.3 sono: stelle, pianeti, asteroidi.
 </td></tr>
