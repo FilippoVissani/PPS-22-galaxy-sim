@@ -1,0 +1,11 @@
+bin
+.idea
+out
+project/target
+project/project
+target
+classes
+build
+.gradle
+.bsp/
+/project/build.properties
