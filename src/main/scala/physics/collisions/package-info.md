@@ -1,0 +1,1 @@
+This package contains the logic of collision detection and reaction.
