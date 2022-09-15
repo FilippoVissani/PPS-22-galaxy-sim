@@ -21,7 +21,7 @@ object Entity:
   def changeGravityForce(entity: Entity, newGForce: Float): Entity =
     Entity(entity.mass, entity.force, newGForce, entity.speed, entity.position, entity.accelleration)
 
-  def changespeed(entity: Entity, newspeed: Float): Entity =
+  def changeSpeed(entity: Entity, newspeed: Float): Entity =
     Entity(entity.mass, entity.force, entity.gravityForce, newspeed, entity.position, entity.accelleration)
 
   def changePosition(entity: Entity, newPosition: Position): Entity =
