@@ -1,7 +1,6 @@
 package galaxy_sim.view
 
 import galaxy_sim.controller.ControllerModule
-
 import java.awt.{Dimension, Toolkit}
 
 object ViewModule:
@@ -19,22 +18,31 @@ object ViewModule:
 
   trait Component:
     context: Requirements =>
-    object View:
-      def apply(windowWidth: Int, windowHeight: Int): View = ViewImpl(windowWidth: Int, windowHeight: Int)
+    class GraphicalView(windowWidth: Int, windowHeight: Int) extends View:
+      val screenSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
+      val simulationFrame: SimulationFrame = SimulationFrame(this, Dimension(windowWidth * screenSize.width / 100, windowHeight * screenSize.height / 100))
 
-      private class ViewImpl(windowWidth: Int, windowHeight: Int) extends View:
-        val screenSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
-        val simulationFrame: SimulationFrame = SimulationFrame(Dimension(windowWidth * screenSize.width / 100, windowHeight * screenSize.height / 100))
+      override def update(): Unit = ???
 
-        override def update(): Unit = ???
+      override def start(): Unit = ???
 
-        override def start(): Unit = ???
+      override def stop(): Unit = ???
 
-        override def stop(): Unit = ???
+      override def pause(): Unit = ???
 
-        override def pause(): Unit = ???
+      override def resume(): Unit = ???
+    end GraphicalView
 
-        override def resume(): Unit = ???
+    class TextualView extends View:
+      override def update(): Unit = ???
+
+      override def start(): Unit = ???
+
+      override def stop(): Unit = ???
+
+      override def pause(): Unit = ???
+
+      override def resume(): Unit = ???
 
   trait Interface extends Provider with Component:
     self: Requirements =>

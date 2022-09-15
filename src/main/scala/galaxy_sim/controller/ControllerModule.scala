@@ -17,17 +17,14 @@ object ControllerModule:
 
   trait Component:
     context: Requirements =>
-    object Controller:
-      def apply(): Controller = ControllerImpl()
+    class ControllerImpl extends Controller:
+      override def startSimulation(): Unit = ???
 
-      private class ControllerImpl extends Controller:
-        override def startSimulation(): Unit = ???
+      override def stopSimulation(): Unit = ???
 
-        override def stopSimulation(): Unit = ???
+      override def pauseSimulation(): Unit = ???
 
-        override def pauseSimulation(): Unit = ???
-
-        override def resumeSimulation(): Unit = ???
+      override def resumeSimulation(): Unit = ???
 
   trait Interface extends Provider with Component:
     self: Requirements =>

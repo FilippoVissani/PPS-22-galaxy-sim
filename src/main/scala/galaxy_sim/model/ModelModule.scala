@@ -8,10 +8,7 @@ object ModelModule:
     val model: Model
 
   trait Component:
-    object Model:
-      def apply(): Model = ModelImpl()
-
-      private class ModelImpl extends Model:
-        override def entities(): Set[Entity] = Set()
+    class ModelImpl extends Model:
+      override def entities(): Set[Entity] = Set()
 
   trait Interface extends Provider with Component
