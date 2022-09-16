@@ -21,7 +21,7 @@ class TestPhysicalEntityCreation extends AnyFunSuite with BeforeAndAfterAll: //M
     entity1 = PhysicalEntity(mass1, pos1, speed1)
     assert(entity1.mass === mass1)
     assert(entity1.position === pos1)
-    assert(entity1.speed === speed1)
+    assert(entity1.aphelionSpeed === speed1)
   }
 
   test("creation of a second entity and modify it's field with methods"){
@@ -31,7 +31,7 @@ class TestPhysicalEntityCreation extends AnyFunSuite with BeforeAndAfterAll: //M
     entity2 = changeSpeed(entity2, speed2)
     assert(entity2.mass === mass2)
     assert(entity2.position === pos2)
-    assert(entity2.speed === speed2)
+    assert(entity2.aphelionSpeed === speed2)
   }
 
   test("assign position to entities"){
