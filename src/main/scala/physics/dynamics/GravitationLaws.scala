@@ -5,6 +5,7 @@ import math.{ sqrt, pow }
 
 trait Constants:
   val gravitationalCostant: Double = 6.67e-11
+  val daySec: Double = 24.0 * 60 * 60
 
 object GravitationLaws extends Constants:
 
@@ -22,3 +23,5 @@ object GravitationLaws extends Constants:
 
   def distanceBetweenTwoEntities(pos1: Position, pos2: Position): Double =
     sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2))
+
+  def gravitationalForceOnEntity(entity: PhysicalEntity): Double = ???

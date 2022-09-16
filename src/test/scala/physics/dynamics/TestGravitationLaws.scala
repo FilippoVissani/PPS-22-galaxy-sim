@@ -3,8 +3,7 @@ package physics.dynamics
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 import physics.utils.{PhysicalEntity, Position}
-import math.{ pow }
-
+import math.pow
 
 class TestGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
   import GravitationLaws.*
@@ -12,13 +11,14 @@ class TestGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
   var sun: PhysicalEntity = PhysicalEntity()
   val earthPos: Position = Position(106, 106)
   val sunPos: Position = Position(0, 0)
+  val earthSpeed: Double = 29290
   var dist: Double = 0.0
   var acc: Double = 0.0
   var force: Double = 0.0
+  var speed: Double = 0.0
 
   override protected def beforeAll(): Unit =
     val earthMass: Double = 5.972e24 //earth
-    val earthSpeed: Double = 50.4
     earth = PhysicalEntity(earthMass, earthPos, earthSpeed)
     val sunMass: Double =  2.0e30 //sun
     val sunSpeed: Double = 77.4
@@ -46,12 +46,15 @@ class TestGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
     assert(force == shouldForce)
   }
 
-  /*test("calculate speed of the entity after delta time"){
-    speedAfterDeltaTime(???,???)
-    assert(false)
+  test("calculate speed of the entity after delta time"){
+    val time = 1 * daySec
+    val shouldSpeed = acc * time
+    speed = speedAfterDeltaTime(acc, time)
+    println(s"speed of earth after $time seconds is $speed")
+    assert(speed == shouldSpeed)
   }
 
-  test("calculate entity's new position"){
+  /*test("calculate entity's new position"){
     calculateNewPosition()
     assert(false)
   }*/
