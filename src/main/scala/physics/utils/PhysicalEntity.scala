@@ -1,9 +1,10 @@
 package physics.utils
 
 case class Position(x: Int, y: Int)
-case class Vector(x: Double, y: Double, z: Double)
+case class SpeedVector(x: Double, y: Double, z: Double)
+case class GravitationalForceVector(x: Double, y: Double)
 
-class PhysicalEntity(var mass: Double, var position: Position = Position(0,0), var aphelionSpeed: Double = 100)
+class PhysicalEntity(var mass: Double, var position: Position = Position(0,0), var aphelionSpeed: Double = 10000, var speedVector: SpeedVector = SpeedVector(0, 0, 0), var gForce: GravitationalForceVector = GravitationalForceVector(0, 0))
 
 object PhysicalEntity:
   def apply(): PhysicalEntity = new PhysicalEntity(5)
@@ -16,5 +17,9 @@ object PhysicalEntity:
   def changePosition(entity: PhysicalEntity, newPosition: Position): PhysicalEntity =
     PhysicalEntity(entity.mass, newPosition, entity.aphelionSpeed)
 
-  def changeSpeed(entity: PhysicalEntity, newspeed: Double): PhysicalEntity =
+  def changeAphelionSpeed(entity: PhysicalEntity, newspeed: Double): PhysicalEntity =
     PhysicalEntity(entity.mass, entity.position, newspeed)
+
+  def changeSpeedVector(entity: PhysicalEntity, newVector: SpeedVector): PhysicalEntity = ???
+  
+  
