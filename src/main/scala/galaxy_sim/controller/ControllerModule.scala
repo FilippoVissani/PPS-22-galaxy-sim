@@ -18,7 +18,7 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
-      override def startSimulation(): Unit = ???
+      override def startSimulation(): Unit = view.update(model.entities)
 
       override def stopSimulation(): Unit = ???
 

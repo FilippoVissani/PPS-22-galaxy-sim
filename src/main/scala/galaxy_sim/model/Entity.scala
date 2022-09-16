@@ -7,26 +7,21 @@ trait Entity:
   val speed: Float
   val acceleration: Float
   val position: Pair[Float, Float]
-
   def updateName(name: String): Entity
-
   def updateMass(delta: Float): Entity
-
   def updateVolume(delta: Float): Entity
-
   def updateSpeed(delta: Float): Entity
-
   def updateAcceleration(delta: Float): Entity
-
   def updatePosition(deltaX: Float)(deltaY: Float): Entity
 
 object Entity:
-  def apply(name: String,
-            mass: Float,
-            volume: Float,
+  def apply(name: String = "",
+            mass: Float = 0,
+            volume: Float = 0,
             speed: Float = 0,
             acceleration: Float = 0,
-            position: Pair[Float, Float]): Entity = EntityImpl(name, mass, volume, speed, acceleration, position)
+            position: Pair[Float, Float] = Pair(0,0)): Entity =
+    EntityImpl(name, mass, volume, speed, acceleration, position)
 
   private case class EntityImpl(name: String,
                                 mass: Float,
