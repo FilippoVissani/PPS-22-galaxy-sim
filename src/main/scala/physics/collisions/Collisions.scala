@@ -12,17 +12,16 @@ object Collisions:
 
   object Detector:
     import CollisionDetectors.given
-    def detect[A: CollisionDetector](pairOfColliders: A): Boolean =
-      summon[CollisionDetector[A]].detect(pairOfColliders)
+    def detect[A <: Collider, B <: Collider](c1: A, c2: B)(using col: CollisionDetector[A, B]): Boolean =
+      col.detect(c1, c2)
 
-  trait CollisionDetector[PairOfColliders]:
-    def detect(p: PairOfColliders): Boolean
+
+  trait CollisionDetector[A <: Collider, B <: Collider]:
+    def detect(c1: A, c2: B): Boolean
 
   object CollisionDetectors:
-    given CircleToCircleDetector: CollisionDetector[(CircleCollider, CircleCollider)] with
-      override def detect(p: (CircleCollider, CircleCollider)): Boolean =
-        val c1 = p._1
-        val c2 = p._2
+    given CircleToCircleDetector: CollisionDetector[CircleCollider, CircleCollider] with
+      override def detect(c1: CircleCollider, c2: CircleCollider): Boolean =
         val dx = c1.origin.x - c2.origin.x
         val dy = c1.origin.y - c2.origin.y
         val dist = Math.sqrt(dx*dx + dy*dy)
