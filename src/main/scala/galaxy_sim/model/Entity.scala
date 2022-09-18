@@ -15,12 +15,12 @@ trait Entity:
   def updatePosition(deltaX: Float)(deltaY: Float): Entity
 
 object Entity:
-  def apply(name: String = "",
-            mass: Float = 0,
-            volume: Float = 0,
-            speed: Float = 0,
-            acceleration: Float = 0,
-            position: Pair[Float, Float] = Pair(0,0)): Entity =
+  def apply(name: String,
+            mass: Float,
+            volume: Float,
+            speed: Float,
+            acceleration: Float,
+            position: Pair[Float, Float]): Entity =
     EntityImpl(name, mass, volume, speed, acceleration, position)
 
   private case class EntityImpl(name: String,
@@ -31,7 +31,7 @@ object Entity:
                                 position: Pair[Float, Float]) extends Entity:
 
     override def updatePosition(deltaX: Float)(deltaY: Float): Entity =
-      Entity(name, mass, volume, speed, acceleration, Pair(position.x + deltaX, position.y + deltaY))
+      Entity(name, mass, volume, speed, acceleration, position.map(_ + deltaX)(_ + deltaY))
 
     override def updateName(name: String): Entity =
       Entity(name, mass, volume, speed, acceleration, position)
