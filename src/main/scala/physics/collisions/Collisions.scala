@@ -29,7 +29,7 @@ object Collisions:
 
     given RectangleToRectangleDetector: CollisionDetector[RectangleCollider, RectangleCollider] with
       override def detect(c1: RectangleCollider, c2: RectangleCollider): Boolean =
-        c1.topLeft.x < c2.topLeft.x + c2.width && 
-          c1.topLeft.x + c1.width > c2.topLeft.x &&
-          c1.topLeft.y < c2.topLeft.y + c2.height &&
-          c1.height + c1.topLeft.y > c2.topLeft.y
+        ! (c1.topLeft.x > c2.topLeft.x + c2.width ||
+          c1.topLeft.x + c1.width < c2.topLeft.x ||
+          c1.topLeft.y > c2.topLeft.y + c2.height ||
+          c1.height + c1.topLeft.y < c2.topLeft.y)
