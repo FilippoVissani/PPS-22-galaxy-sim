@@ -3,8 +3,10 @@ package galaxy_sim.view
 import galaxy_sim.model.Entity
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import galaxy_sim.view.ViewModule.View
-import java.awt.{Dimension, Graphics, Graphics2D, RenderingHints, Toolkit}
-import javax.swing.{JFrame, JPanel, SwingUtilities}
+
+import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
+import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, RenderingHints, Toolkit}
+import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 
 trait SwingGUI:
   def update(entities: Set[Entity]): Unit
@@ -17,18 +19,31 @@ object SwingGUI:
     val screenSize: Dimension = Toolkit.getDefaultToolkit.getScreenSize
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
-
-    mainFrame.setDefaultCloseOperation(0)
+    val controlPanel: JPanel = JPanel()
+    val startButton: JButton = JButton("Start Simulation")
+    val pauseButton: JButton = JButton("Pause Simulation")
+    
+    startButton.addActionListener((_: ActionEvent) => view.start())
+    controlPanel.add(startButton)
+    controlPanel.add(pauseButton)
+    mainFrame.addWindowListener(new WindowAdapter {
+      override def windowClosing(windowEvent: WindowEvent): Unit = System.exit(0)
+    })
     mainFrame.setSize(Dimension(windowWidth * screenSize.width / 100, windowHeight * screenSize.height / 100))
-    mainFrame.getContentPane.add(simulationPanel)
+    mainFrame.setResizable(false)
+    mainFrame.mainPanel.add(controlPanel, BorderLayout.NORTH)
+    mainFrame.mainPanel.add(simulationPanel, BorderLayout.CENTER)
     mainFrame.setVisible(true)
 
     override def update(entities: Set[Entity]): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.entities_(entities)
       })
+  end SwingSimulationGUIImpl
 
-  private class MainFrame extends JFrame
+  private class MainFrame extends JFrame:
+    val mainPanel: JPanel = JPanel(BorderLayout())
+    this.getContentPane.add(mainPanel)
 
   private class SimulationPanel extends JPanel:
     var entities: Set[Entity] = Set()
@@ -45,4 +60,4 @@ object SwingGUI:
       g2.fillRect(0, 0, this.getWidth, this.getHeight)
       g2.setColor(java.awt.Color.WHITE)
       entities.foreach(e => g2.fillOval(e.position.x.toInt, e.position.y.toInt, e.volume.toInt, e.volume.toInt))
-
+  end SimulationPanel

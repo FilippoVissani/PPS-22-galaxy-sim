@@ -12,5 +12,3 @@ object Main extends App
   override val model = ModelImpl()
   override val view = GraphicalView(90, 90)
   override val controller = ControllerImpl()
-
-  controller.startSimulation()

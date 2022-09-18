@@ -8,6 +8,7 @@ import javax.swing.{JFrame, JPanel}
 object ViewModule:
   trait View:
     def update(entities: Set[Entity]): Unit
+    def start(): Unit
 
   trait Provider:
     val view: View
@@ -22,8 +23,12 @@ object ViewModule:
       override def update(entities: Set[Entity]): Unit =
         gui.update(entities)
 
+      override def start(): Unit = context.controller.startSimulation()
+
     class TextualView extends View:
       override def update(entities: Set[Entity]): Unit = ???
+
+      override def start(): Unit = ???
 
   trait Interface extends Provider with Component:
     self: Requirements =>

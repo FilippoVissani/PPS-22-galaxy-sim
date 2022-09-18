@@ -11,5 +11,5 @@ class ModelTest extends AnyFlatSpec with should.Matchers:
   val mvcAssembler: MVCAssembler = MVCAssembler()
 
   "Model" should "throw return an empty Set of entities" in {
-    mvcAssembler.model.entities() shouldBe Set()
+    mvcAssembler.model.entities shouldBe Set()
   }
