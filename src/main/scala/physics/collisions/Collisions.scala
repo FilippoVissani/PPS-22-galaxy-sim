@@ -6,9 +6,9 @@ object Collisions:
   object Colliders:
     trait Collider
     case class CircleCollider(origin: P2d, radius: Float) extends Collider
+    case class RectangleCollider(topLeft: P2d, height: Float, width: Float) extends Collider
 
   import Colliders.*
-  type PairOfColliders = (Collider,Collider)
 
   object Detector:
     import CollisionDetectors.given
@@ -26,3 +26,10 @@ object Collisions:
         val dy = c1.origin.y - c2.origin.y
         val dist = Math.sqrt(dx*dx + dy*dy)
         dist < c1.radius + c2.radius
+
+    given RectangleToRectangleDetector: CollisionDetector[RectangleCollider, RectangleCollider] with
+      override def detect(c1: RectangleCollider, c2: RectangleCollider): Boolean =
+        c1.topLeft.x < c2.topLeft.x + c2.width && 
+          c1.topLeft.x + c1.width > c2.topLeft.x &&
+          c1.topLeft.y < c2.topLeft.y + c2.height &&
+          c1.height + c1.topLeft.y > c2.topLeft.y
