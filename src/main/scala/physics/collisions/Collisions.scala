@@ -12,7 +12,7 @@ object Collisions:
 
   import Colliders.*
 
-  object Detector:
+  object CollisionManager:
     import CollisionDetectors.given
     def detect[A <: Collider, B <: Collider](c1: A, c2: B)(using col: CollisionDetector[A, B]): Boolean =
       col.detect(c1, c2)
