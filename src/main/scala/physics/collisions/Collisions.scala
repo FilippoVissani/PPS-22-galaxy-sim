@@ -1,12 +1,14 @@
 package physics.collisions
 
 object Collisions:
-  case class P2d(x: Float, y: Float)
+  case class P2d(x: Double, y: Double)
+  trait RigidBody[T <: Collider]:
+    def collider: T 
 
   object Colliders:
     trait Collider
-    case class CircleCollider(origin: P2d, radius: Float) extends Collider
-    case class RectangleCollider(topLeft: P2d, height: Float, width: Float) extends Collider
+    case class CircleCollider(origin: P2d, radius: Double) extends Collider
+    case class RectangleCollider(topLeft: P2d, height: Double, width: Double) extends Collider
 
   import Colliders.*
 
