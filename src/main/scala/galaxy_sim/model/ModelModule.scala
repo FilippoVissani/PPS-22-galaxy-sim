@@ -2,20 +2,13 @@ package galaxy_sim.model
 
 object ModelModule:
   trait Model:
-    def entities: Set[Entity]
+    def entities: Seq[Entity]
 
   trait Provider:
     val model: Model
 
   trait Component:
     class ModelImpl extends Model:
-      override val entities: Set[Entity] = Set(
-        Entity(name = "Star1",
-          mass = 10,
-          volume = 10,
-          speed = 10,
-          acceleration = 10,
-          position = Pair(100, 100))
-      )
+      override val entities: Seq[Entity] = (0 to 9) map (_ => EntityGenerator.generateRandomEntity(700))
 
   trait Interface extends Provider with Component
