@@ -2,7 +2,7 @@ Priority,Description,EstimatedInitialEffort,Sprint1,Sprint2,Sprint3,Sprint4,Spri
 1,Setting up the build environment,2,0,,,,,
 2,Understanding how orbits work,2,1,,,,,
 3,As a user i want to visualize the interstellar clouds,6,,,,,,
-4,As a user i want to visualize orbit of the entities if present,15,,,,,,
+4,As a user i want to visualize orbit of the entities if present,15,6,,,,,
 5,As a user i want to visualize collisions between entities,10,,,,,,
 6,As a user i want to visualize the life cycle of the entities,5,,,,,,
 7,As a user i want to visualize relevant information about each entity,4,,,,,,
