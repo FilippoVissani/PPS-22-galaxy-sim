@@ -4,7 +4,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import physics.collisions.Collisions.Colliders.RectangleCollider
 import physics.collisions.Collisions.CollisionManager.detect
-import physics.collisions.Collisions.{RigidBody, CollisionDetector, P2d}
+import physics.collisions.Collisions.{CollisionDetector, P2d, RigidBody}
 
 
 class TestCollisionDetection extends AnyFlatSpec:

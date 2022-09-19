@@ -1,11 +1,13 @@
 package physics.collisions
 
-import physics.collisions.Collisions.Colliders.Collider
+import physics.collisions.Collisions.Colliders.{CircleCollider, Collider}
+import physics.collisions.Collisions.RigidBody
 
 object Collisions:
   case class P2d(x: Double, y: Double)
+
   trait RigidBody[T <: Collider]:
-    def collider: T 
+    def collider: T
 
   object Colliders:
     trait Collider
