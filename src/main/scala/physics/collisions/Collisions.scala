@@ -1,5 +1,7 @@
 package physics.collisions
 
+import physics.collisions.Collisions.Colliders.Collider
+
 object Collisions:
   case class P2d(x: Double, y: Double)
   trait RigidBody[T <: Collider]:
@@ -14,13 +16,14 @@ object Collisions:
 
   object CollisionManager:
     import CollisionDetectors.given
-    def detect[A <: Collider, B <: Collider](c1: A, c2: B)(using col: CollisionDetector[A, B]): Boolean =
-      col.detect(c1, c2)
+    def detect[A <: Collider, B <: Collider](c1: RigidBody[A], c2: RigidBody[B])(using col: CollisionDetector[A, B]): Boolean =
+      col.detect(c1.collider, c2.collider)
 
 
   trait CollisionDetector[A <: Collider, B <: Collider]:
     def detect(c1: A, c2: B): Boolean
-
+  
+  
   object CollisionDetectors:
     given CircleToCircleDetector: CollisionDetector[CircleCollider, CircleCollider] with
       override def detect(c1: CircleCollider, c2: CircleCollider): Boolean =
