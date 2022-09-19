@@ -11,7 +11,7 @@ object ViewModule:
     def start(): Unit
 
   trait Provider:
-    val view: View
+    def view: View
 
   type Requirements = ControllerModule.Provider
 

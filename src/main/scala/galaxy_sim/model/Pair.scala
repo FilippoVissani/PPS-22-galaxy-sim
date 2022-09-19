@@ -1,8 +1,8 @@
 package galaxy_sim.model
 
 trait Pair[+A, +B]:
-  val x: A
-  val y: B
+  def x: A
+  def y: B
   def map[C, D](f: A => C )(g: B => D ): Pair[C, D]
 
 object Pair:

@@ -1,12 +1,12 @@
 package galaxy_sim.model
 
 trait Entity:
-  val name: String
-  val mass: Float
-  val volume: Float
-  val speed: Float
-  val acceleration: Float
-  val position: Pair[Float, Float]
+  def name: String
+  def mass: Float
+  def volume: Float
+  def speed: Float
+  def acceleration: Float
+  def position: Pair[Float, Float]
   def updateName(name: String): Entity
   def updateMass(delta: Float): Entity
   def updateVolume(delta: Float): Entity

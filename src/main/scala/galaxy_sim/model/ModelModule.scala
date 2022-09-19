@@ -5,7 +5,7 @@ object ModelModule:
     def entities: Set[Entity]
 
   trait Provider:
-    val model: Model
+    def model: Model
 
   trait Component:
     class ModelImpl extends Model:
