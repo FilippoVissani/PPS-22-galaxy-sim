@@ -3,13 +3,13 @@ package physics.collisions
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import physics.collisions.Collisions.Colliders.RectangleCollider
-import physics.collisions.Collisions.Detector.detect
-import physics.collisions.Collisions.{CollisionDetector, P2d}
+import physics.collisions.Collisions.CollisionManager.detect
+import physics.collisions.Collisions.{RigidBody, CollisionDetector, P2d}
 
 
 class TestCollisionDetection extends AnyFlatSpec:
   import Collisions.Colliders.CircleCollider
-  import Collisions.Detector
+  import Collisions.CollisionManager
   import Collisions.CollisionDetectors.given
 
 
