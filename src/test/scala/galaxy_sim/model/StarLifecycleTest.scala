@@ -11,7 +11,7 @@ class StarLifecycleTest extends AnyFlatSpec with should.Matchers:
   val speed: Float = 500000
   val acceleration: Float = 200
   val position: Pair[Float, Float] = Pair(1, 1)
-  val star1: Body = Entity(name, mass, volume, speed, acceleration, position)
+  val star1: Entity = Entity(name, mass, volume, speed, acceleration, position)
 
   "star1" should "have correct parameters" in {
     star1.name shouldBe name
