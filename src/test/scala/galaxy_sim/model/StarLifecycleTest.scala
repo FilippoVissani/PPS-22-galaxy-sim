@@ -6,20 +6,18 @@ import org.scalatest.matchers.should
 class StarLifecycleTest extends AnyFlatSpec with should.Matchers:
 
   val name: String = "Star1"
-  val mass: Float = 100
-  val volume: Float = 23.7
-  val speed: Float = 500000
-  val acceleration: Float = 200
-  val position: Pair[Float, Float] = Pair(1, 1)
-  val star1: Entity = Entity(name, mass, volume, speed, acceleration, position)
+  val mass: Double = 100
+  val volume: Double = 23.7
+  val speed: Pair[Double, Double] = Pair(1, 1)
+  val position: Pair[Double, Double] = Pair(1, 1)
+  val star: Entity = Entity(name, mass, volume, speed, position)
 
-  "star1" should "have correct parameters" in {
-    star1.name shouldBe name
-    star1.mass shouldBe mass
-    star1.volume shouldBe volume
-    star1.speed shouldBe 500000
-    star1.acceleration shouldBe 200
-    star1.position shouldBe position
+  "star" should "have correct parameters" in {
+    star.name shouldBe name
+    star.mass shouldBe mass
+    star.volume shouldBe volume
+    star.speed shouldBe Pair(1, 1)
+    star.position shouldBe position
   }
 
   "'Massive Star'" should "become 'Red Supergiant'"
