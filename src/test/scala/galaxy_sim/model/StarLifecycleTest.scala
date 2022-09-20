@@ -2,6 +2,7 @@ package galaxy_sim.model
 
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
+import StarType.*
 
 class StarLifecycleTest extends AnyFlatSpec with should.Matchers:
 
@@ -10,17 +11,22 @@ class StarLifecycleTest extends AnyFlatSpec with should.Matchers:
   val volume: Volume = 23.7
   val speed: Vector2D = Pair(2, 2)
   val position: Point2D = Pair(1, 1)
-  val star1: Star = Star(Body(name, mass, volume, speed, position))
 
   "star1" should "have correct parameters" in {
-    star1.body.name shouldBe name
-    star1.body.mass shouldBe mass
-    star1.body.volume shouldBe volume
-    star1.body.speed shouldBe speed
-    star1.body.position shouldBe position
+    val star: Star = Star(Body(name, mass, volume, speed, position), MassiveStar)
+    star.body.name shouldBe name
+    star.body.mass shouldBe mass
+    star.body.volume shouldBe volume
+    star.body.speed shouldBe speed
+    star.body.position shouldBe position
+    star.starType shouldBe MassiveStar
   }
 
-  "'Massive Star'" should "become 'Red Supergiant'"
+  "'Massive Star'" should "become 'Red Supergiant'" in {
+    val star: Star = Star(Body(name, mass, volume, speed, position), MassiveStar)
+    star.starType shouldBe MassiveStar
+    star.oneYearOlder.starType shouldBe RedSuperGiant
+  }
 
   "'Red Supergiant'" should "become 'Supernova'"
 

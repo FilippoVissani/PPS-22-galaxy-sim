@@ -1,6 +1,6 @@
 package galaxy_sim.model
 
-import galaxy_sim.model.StarType.MassiveStar
+import galaxy_sim.model.StarType.*
 
 type Point2D = Pair[Double, Double]
 type Vector2D = Pair[Double, Double]
@@ -35,24 +35,30 @@ trait Entity:
   def body: Body
 
 enum StarType:
-  case MassiveStar
-  case RedSuperGiant
-  case Supernova
-  case BlackHole
-  case LowMassStar
-  case RedGiant
-  case PlanetaryNebula
-  case WhiteDwarf
-  case BlackDwarf
+  case MassiveStar, RedSuperGiant, Supernova, BlackHole, LowMassStar, RedGiant, PlanetaryNebula, WhiteDwarf, BlackDwarf
 
 trait Star extends Entity:
   def starType: StarType
+  def oneYearOlder: Star
 
 object Star:
-  def apply(body: Body): Star = StarImpl(body)
+  def apply(body: Body, starType: StarType): Star = StarImpl(body, starType)
 
-  private case class StarImpl(override val body: Body) extends Star:
-    override def starType: StarType = ???
+  private case class StarImpl(override val body: Body, override val starType: StarType) extends Star:
+
+    override def oneYearOlder: Star = ???
+
+    private def nextType: StarType = starType match
+      case MassiveStar => RedSuperGiant
+      case RedSuperGiant => Supernova
+      case Supernova => BlackHole
+      case LowMassStar => RedGiant
+      case RedGiant => PlanetaryNebula
+      case PlanetaryNebula => WhiteDwarf
+      case WhiteDwarf => BlackDwarf
+      case _ => starType
+
+
 
 trait Planet extends Entity
 
