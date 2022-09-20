@@ -21,3 +21,20 @@ class StarLifecycleTest extends AnyFlatSpec with should.Matchers:
     star1.acceleration shouldBe 200
     star1.position shouldBe position
   }
+
+  "'Massive Star'" should "become 'Red Supergiant'"
+
+  "'Red Supergiant'" should "become 'Supernova'"
+
+  "'Supernova'" should "become 'Black Hole'"
+
+  "'Low Mass Star'" should "become 'Red Giant'"
+
+  "'Red Giant'" should "become 'Planetary Nebula'"
+
+  "'Planetary Nebula'" should "become 'White Dwarf'"
+
+  "'White Dwarf'" should "become 'Black Dwarf'"
+
+
+
