@@ -1,25 +1,33 @@
 package physics.utils
 
-case class Position(x: Int, y: Int)
+case class Position(x: Double, y: Double)
 case class SpeedVector(x: Double, y: Double, z: Double)
 case class GravitationalForceVector(x: Double, y: Double)
 
-class PhysicalEntity(var mass: Double, var position: Position = Position(0,0), var aphelionSpeed: Double = 10000, var speedVector: SpeedVector = SpeedVector(0, 0, 0), var gForce: GravitationalForceVector = GravitationalForceVector(0, 0))
+class PhysicalEntity(val mass: Double = 1000,
+                     val position: Position = Position(0,0),
+                     val aphelionSpeed: Double = 10000,
+                     val speedVector: SpeedVector = SpeedVector(0, 0, 0),
+                     val gForceVector: GravitationalForceVector = GravitationalForceVector(0, 0))
 
 object PhysicalEntity:
-  def apply(): PhysicalEntity = new PhysicalEntity(5)
-  def apply(mass: Double, pos: Position): PhysicalEntity = new PhysicalEntity(mass, pos)
-  def apply(mass: Double, pos: Position, speed: Double): PhysicalEntity = new PhysicalEntity(mass, pos, speed)
+  def apply(): PhysicalEntity = new PhysicalEntity() //with default values
+  def apply(mass: Double, pos: Position, aphelionSpeed: Double): PhysicalEntity = new PhysicalEntity(mass, pos, aphelionSpeed)
+  def apply(mass: Double, pos: Position, aphelionSpeed: Double, speedVector: SpeedVector, gForceVector: GravitationalForceVector): PhysicalEntity =
+    new PhysicalEntity(mass, pos, aphelionSpeed, speedVector, gForceVector)
 
   def changeMass(entity: PhysicalEntity, newMass: Double): PhysicalEntity =
-    PhysicalEntity(newMass, entity.position, entity.aphelionSpeed)
+    PhysicalEntity(newMass, entity.position, entity.aphelionSpeed, entity.speedVector, entity.gForceVector)
 
   def changePosition(entity: PhysicalEntity, newPosition: Position): PhysicalEntity =
-    PhysicalEntity(entity.mass, newPosition, entity.aphelionSpeed)
+    PhysicalEntity(entity.mass, newPosition, entity.aphelionSpeed, entity.speedVector, entity.gForceVector)
 
   def changeAphelionSpeed(entity: PhysicalEntity, newspeed: Double): PhysicalEntity =
-    PhysicalEntity(entity.mass, entity.position, newspeed)
+    PhysicalEntity(entity.mass, entity.position, newspeed, entity.speedVector, entity.gForceVector)
 
-  def changeSpeedVector(entity: PhysicalEntity, newVector: SpeedVector): PhysicalEntity = ???
-  
-  
+  def changeSpeedVector(entity: PhysicalEntity, newSpeedVector: SpeedVector): PhysicalEntity =
+    PhysicalEntity(entity.mass, entity.position, entity.aphelionSpeed, newSpeedVector, entity.gForceVector)
+
+  def changeGForceVector(entity: PhysicalEntity, newForceVector: GravitationalForceVector): PhysicalEntity =
+    PhysicalEntity(entity.mass, entity.position, entity.aphelionSpeed, entity.speedVector, newForceVector)
+

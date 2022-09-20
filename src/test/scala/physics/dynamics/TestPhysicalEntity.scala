@@ -3,9 +3,9 @@ package physics.dynamics
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
-import physics.utils.{PhysicalEntity, Position, SpeedVector}
+import physics.utils.{PhysicalEntity, Position, SpeedVector, GravitationalForceVector}
 
-class TestPhysicalEntityCreation extends AnyFunSuite with BeforeAndAfterAll: //Matchers
+class TestPhysicalEntity extends AnyFunSuite with BeforeAndAfterAll: //Matchers
   import PhysicalEntity.*
 
   val mass1: Double = 9.2
@@ -46,8 +46,21 @@ class TestPhysicalEntityCreation extends AnyFunSuite with BeforeAndAfterAll: //M
   test("assign speed vector to entities"){
     val sVec1: SpeedVector = SpeedVector(10,20,0)
     val sVec2: SpeedVector = SpeedVector(20,30,10)
+    println(s"entity1 speedvector before ${entity1.speedVector}")
     entity1 = changeSpeedVector(entity1, sVec1)
+    println(s"entity1 speedvector before ${entity1.speedVector}")
     entity2 = changeSpeedVector(entity2, sVec2)
     assert(entity1.speedVector == sVec1)
     assert(entity2.speedVector == sVec2)
+  }
+
+  test("assign gravitational force vector to entities"){
+    val gForceVec1: GravitationalForceVector = GravitationalForceVector(10,20)
+    val gForceVec2: GravitationalForceVector = GravitationalForceVector(40,30)
+    println(s"entity1 gforce vector before ${entity1.gForceVector}")
+    entity1 = changeGForceVector(entity1, gForceVec1)
+    println(s"entity1 gforce vector after ${entity1.gForceVector}")
+    entity2 = changeGForceVector(entity2, gForceVec2)
+    assert(entity1.gForceVector == gForceVec1)
+    assert(entity2.gForceVector == gForceVec2)
   }
