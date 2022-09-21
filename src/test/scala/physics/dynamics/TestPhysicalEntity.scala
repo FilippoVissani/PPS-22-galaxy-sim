@@ -23,17 +23,23 @@ class TestPhysicalEntity extends AnyFunSuite with BeforeAndAfterAll: //Matchers
     assert(entity1.aphelionSpeed === speed1)
   }
 
-  test("creation of a second entity and modify it's field with methods"){
-    var entity2: PhysicalEntity = PhysicalEntity()
+  test("change mass of second entity"){
     entity2 = changeMass(entity2, mass2)
-    entity2 = changePosition(entity2, pos2)
-    entity2 = changeAphelionSpeed(entity2, speed2)
     assert(entity2.mass === mass2)
-    assert(entity2.position === pos2)
-    assert(entity2.aphelionSpeed === speed2)
   }
 
-  test("assign position to entities"){
+  test("change position of second entity"){
+    entity2 = changePosition(entity2, pos2)
+    assert(entity2.position === pos2)
+  }
+
+  test("change aphelion speed of second entity"){
+    entity2 = changeAphelionSpeed(entity2, speed2)
+    assert(entity2.aphelionSpeed === speed2)
+
+  }
+
+  test("assign new position to both entities"){
     val pos1 = Position(2,2)
     val pos2 = Position(5,5)
     entity1 = changePosition(entity1, pos1)
@@ -42,23 +48,19 @@ class TestPhysicalEntity extends AnyFunSuite with BeforeAndAfterAll: //Matchers
     assert(entity2.position === pos2)
   }
 
-  test("assign speed vector to entities"){
+  test("assign speed vector to both entities"){
     val sVec1: SpeedVector = SpeedVector(10,20)
     val sVec2: SpeedVector = SpeedVector(20,30)
-    println(s"entity1 speedvector before ${entity1.speedVector}")
     entity1 = changeSpeedVector(entity1, sVec1)
-    println(s"entity1 speedvector before ${entity1.speedVector}")
     entity2 = changeSpeedVector(entity2, sVec2)
     assert(entity1.speedVector == sVec1)
     assert(entity2.speedVector == sVec2)
   }
 
-  test("assign gravity force vector to entities"){
+  test("assign gravity force vector to both entities"){
     val gForceVec1: GravityForceVector = GravityForceVector(10,20)
     val gForceVec2: GravityForceVector = GravityForceVector(40,30)
-    println(s"entity1 gforce vector before ${entity1.gForceVector}")
     entity1 = changeGForceVector(entity1, gForceVec1)
-    println(s"entity1 gforce vector after ${entity1.gForceVector}")
     entity2 = changeGForceVector(entity2, gForceVec2)
     assert(entity1.gForceVector == gForceVec1)
     assert(entity2.gForceVector == gForceVec2)
