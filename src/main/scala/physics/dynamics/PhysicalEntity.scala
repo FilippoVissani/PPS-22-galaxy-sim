@@ -1,20 +1,26 @@
 package physics.dynamics
 
-case class Position(x: Double, y: Double)
-case class SpeedVector(x: Double, y: Double)
-case class GravityForceVector(x: Double, y: Double)
+import physics.*
 
-class PhysicalEntity(val mass: Double = 1000,
-                     val position: Position = Position(0,0),
-                     val aphelionSpeed: Double = 10000,
-                     val speedVector: SpeedVector = SpeedVector(0, 0),
-                     val gForceVector: GravityForceVector = GravityForceVector(0, 0))
+trait PhysicalEntity:
+  def mass: Mass
+  def position: Position
+  def aphelionSpeed: Speed
+  def speedVector: SpeedVector
+  def gForceVector: GravityForceVector
+
 
 object PhysicalEntity:
-  def apply(): PhysicalEntity = new PhysicalEntity() //with default values
-  def apply(mass: Double, pos: Position, aphelionSpeed: Double): PhysicalEntity = new PhysicalEntity(mass, pos, aphelionSpeed)
-  def apply(mass: Double, pos: Position, aphelionSpeed: Double, speedVector: SpeedVector, gForceVector: GravityForceVector): PhysicalEntity =
-    new PhysicalEntity(mass, pos, aphelionSpeed, speedVector, gForceVector)
+  private case class PhysicalEntityImpl(override val mass: Mass = 1000,
+                                        override val position: Position = Pair(0, 0),
+                                        override val aphelionSpeed: Speed = 10000,
+                                        override val speedVector: SpeedVector = Pair(0, 0),
+                                        override val gForceVector: GravityForceVector = Pair(0, 0)) extends PhysicalEntity
+
+  def apply(): PhysicalEntity = PhysicalEntityImpl() //with default values
+  def apply(mass: Mass, pos: Position, aphelionSpeed: Speed): PhysicalEntity = PhysicalEntityImpl(mass, pos, aphelionSpeed)
+  def apply(mass: Mass, pos: Position, aphelionSpeed: Speed, speedVector: SpeedVector, gForceVector: GravityForceVector): PhysicalEntity =
+    PhysicalEntityImpl(mass, pos, aphelionSpeed, speedVector, gForceVector)
 
   /**
    * update the mass of an entity
@@ -22,7 +28,7 @@ object PhysicalEntity:
    * @param newMass Double
    * @return a new type PhysicalEntity updated
    */
-  def changeMass(entity: PhysicalEntity, newMass: Double): PhysicalEntity =
+  def changeMass(entity: PhysicalEntity, newMass: Mass): PhysicalEntity =
     PhysicalEntity(newMass, entity.position, entity.aphelionSpeed, entity.speedVector, entity.gForceVector)
 
   /**
@@ -37,10 +43,10 @@ object PhysicalEntity:
   /**
    * update the aphelion speed of an entity
    * @param entity type  PhysicalEntity
-   * @param newspeed type Double 
+   * @param newspeed type Double
    * @return a new type PhysicalEntity updated
    */
-  def changeAphelionSpeed(entity: PhysicalEntity, newspeed: Double): PhysicalEntity =
+  def changeAphelionSpeed(entity: PhysicalEntity, newspeed: Speed): PhysicalEntity =
     PhysicalEntity(entity.mass, entity.position, newspeed, entity.speedVector, entity.gForceVector)
 
   /**

@@ -1,6 +1,7 @@
 package physics.dynamics
 
 import org.w3c.dom.EntityReference
+import physics.*
 
 import math.{pow, sqrt}
 
@@ -8,7 +9,7 @@ import math.{pow, sqrt}
  * Trait with different constants that can be useful
  */
 trait Constants:
-  val gravityCostant: Double = 6.67e-11
+  val gravityConstant: Double = 6.67e-11
   val daySec: Double = 24.0 * 60 * 60
   val deltaYear: Double = daySec * 365
   val moduleConstant: Double = 1.5
@@ -37,7 +38,7 @@ object GravitationLaws extends Constants:
    */
   def accelerationBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
     val distance: Double = distanceBetweenTwoEntities(entitySubject, entityReference)
-    gravityCostant * (entityReference.mass / pow(distance, 2))
+    gravityConstant * (entityReference.mass / pow(distance, 2))
 
   /**
    * Calculate the speed of an entity after some time
@@ -79,7 +80,7 @@ object GravitationLaws extends Constants:
    * @return Double, the gravity constant between two entities
    */
   def entitiesGravitationalConstant(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    gravityCostant * entitySubject.mass * entityReference.mass
+    gravityConstant * entitySubject.mass * entityReference.mass
 
   /**
    * Calculate the distance between two entities
@@ -88,7 +89,7 @@ object GravitationLaws extends Constants:
    * @return Position, the distance in a bi-dimensional space
    */
   def posBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Position =
-    Position(entitySubject.position.x - entityReference.position.x, entitySubject.position.y - entityReference.position.y)
+    Pair(entitySubject.position.x - entityReference.position.x, entitySubject.position.y - entityReference.position.y)
 
   /**
    * Calculate the module of a Position (type) that represent the distance between two entities
@@ -108,7 +109,7 @@ object GravitationLaws extends Constants:
     val distance = posBetweenTwoEntities(entitySubject, entityReference)
     val mod = moduleOfDistance(distance)
     val gravConstEntitySubj = negateGravConst(entitiesGravitationalConstant(entitySubject, entityReference))
-    val gForce = GravityForceVector(gravConstEntitySubj * distance.x / mod, gravConstEntitySubj * distance.y / mod)
+    val gForce: GravityForceVector = Pair(gravConstEntitySubj * distance.x / mod, gravConstEntitySubj * distance.y / mod)
     gForce //will be saved into entity
 
   /**
@@ -119,7 +120,7 @@ object GravitationLaws extends Constants:
    */
   def speedVectorAfterTime(entity: PhysicalEntity, deltaTime: Double): SpeedVector =
     val speedVector = calculateSpeedVectorAfterTime(entity, deltaTime)
-    SpeedVector(entity.speedVector.x + speedVector.x, entity.speedVector.y + speedVector.y)
+    Pair(entity.speedVector.x + speedVector.x, entity.speedVector.y + speedVector.y)
 
   /**
    * Calculate entity's new velocity vector after some time
@@ -128,7 +129,7 @@ object GravitationLaws extends Constants:
    * @return SpeedVector, speed change after delta time
    */
   def calculateSpeedVectorAfterTime(entity: PhysicalEntity, deltaTime: Double): SpeedVector =
-    SpeedVector(entity.gForceVector.x * deltaTime / entity.mass, entity.gForceVector.y * deltaTime / entity.mass)
+    Pair(entity.gForceVector.x * deltaTime / entity.mass, entity.gForceVector.y * deltaTime / entity.mass)
 
   /**
    * Calculate entity's new position after some time
@@ -138,7 +139,7 @@ object GravitationLaws extends Constants:
    */
   def vectorChangeOfDisplacement(entity: PhysicalEntity, deltaTime: Double): Position =
     val displacement = calculateChangeOfDisplacement(entity, deltaTime)
-    Position(entity.position.x + displacement.x, entity.position.y + displacement.y)
+    Pair(entity.position.x + displacement.x, entity.position.y + displacement.y)
 
   /**
    * Calculate entity's displacement after some time
@@ -147,7 +148,7 @@ object GravitationLaws extends Constants:
    * @return Position that is the change of displacement
    */
   def calculateChangeOfDisplacement(entity: PhysicalEntity, deltaTime: Double): Position =
-    Position(entity.speedVector.x * deltaTime, entity.speedVector.y * deltaTime)
+    Pair(entity.speedVector.x * deltaTime, entity.speedVector.y * deltaTime)
 
 
   /**
