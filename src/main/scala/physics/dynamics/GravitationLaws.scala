@@ -22,58 +22,50 @@ object GravitationLaws extends Constants:
 
   /**
    * Calculate the gravity force between two entities
-   * @param entitySubject is the entity you want to move
-   * @param entityReference is the reference entity, usually is bigger than the subject, we consider it as still
-   * @return double that represent the gravity force impact of the entity reference on the entity subject
+   * @param entitySubject PhysicalEntity, is the entity you want to move
+   * @param entityReference PhysicalEntity, is the reference entity, usually is bigger than the subject, we consider it as still
+   * @return Double, represent the gravity force impact of the entity reference on the entity subject
    */
   def forceBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
     accelerationBetweenTwoEntities(entitySubject, entityReference) * entitySubject.mass
 
   /**
    * Calculate the acceleration of the entity subject
-   * @param entitySubject is the entity you want to move
-   * @param entityReference is the reference entity, usually is bigger than the subject, we consider it as still
-   * @return double that represent the acceleration of the entity subject
+   * @param entitySubject PhysicalEntity, is the entity you want to move
+   * @param entityReference PhysicalEntity, is the reference entity, usually is bigger than the subject, we consider it as still
+   * @return Double, represent the acceleration of the entity subject
    */
   def accelerationBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    val distance: Double = distanceBetweenTwoEntities(entitySubject.position, entityReference.position)
+    val distance: Double = distanceBetweenTwoEntities(entitySubject, entityReference)
     gravityCostant * (entityReference.mass / pow(distance, 2))
 
   /**
    * Calculate the speed of an entity after some time
    * @param accelleration is only related to the mass of the entity subject and the distance between it and the entity reference
-   * @param deltaTime
-   * @return double of the speed
+   * @param deltaTime Double, time passed
+   * @return Double, the speed after time
    */
   def speedAfterDeltaTime(accelleration: Double, deltaTime: Double): Double =
     accelleration * deltaTime
 
   /**
    * Calculate the change of displacement of an entity
-   * @param aphelionSpeed of the entity
-   * @param deltaSpeed
-   * @param deltaTime
-   * @return
+   * @param aphelionSpeed Double, aphelion speed of the entity
+   * @param deltaSpeed Double, space covered
+   * @param deltaTime Double, time passed
+   * @return Double, space to add to previous position
    */
   def changeOfDisplacement(aphelionSpeed: Double, deltaSpeed: Double, deltaTime: Double): Double =
     (aphelionSpeed + deltaSpeed) * deltaTime
 
   /**
-   *
-   * @param pos1
-   * @param pos2
-   * @return
+   * Calculate the distance between two points that are the two entities
+   * @param entitySubject PhysicalEntity, entity that orbits around another one
+   * @param entityReference PhysicalEntity, entity that has other entities that orbit around it
+   * @return Double, distance between them
    */
-  def distanceBetweenTwoEntities(pos1: Position, pos2: Position): Double =
-    sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2))
-
-  /**
-   *
-   * @param changeOfDisplacement
-   * @param entity
-   * @return
-   */
-  def entityNewPosition(changeOfDisplacement: Double, entity: PhysicalEntity): Position = ???
+  def distanceBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
+    sqrt(pow(entitySubject.position.x - entityReference.position.x, 2) + pow(entitySubject.position.y - entityReference.position.y, 2))
 
 
   /**
@@ -82,37 +74,37 @@ object GravitationLaws extends Constants:
 
   /**
    * Calculate the gravity constant between two entities
-   * @param entitySubject is the entity that orbits around another one
-   * @param entityReference is the entity that has other entities that orbit around it
-   * @return the gravity constant between two entities
+   * @param entitySubject PhysicalEntity, is the entity that orbits around another one
+   * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
+   * @return Double, the gravity constant between two entities
    */
   def entitiesGravitationalConstant(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
     gravityCostant * entitySubject.mass * entityReference.mass
 
   /**
    * Calculate the distance between two entities
-   * @param entitySubject   is the entity that orbits around another one
-   * @param entityReference is the entity that has other entities that orbit around it
-   * @return the distance in a bi-dimensional space
+   * @param entitySubject PhysicalEntity, is the entity that orbits around another one
+   * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
+   * @return Position, the distance in a bi-dimensional space
    */
   def posBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Position =
     Position(entitySubject.position.x - entityReference.position.x, entitySubject.position.y - entityReference.position.y)
 
   /**
-   * Calculate the module of the distance between two entities
-   * @param pos
-   * @return double
+   * Calculate the module of a Position (type) that represent the distance between two entities
+   * @param pos Position
+   * @return Double
    */
   def moduleOfDistance(pos: Position): Double =
    pow(pow(pos.x, 2) + pow(pos.y, 2), moduleConstant)
 
   /**
    * Calculate the gravity force put on entity subject direction
-   * @param entitySubject is the entity that orbits around another one
-   * @param entityReference is the entity that has other entities that orbit around it
-   * @return a vector that represent the gravity force of the entity subject in a bi-dimensional space
+   * @param entitySubject PhysicalEntity, is the entity that orbits around another one
+   * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
+   * @return a vector that represent the gravitational force of the entity subject in a bi-dimensional space
    */
-  def gravityForceOnEntity(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): GravityForceVector =
+  def gravitationalForceOnEntity(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): GravityForceVector =
     val distance = posBetweenTwoEntities(entitySubject, entityReference)
     val mod = moduleOfDistance(distance)
     val gravConstEntitySubj = negateGravConst(entitiesGravitationalConstant(entitySubject, entityReference))
@@ -120,21 +112,47 @@ object GravitationLaws extends Constants:
     gForce //will be saved into entity
 
   /**
-   * calculate entity's new velocity vector after some time
-   * @param entity is the entity subject that you want to move
-   * @param deltaTime
-   * @return
+   * Calculate entity's new velocity vector after some time
+   * @param entity PhysicalEntity, is the entity subject that you want to move
+   * @param deltaTime Double, time passed
+   * @return new SpeedVector to update entity with
    */
   def speedVectorAfterTime(entity: PhysicalEntity, deltaTime: Double): SpeedVector =
-    SpeedVector((entity.gForceVector.x * deltaTime / entity.mass) + entity.speedVector.x, (entity.gForceVector.y * deltaTime / entity.mass) + entity.speedVector.y)
-  
+    val speedVector = calculateSpeedVectorAfterTime(entity, deltaTime)
+    SpeedVector(entity.speedVector.x + speedVector.x, entity.speedVector.y + speedVector.y)
+
   /**
-   * calculate entity's new displacement after some time
-   * @param entity is the entity subject that you want to move
-   * @param deltaTime
-   * @return Position as new displacement
+   * Calculate entity's new velocity vector after some time
+   * @param entity PhysicalEntity, is the entity subject that you want to move
+   * @param deltaTime Double, time passed
+   * @return SpeedVector, speed change after delta time
+   */
+  def calculateSpeedVectorAfterTime(entity: PhysicalEntity, deltaTime: Double): SpeedVector =
+    SpeedVector(entity.gForceVector.x * deltaTime / entity.mass, entity.gForceVector.y * deltaTime / entity.mass)
+
+  /**
+   * Calculate entity's new position after some time
+   * @param entity PhysicalEntity, is the entity subject that you want to move
+   * @param deltaTime Double, time passed
+   * @return new Position to update entity with
    */
   def vectorChangeOfDisplacement(entity: PhysicalEntity, deltaTime: Double): Position =
-    Position(entity.position.x + (entity.speedVector.x * deltaTime), entity.position.y + (entity.speedVector.y * deltaTime))
+    val displacement = calculateChangeOfDisplacement(entity, deltaTime)
+    Position(entity.position.x + displacement.x, entity.position.y + displacement.y)
 
+  /**
+   * Calculate entity's displacement after some time
+   * @param entity PhysicalEntity, is the entity subject that you want to move
+   * @param deltaTime Double, time passed
+   * @return Position that is the change of displacement
+   */
+  def calculateChangeOfDisplacement(entity: PhysicalEntity, deltaTime: Double): Position =
+    Position(entity.speedVector.x * deltaTime, entity.speedVector.y * deltaTime)
+
+
+  /**
+   * Negation of gravityConstant as in gravitationalForceOnEntity calculation the force is opposite of the vector
+   * @param gravityConstant Double
+   * @return Dobule, the negation of gravityConstant
+   */
   private def negateGravConst(gravityConstant: Double): Double = -gravityConstant
