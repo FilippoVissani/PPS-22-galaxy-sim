@@ -34,6 +34,6 @@ typeOfStar(Mass, whiteDwarf) :- Mass > 300, !.
 typeOfStar(Mass, blackDwarf) :- Mass > 0.
 
 typeOfEntity(Temp, Mass, X) :- 1000 < Temp, typeOfStar(Mass, X), !.
-typeOfEntity(Temp, Mass, planet) :- 100 < Temp, !.
-typeOfEntity(Temp, Mass, asteroid) :- 0 < Temp, !.
-typeOfEntity(Temp, Mass, interstellarCloud).
+typeOfEntity(Temp, _, planet) :- 100 < Temp, !.
+typeOfEntity(Temp, _, asteroid) :- 0 < Temp, !.
+typeOfEntity(Temp, _, interstellarCloud).
