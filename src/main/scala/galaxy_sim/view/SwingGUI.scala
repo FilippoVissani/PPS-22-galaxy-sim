@@ -1,6 +1,6 @@
 package galaxy_sim.view
 
-import galaxy_sim.model.Entity
+import galaxy_sim.model.Body
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import galaxy_sim.view.ViewModule.View
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
@@ -8,7 +8,7 @@ import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, RenderingHints, 
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 
 trait SwingGUI:
-  def update(entities: Seq[Entity]): Unit
+  def update(entities: Seq[Body]): Unit
 
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
@@ -34,7 +34,7 @@ object SwingGUI:
     mainFrame.mainPanel.add(simulationPanel, BorderLayout.CENTER)
     mainFrame.setVisible(true)
 
-    override def update(entities: Seq[Entity]): Unit =
+    override def update(entities: Seq[Body]): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.entities_(entities)
       })
@@ -45,9 +45,9 @@ object SwingGUI:
     this.getContentPane.add(mainPanel)
 
   private class SimulationPanel extends JPanel:
-    var entities: Seq[Entity] = Seq()
+    var entities: Seq[Body] = Seq()
 
-    def entities_(entities: Seq[Entity]): Unit =
+    def entities_(entities: Seq[Body]): Unit =
       this.entities = entities
       repaint()
 
@@ -61,5 +61,5 @@ object SwingGUI:
       entities.foreach(e => g2.fillOval(e.position.x.toInt, e.position.y.toInt, e.volume.toInt, e.volume.toInt))
       g2.setColor(java.awt.Color.BLACK)
       entities.foreach(e => g2.drawOval(e.position.x.toInt, e.position.y.toInt, e.volume.toInt, e.volume.toInt))
-      entities.foreach(e => g2.drawString(e.name, e.position.x, e.position.y))
+      entities.foreach(e => g2.drawString(e.name, e.position.x.toInt, e.position.y.toInt))
   end SimulationPanel

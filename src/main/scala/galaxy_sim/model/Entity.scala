@@ -1,49 +1,38 @@
 package galaxy_sim.model
 
-trait Entity:
-  val name: String
-  val mass: Float
-  val volume: Float
-  val speed: Float
-  val acceleration: Float
-  val position: Pair[Float, Float]
-  def updateName(name: String): Entity
-  def updateMass(delta: Float): Entity
-  def updateVolume(delta: Float): Entity
-  def updateSpeed(delta: Float): Entity
-  def updateAcceleration(delta: Float): Entity
-  def updatePosition(deltaX: Float)(deltaY: Float): Entity
+type Point2D = Pair[Double, Double]
+type Vector2D = Pair[Double, Double]
+type Mass = Double
+type Volume = Double
+type Speed = Vector2D
+type Position = Point2D
+
+trait Body:
+  def name: String
+  def mass: Mass
+  def volume: Volume
+  def speed: Speed
+  def position: Position
+
+enum EntityType:
+  case MassiveStar
+  case RedSuperGiant
+  case Supernova
+  case BlackHole
+  case LowMassStar
+  case RedGiant
+  case PlanetaryNebula
+  case WhiteDwarf
+  case BlackDwarf
+  case Planet
+  case Asteroid
+  case InterstellarCloud
+
+case class Entity(override val name: String,
+                  override val mass: Mass,
+                  override val volume: Volume,
+                  override val speed: Speed,
+                  override val position: Position) extends Body
 
 object Entity:
-  def apply(name: String,
-            mass: Float,
-            volume: Float,
-            speed: Float,
-            acceleration: Float,
-            position: Pair[Float, Float]): Entity =
-    EntityImpl(name, mass, volume, speed, acceleration, position)
-
-  private case class EntityImpl(name: String,
-                                mass: Float,
-                                volume: Float,
-                                speed: Float,
-                                acceleration: Float,
-                                position: Pair[Float, Float]) extends Entity:
-
-    override def updatePosition(deltaX: Float)(deltaY: Float): Entity =
-      Entity(name, mass, volume, speed, acceleration, position.map(_ + deltaX)(_ + deltaY))
-
-    override def updateName(name: String): Entity =
-      Entity(name, mass, volume, speed, acceleration, position)
-
-    override def updateVolume(delta: Float): Entity =
-      Entity(name, mass, volume + delta, speed, acceleration, position)
-
-    override def updateSpeed(delta: Float): Entity =
-      Entity(name, mass, volume, speed + delta, acceleration, position)
-
-    override def updateAcceleration(delta: Float): Entity =
-      Entity(name, mass, volume, speed, acceleration + delta, position)
-
-    override def updateMass(delta: Float): Entity =
-      Entity(name, mass + delta, volume, speed, acceleration, position)
+  def typeOf(e: Entity): EntityType = ???

@@ -1,17 +1,17 @@
 package galaxy_sim.view
 
 import galaxy_sim.controller.ControllerModule
-import galaxy_sim.model.Entity
+import galaxy_sim.model.Body
 import java.awt.{Dimension, Toolkit}
 import javax.swing.{JFrame, JPanel}
 
 object ViewModule:
   trait View:
-    def update(entities: Seq[Entity]): Unit
+    def update(entities: Seq[Body]): Unit
     def start(): Unit
 
   trait Provider:
-    val view: View
+    def view: View
 
   type Requirements = ControllerModule.Provider
 
@@ -20,13 +20,13 @@ object ViewModule:
     class GraphicalView(windowWidth: Int, windowHeight: Int) extends View:
       val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight)
 
-      override def update(entities: Seq[Entity]): Unit =
+      override def update(entities: Seq[Body]): Unit =
         gui.update(entities)
 
       override def start(): Unit = context.controller.startSimulation()
 
     class TextualView extends View:
-      override def update(entities: Seq[Entity]): Unit = ???
+      override def update(entities: Seq[Body]): Unit = ???
 
       override def start(): Unit = ???
 
