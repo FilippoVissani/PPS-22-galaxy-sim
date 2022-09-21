@@ -108,9 +108,8 @@ object GravitationLaws extends Constants:
   def gravitationalForceOnEntity(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): GravityForceVector =
     val distance = posBetweenTwoEntities(entitySubject, entityReference)
     val mod = moduleOfDistance(distance)
-    val gravConstEntitySubj = negateGravConst(entitiesGravitationalConstant(entitySubject, entityReference))
-    val gForce: GravityForceVector = Pair(gravConstEntitySubj * distance.x / mod, gravConstEntitySubj * distance.y / mod)
-    gForce //will be saved into entity
+    val gravConstEntitySubj = entitiesGravitationalConstant(entitySubject, entityReference)
+    Pair(- gravConstEntitySubj * distance.x / mod, - gravConstEntitySubj * distance.y / mod)
 
   /**
    * Calculate entity's new velocity vector after some time
@@ -149,11 +148,3 @@ object GravitationLaws extends Constants:
    */
   def calculateChangeOfDisplacement(entity: PhysicalEntity, deltaTime: Double): Position =
     Pair(entity.speedVector.x * deltaTime, entity.speedVector.y * deltaTime)
-
-
-  /**
-   * Negation of gravityConstant as in gravitationalForceOnEntity calculation the force is opposite of the vector
-   * @param gravityConstant Double
-   * @return Dobule, the negation of gravityConstant
-   */
-  private def negateGravConst(gravityConstant: Double): Double = -gravityConstant
