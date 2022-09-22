@@ -5,29 +5,38 @@ import physics.collisions.Collisions.Colliders.CircleCollider
 import physics.collisions.Collisions.{P2d, RigidBody}
 import physics.dynamics.PhysicalEntity
 
-trait CelestialBody extends PhysicalEntity with RigidBody[CircleCollider]:
+trait CelestialBody extends RigidBody[CircleCollider]:
   def name: String
   def radius: Double
+  def birthTime: Double
+  def body: PhysicalEntity
 
 object CelestialBody:
   def apply(name: String,
-            gForceVector: GravityForceVector, 
-            speedVector: SpeedVector, 
-            mass: Mass, 
-            position: Position, 
-            aphelionSpeed: Speed,
-            radius: Double): CelestialBody = CelestialBodyImpl(name, gForceVector, speedVector, mass, position, aphelionSpeed, radius)
-  def typeOf(e: CelestialBody): CelestialBodyType = ???
+            radius: Double,
+            birthTime: Double,
+            physicalEntity: PhysicalEntity): CelestialBody =
+    CelestialBodyImpl(name, radius, birthTime, physicalEntity)
+
+  def typeOf(b: CelestialBody): CelestialBodyType = ???
+
+  def updateName(b: CelestialBody, name: String): CelestialBody =
+    CelestialBody(name, b.radius, b.birthTime, b.body)
+
+  def updateRadius(b: CelestialBody)(f: Double => Double): CelestialBody =
+    CelestialBody(b.name, f(b.radius), b.birthTime, b.body)
+
+  def updateBirthTime(b: CelestialBody)(f: Double => Double): CelestialBody =
+    CelestialBody(b.name, b.radius, f(b.birthTime), b.body)
+
+  def updatePhysicalEntity(b: CelestialBody)(f: PhysicalEntity => PhysicalEntity): CelestialBody =
+    CelestialBody(b.name, b.radius, b.birthTime, f(b.body))
 
   private case class CelestialBodyImpl(override val name: String,
-                                       override val gForceVector: GravityForceVector,
-                                       override val speedVector: SpeedVector,
-                                       override val mass: Mass,
-                                       override val position: Position,
-                                       override val aphelionSpeed: Speed,
-                                       override val radius: Double) extends CelestialBody:
-
-    override val collider: CircleCollider = CircleCollider(P2d(position.x, position.y), radius)
+                                       override val radius: Double,
+                                       override val birthTime: Double,
+                                       override val body: PhysicalEntity) extends CelestialBody:
+    override val collider: CircleCollider = CircleCollider(P2d(body.position.x, body.position.y), radius)
 
 enum CelestialBodyType:
   case MassiveStar
