@@ -3,9 +3,9 @@
 ## Requisiti di business
 <table>
 <tr><th>ID/Numero</th><th>Testo del requisito</th></tr>
-<tr><td>1.1</td><td>La simulazione deve permettere di visualizzare l'evoluzione di una galassia, dove sono presenti le seguenti entità: nuvole di gas, stelle, buchi neri e pianeti.</td></tr>
+<tr><td>1.1</td><td>La simulazione deve permettere di visualizzare l'evoluzione di una galassia, dove sono presenti le seguenti entità: stelle, pianeti, asteroidi e nuvole di gas.</td></tr>
 <tr><td>1.2</td><td>Gli elementi presenti all'interno della simulazione hanno un tempo di vita, possono collidere e modificarsi.</td></tr>
-<tr><td>1.3</td><td>Stelle e pianeti possono essere di tipi differenti, con conseguenze sul loro comportamento.</td></tr>
+<tr><td>1.3</td><td>Le stelle possono essere di tipi differenti, con conseguenze sul loro comportamento.</td></tr>
 </table>
 
 ## Requisiti utente
@@ -23,11 +23,8 @@
 <table>
 <tr><th>ID/Numero</th><th>Testo del requisito</th></tr>
 <tr><td>3.1</td><td>L'andamento della simulazione deve essere scandito da un tempo virtuale.</td></tr>
-<tr><td>3.2</td><td>Inizialmente si presuppone la presenza di nuvole di vari tipi di gas nella simulazione, le quali si muovono liberamente nello spazio.</td></tr>
-<tr><td>3.2</td><td>Nel momento in cui le nuvole di gas si concentrano in dei punti ad elevata densità causano un'esplosione che genera una stella.</td></tr>
-<tr><td>3.3</td><td>In base al punto 3.2, la simulazione deve supportare diverse tipologie di elementi: idrogeno, elio, polvere e metalli.
-</td></tr>
-<tr><td>3.2</td><td>La creazione di una nuova stella comporta il rilascio di gas residuo, che viene liberato nello spazio.</td></tr>
+<tr><td>3.2</td><td>Inizialmente si presuppone la presenza di nuvole di gas nella simulazione, le quali si muovono liberamente nello spazio.</td></tr>
+<tr><td>3.2</td><td>Nel momento in cui le nuvole di gas si concentrano in dei punti a elevata densità causano un'esplosione che genera una stella.</td></tr>
 <tr><td>3.2</td><td>Nel momento in cui si genera una stella, viene anche creato un nuovo sistema di entità che le orbitano attorno.</td></tr>
 <tr><td>3.4</td><td>Le entità che possono essere generate da quelle definite nel punto 3.3 sono: stelle, pianeti, asteroidi.
 </td></tr>
@@ -36,7 +33,7 @@
 Per ogni entità devono essere definite tipologia, massa, posizione, velocità e attrazione gravitazionale.
 </td></tr>
 <tr><td>3.4.1.2</td><td>
-Ogni stella ha un tempo di vita, durante il quale brucia idrogeno o elio, di conseguenza la massa cambia.
+Ogni stella ha un tempo di vita, durante il quale la sua massa cambia.
 </td></tr>
 <tr><td>3.4.1.3</td><td>
 Le stelle hanno un ciclo di vita.
