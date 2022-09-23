@@ -1,5 +1,6 @@
 package galaxy_sim.model
 
+import galaxy_sim.prolog.EntityIdentifierProlog
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
@@ -18,6 +19,11 @@ class StarLifecycleTest extends AnyFlatSpec with should.Matchers:
     star.volume shouldBe volume
     star.speed shouldBe Pair(1, 1)
     star.position shouldBe position
+  }
+
+  "entity with mass 10 and temperature 1010" should "be a blackDwarf" in {
+    val entityIdentifierProlog = EntityIdentifierProlog()
+    entityIdentifierProlog.checkEntityType(10, 1010) shouldBe EntityType.BlackDwarf
   }
 
   "'Massive Star'" should "become 'Red Supergiant'"
