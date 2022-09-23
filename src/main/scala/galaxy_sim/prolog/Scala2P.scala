@@ -1,25 +1,25 @@
 package galaxy_sim.prolog
 
 import alice.tuprolog.*
-import galaxy_sim.model.EntityType
+import galaxy_sim.model.CelestialBodyType
 
 object Scala2P:
 
   given Conversion[String, Term] = Term.createTerm(_)
   given Conversion[String, Theory] = Theory.parseLazilyWithStandardOperators(_)
-  given Conversion[Term, EntityType] = _.toString match
-    case "MassiveStar" => EntityType.MassiveStar
-    case "redSuperGiant" => EntityType.RedSuperGiant
-    case "supernova" => EntityType.Supernova
-    case "blackHole" => EntityType.BlackHole
-    case "lowMassStar" => EntityType.LowMassStar
-    case "redGiant" => EntityType.RedGiant
-    case "planetaryNebula" => EntityType.PlanetaryNebula
-    case "whiteDwarf" => EntityType.WhiteDwarf
-    case "blackDwarf" => EntityType.BlackDwarf
-    case "planet" => EntityType.Planet
-    case "asteroid" => EntityType.Asteroid
-    case "interstellarCloud" => EntityType.InterstellarCloud
+  given Conversion[Term, CelestialBodyType] = _.toString match
+    case "massiveStar" => CelestialBodyType.MassiveStar
+    case "redSuperGiant" => CelestialBodyType.RedSuperGiant
+    case "supernova" => CelestialBodyType.Supernova
+    case "blackHole" => CelestialBodyType.BlackHole
+    case "lowMassStar" => CelestialBodyType.LowMassStar
+    case "redGiant" => CelestialBodyType.RedGiant
+    case "planetaryNebula" => CelestialBodyType.PlanetaryNebula
+    case "whiteDwarf" => CelestialBodyType.WhiteDwarf
+    case "blackDwarf" => CelestialBodyType.BlackDwarf
+    case "planet" => CelestialBodyType.Planet
+    case "asteroid" => CelestialBodyType.Asteroid
+    case "interstellarCloud" => CelestialBodyType.InterstellarCloud
 
   def extractTerm(solveInfo: SolveInfo, s: String): Term =
     solveInfo.getTerm(s)
