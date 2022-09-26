@@ -1,42 +1,61 @@
 package galaxy_sim.model
 
+import galaxy_sim.model.BodyAliases.{Radius, Temperature}
 import physics.{GravityForceVector, Mass, Position, Speed, SpeedVector}
 import physics.collisions.Collisions.Colliders.CircleCollider
 import physics.collisions.Collisions.{P2d, RigidBody}
 import physics.dynamics.PhysicalEntity
 
+object BodyAliases:
+  type Radius = Double
+  type Temperature = Double
+
+trait Body:
+  val physicalEntity: PhysicalEntity
+  export physicalEntity.*
+  def radius: Radius
+  def temperature: Temperature
+
+object Body:
+  def apply(physicalEntity: PhysicalEntity, radius: Radius, temperature: Temperature): Body =
+    BodyImpl(physicalEntity, radius, temperature)
+
+  private case class BodyImpl(override val physicalEntity: PhysicalEntity,
+                              override val radius: Radius,
+                              override val temperature: Temperature) extends Body
+
 trait CelestialBody extends RigidBody[CircleCollider]:
   def name: String
-  def radius: Double
   def birthTime: Double
-  def body: PhysicalEntity
+  val body: Body
+  export body.*
 
 object CelestialBody:
   def apply(name: String,
-            radius: Double,
             birthTime: Double,
-            physicalEntity: PhysicalEntity): CelestialBody =
-    CelestialBodyImpl(name, radius, birthTime, physicalEntity)
-
-  def typeOf(b: CelestialBody): CelestialBodyType = ???
-
-  def updateName(b: CelestialBody, name: String): CelestialBody =
-    CelestialBody(name, b.radius, b.birthTime, b.body)
-
-  def updateRadius(b: CelestialBody)(f: Double => Double): CelestialBody =
-    CelestialBody(b.name, f(b.radius), b.birthTime, b.body)
-
-  def updateBirthTime(b: CelestialBody)(f: Double => Double): CelestialBody =
-    CelestialBody(b.name, b.radius, f(b.birthTime), b.body)
-
-  def updatePhysicalEntity(b: CelestialBody)(f: PhysicalEntity => PhysicalEntity): CelestialBody =
-    CelestialBody(b.name, b.radius, b.birthTime, f(b.body))
+            b: Body): CelestialBody =
+    CelestialBodyImpl(name, birthTime, b)
 
   private case class CelestialBodyImpl(override val name: String,
-                                       override val radius: Double,
                                        override val birthTime: Double,
-                                       override val body: PhysicalEntity) extends CelestialBody:
+                                       override val body: Body) extends CelestialBody :
     override val collider: CircleCollider = CircleCollider(P2d(body.position.x, body.position.y), radius)
+
+object CelestialBodyOperations:
+  extension (c: CelestialBody)
+    def typeOf: CelestialBodyType = ???
+
+    def updateName(name: String): CelestialBody =
+      CelestialBody(name, c.birthTime, c.body)
+
+    def updateRadius(f: Double => Double): CelestialBody =
+      CelestialBody(c.name, c.birthTime, Body(c.body.physicalEntity, f(c.radius), c.temperature))
+
+    def updateBirthTime(f: Double => Double): CelestialBody =
+      CelestialBody(c.name, f(c.birthTime), c.body)
+
+    def updatePhysicalEntity(f: PhysicalEntity => PhysicalEntity): CelestialBody =
+      CelestialBody(c.name, c.birthTime, Body(f(c.body.physicalEntity), c.radius, c.temperature))
 
 enum CelestialBodyType:
   case MassiveStar
