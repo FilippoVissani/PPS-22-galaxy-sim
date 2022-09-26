@@ -1,22 +1,20 @@
 package galaxy_sim.model
 
 trait Simulation:
-  def virtualTime: Double
-  def deltaTime: Double
   def celestialBodies: Seq[CelestialBody]
-  def incrementVirtualTime(): Simulation
-  def updateCelestialBodies(celestialBodies: Seq[CelestialBody]): Simulation
+  def bounds: Boundary
+  val clock: Clock
+  export clock.*
 
 object Simulation:
-  def apply(celestialBodies: Seq[CelestialBody], virtualTime: Double, deltaTime: Double): Simulation =
-    SimulationImpl(celestialBodies, virtualTime, deltaTime)
-  
+  def apply(celestialBodies: Seq[CelestialBody] = Seq(), bounds: Boundary, clock: Clock = Clock()): Simulation =
+    SimulationImpl(celestialBodies, bounds, clock)
+
   private case class SimulationImpl(override val celestialBodies: Seq[CelestialBody],
-                                    override val virtualTime: Double,
-                                    override val deltaTime: Double) extends Simulation:
+                                    override val bounds: Boundary,
+                                    override val clock: Clock) extends Simulation
 
-    override def incrementVirtualTime(): Simulation =
-      Simulation(celestialBodies, virtualTime + deltaTime, deltaTime)
-
-    override def updateCelestialBodies(celestialBodies: Seq[CelestialBody]): Simulation =
-      Simulation(celestialBodies, virtualTime, deltaTime)
+object SimulationOperations:
+  extension (s: Simulation)
+    def updateCelestialBodies(f: Seq[CelestialBody] => Seq[CelestialBody]): Simulation =
+      Simulation(f(s.celestialBodies), s.bounds, s.clock)
