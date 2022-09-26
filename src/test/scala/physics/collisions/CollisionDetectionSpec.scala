@@ -2,9 +2,9 @@ package physics.collisions
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
-import physics.collisions.Collisions.Colliders.CircleCollider
-import physics.collisions.Collisions.P2d
-import physics.collisions.Collisions.CollisionDetectors.given
+import physics.collisions.CollisionDetection.Colliders.CircleCollider
+import physics.collisions.CollisionDetection.P2d
+import physics.collisions.CollisionDetection.CollisionDetectors.given
 import physics.collisions.CollisionDetectionTest
 
 class CollisionDetectionSpec extends AnyFeatureSpec with GivenWhenThen with CollisionDetectionTest:
