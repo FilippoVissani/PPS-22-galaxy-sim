@@ -1,10 +1,11 @@
 package galaxy_sim
 
 import org.scalatest.funsuite.AnyFunSuite
-import galaxy_sim.model.{CelestialBody, CelestialBodyGenerator, ModelModule}
+import galaxy_sim.model.{CelestialBody, CelestialBodyGenerator, Clock, ModelModule}
 import galaxy_sim.view.ViewModule
 import galaxy_sim.controller.ControllerModule
 import org.scalatest.matchers.should.Matchers.*
+import galaxy_sim.model.CelestialBodyOperations.*
 
 class MVCTest extends AnyFunSuite:
   test("MVC correctly defines constructors"){
@@ -15,12 +16,16 @@ class MVCTest extends AnyFunSuite:
     val mvc = MVCAssembler()
     val celestialBody: CelestialBody = CelestialBodyGenerator.generateRandomCelestialBody(150)
 
-    mvc.model.virtualTime shouldBe 0
-    mvc.model.celestialBodies.size shouldBe 10
+    mvc.model.simulation.clock shouldBe Clock()
+    mvc.model.simulation.celestialBodies.size shouldBe 10
     mvc.model.addCelestialBody(celestialBody)
-    mvc.model.celestialBodies.size shouldBe 11
+    mvc.model.simulation.celestialBodies.size shouldBe 11
     mvc.model.removeCelestialBody(celestialBody)
-    mvc.model.celestialBodies.size shouldBe 10
+    mvc.model.simulation.celestialBodies.size shouldBe 10
+    val body = mvc.model.simulation.celestialBodies.head
+    mvc.model.updateCelestialBody(body)(b => b.updateName("Test"))
+    mvc.model.simulation.celestialBodies.count(b => b.name == "Test") shouldBe 1
+    mvc.model.simulation.celestialBodies.size shouldBe 10
   }
 
 class MVCAssembler extends ModelModule.Interface

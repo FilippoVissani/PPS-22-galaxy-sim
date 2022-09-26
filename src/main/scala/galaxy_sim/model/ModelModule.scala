@@ -2,39 +2,34 @@ package galaxy_sim.model
 
 import physics.Position
 import physics.dynamics.PhysicalEntity.changePosition
+import SimulationOperations.*
+import CelestialBodyOperations.*
 
 object ModelModule:
   trait Model:
-    def virtualTime: Double
-    def celestialBodies: Seq[CelestialBody]
-    def moveCelestialBody(celestialBody: CelestialBody)(f: Position => Position): Unit
+    def simulation: Simulation
     def removeCelestialBody(celestialBody: CelestialBody): Unit
     def addCelestialBody(celestialBody: CelestialBody): Unit
+    def updateCelestialBody(celestialBody: CelestialBody)(f: CelestialBody => CelestialBody): Unit
 
   trait Provider:
     def model: Model
 
   trait Component:
     class ModelImpl extends Model:
-      var simulation: Simulation = Simulation((0 to 9) map (_ => CelestialBodyGenerator.generateRandomCelestialBody(150)), 0, 0.1)
+      var simulations: Seq[Simulation] = Seq(Simulation(
+        celestialBodies = (0 to 9) map (_ => CelestialBodyGenerator.generateRandomCelestialBody(150)),
+        bounds = Boundary(100, 100, 100, 100)))
 
-      override def virtualTime: Double =
-        simulation.virtualTime
-
-      override def celestialBodies: Seq[CelestialBody] =
-        simulation.celestialBodies
-
-      override def moveCelestialBody(celestialBody: CelestialBody)(f: Position => Position): Unit =
-        simulation = Simulation(
-          simulation.celestialBodies.map(b => if b == celestialBody then CelestialBody(b.name, b.radius, b.birthTime, changePosition(b.body, f(b.body.position))) else b),
-          simulation.virtualTime,
-          simulation.deltaTime
-        )
+      override def simulation: Simulation = simulations.head
 
       override def addCelestialBody(celestialBody: CelestialBody): Unit =
-        simulation = Simulation(simulation.celestialBodies :+ celestialBody, simulation.virtualTime, simulation.deltaTime)
+        simulations = simulations.head.updateCelestialBodies(c => celestialBody +: c) +: simulations
 
       override def removeCelestialBody(celestialBody: CelestialBody): Unit =
-        simulation = Simulation(simulation.celestialBodies.filter(b => b != celestialBody), simulation.virtualTime, simulation.deltaTime)
+        simulations = simulations.head.updateCelestialBodies(c => c.filter(b => b != celestialBody)) +: simulations
+
+      override def updateCelestialBody(celestialBody: CelestialBody)(f: CelestialBody => CelestialBody): Unit =
+        simulations = simulations.head.updateCelestialBodies(c => c.map(b => if b == celestialBody then f(b) else b)) +: simulations
 
   trait Interface extends Provider with Component

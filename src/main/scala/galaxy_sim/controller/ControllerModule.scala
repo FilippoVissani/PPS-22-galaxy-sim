@@ -21,7 +21,7 @@ object ControllerModule:
       var stop: Boolean = false
 
       override def startSimulation(): Unit =
-        view.update(model.celestialBodies)
+        view.update(model.simulation.celestialBodies)
       // for
       //  calculate next position
       //  calculate collisions
