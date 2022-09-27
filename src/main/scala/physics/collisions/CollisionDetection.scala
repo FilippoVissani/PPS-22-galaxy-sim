@@ -1,14 +1,11 @@
 package physics.collisions
 
 import physics.collisions.CollisionDetection.Colliders.{CircleCollider, Collider}
-import physics.collisions.CollisionDetection.RigidBody
 import physics.dynamics.PhysicalEntity
 
 object CollisionDetection:
   type Position = P2d
   case class P2d(x: Double, y: Double)
-  trait RigidBody[T <: Collider]:
-    def collider: T
 
   object Colliders:
     trait Collider
