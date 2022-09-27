@@ -2,8 +2,9 @@ package galaxy_sim.model
 
 import physics.Position
 import physics.dynamics.PhysicalEntity.changePosition
-import SimulationOperations.*
 import CelestialBodyOperations.*
+import galaxy_sim.model.SimulationConfig.{blackHole, bounds, interstellarCloud}
+import galaxy_sim.model.SimulationOperations.updateCelestialBodies
 
 object ModelModule:
   trait Model:
@@ -17,14 +18,12 @@ object ModelModule:
 
   trait Component:
     class ModelImpl extends Model:
-      var simulations: Seq[Simulation] = Seq(Simulation(
-        celestialBodies = (0 to 9) map (_ => CelestialBodyGenerator.generateRandomCelestialBody(150)),
-        bounds = Boundary(100, 100, 100, 100)))
+      var simulations: Seq[Simulation] = Seq(Simulation(celestialBodies = Set(blackHole, interstellarCloud), bounds = bounds))
 
       override def simulation: Simulation = simulations.head
 
       override def addCelestialBody(celestialBody: CelestialBody): Unit =
-        simulations = simulations.head.updateCelestialBodies(c => celestialBody +: c) +: simulations
+        simulations = simulations.head.updateCelestialBodies(c => c + celestialBody) +: simulations
 
       override def removeCelestialBody(celestialBody: CelestialBody): Unit =
         simulations = simulations.head.updateCelestialBodies(c => c.filter(b => b != celestialBody)) +: simulations
