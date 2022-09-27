@@ -53,7 +53,7 @@ class TestVectorGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
   }
   
   test("calculate the gravity force put on the earth's direction"){
-    val shouldGForce: GravityForceVector = Pair(-gravConstEarth * sunEarthPos.x / module, -gravConstEarth * sunEarthPos.y / module)
+    val shouldGForce: GravityForceVector = Pair(- gravConstEarth * sunEarthPos.x / module, - gravConstEarth * sunEarthPos.y / module)
     gForceEarth = gravitationalForceOnEntity(earth, sun)
     earth = changeGForceVector(earth, gForceEarth)
     println(s"earth gforce ${earth.gForceVector.toString}")

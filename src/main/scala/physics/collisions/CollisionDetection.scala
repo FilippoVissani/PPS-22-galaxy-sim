@@ -1,31 +1,22 @@
 package physics.collisions
 
-import physics.collisions.Collisions.Colliders.{CircleCollider, Collider}
-import physics.collisions.Collisions.RigidBody
+import physics.collisions.CollisionDetection.Colliders.{CircleCollider, Collider}
+import physics.dynamics.PhysicalEntity
 
-object Collisions:
+object CollisionDetection:
+  type Position = P2d
   case class P2d(x: Double, y: Double)
-
-  trait RigidBody[T <: Collider]:
-    def collider: T
 
   object Colliders:
     trait Collider
-    case class CircleCollider(origin: P2d, radius: Double) extends Collider
-    case class RectangleCollider(topLeft: P2d, height: Double, width: Double) extends Collider
+    case class CircleCollider(origin: Position, radius: Double) extends Collider
+    case class RectangleCollider(topLeft: Position, height: Double, width: Double) extends Collider
 
   import Colliders.*
 
-  object CollisionManager:
-    import CollisionDetectors.given
-    def detect[A <: Collider, B <: Collider](c1: RigidBody[A], c2: RigidBody[B])(using col: CollisionDetector[A, B]): Boolean =
-      col.detect(c1.collider, c2.collider)
-
-
-  trait CollisionDetector[A <: Collider, B <: Collider]:
+  trait CollisionDetector[A <: Collider, B<: Collider]:
     def detect(c1: A, c2: B): Boolean
-  
-  
+
   object CollisionDetectors:
     given CircleToCircleDetector: CollisionDetector[CircleCollider, CircleCollider] with
       override def detect(c1: CircleCollider, c2: CircleCollider): Boolean =
@@ -40,3 +31,4 @@ object Collisions:
           c1.topLeft.x + c1.width < c2.topLeft.x ||
           c1.topLeft.y > c2.topLeft.y + c2.height ||
           c1.height + c1.topLeft.y < c2.topLeft.y)
+        
