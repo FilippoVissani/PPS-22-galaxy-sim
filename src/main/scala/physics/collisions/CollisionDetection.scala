@@ -5,14 +5,15 @@ import physics.collisions.CollisionDetection.RigidBody
 import physics.dynamics.PhysicalEntity
 
 object CollisionDetection:
+  type Position = P2d
   case class P2d(x: Double, y: Double)
   trait RigidBody[T <: Collider]:
     def collider: T
 
   object Colliders:
     trait Collider
-    case class CircleCollider(origin: P2d, radius: Double) extends Collider
-    case class RectangleCollider(topLeft: P2d, height: Double, width: Double) extends Collider
+    case class CircleCollider(origin: Position, radius: Double) extends Collider
+    case class RectangleCollider(topLeft: Position, height: Double, width: Double) extends Collider
 
   import Colliders.*
 
