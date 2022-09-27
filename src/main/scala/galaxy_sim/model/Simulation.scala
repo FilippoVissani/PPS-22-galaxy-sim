@@ -18,3 +18,6 @@ object SimulationOperations:
   extension (s: Simulation)
     def updateCelestialBodies(f: Set[CelestialBody] => Set[CelestialBody]): Simulation =
       Simulation(f(s.celestialBodies), s.bounds, s.clock)
+      
+    def updateClock(f: Clock => Clock): Simulation =
+      Simulation(s.celestialBodies, s.bounds, f(s.clock))

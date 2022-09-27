@@ -3,8 +3,11 @@ package galaxy_sim.model
 import physics.Position
 import physics.dynamics.PhysicalEntity.changePosition
 import CelestialBodyOperations.*
+import BodyOperations.*
 import galaxy_sim.model.SimulationConfig.{blackHole, bounds, interstellarCloud}
 import galaxy_sim.model.SimulationOperations.updateCelestialBodies
+import physics.dynamics.GravitationLaws.vectorChangeOfDisplacement
+import galaxy_sim.model.SimulationOperations.updateClock
 
 object ModelModule:
   trait Model:
@@ -12,6 +15,8 @@ object ModelModule:
     def removeCelestialBody(celestialBody: CelestialBody): Unit
     def addCelestialBody(celestialBody: CelestialBody): Unit
     def updateCelestialBody(celestialBody: CelestialBody)(f: CelestialBody => CelestialBody): Unit
+    def moveCelestialBodiesToNextPosition(): Unit
+    def incrementVirtualTime(): Unit
 
   trait Provider:
     def model: Model
@@ -23,12 +28,18 @@ object ModelModule:
       override def simulation: Simulation = simulations.head
 
       override def addCelestialBody(celestialBody: CelestialBody): Unit =
-        simulations = simulations.head.updateCelestialBodies(c => c + celestialBody) +: simulations
+        simulations = simulations.head.updateCelestialBodies(x => x + celestialBody) +: simulations
 
       override def removeCelestialBody(celestialBody: CelestialBody): Unit =
-        simulations = simulations.head.updateCelestialBodies(c => c.filter(b => b != celestialBody)) +: simulations
+        simulations = simulations.head.updateCelestialBodies(x => x.filter(y => y != celestialBody)) +: simulations
 
       override def updateCelestialBody(celestialBody: CelestialBody)(f: CelestialBody => CelestialBody): Unit =
-        simulations = simulations.head.updateCelestialBodies(c => c.map(b => if b == celestialBody then f(b) else b)) +: simulations
+        simulations = simulations.head.updateCelestialBodies(x => x.map(y => if y == celestialBody then f(y) else y)) +: simulations
+
+      override def moveCelestialBodiesToNextPosition(): Unit =
+        simulations = simulations.head.updateCelestialBodies(x => x.map(y => y.updateBody(z => z.updatePhysicalEntity(w => changePosition(w, vectorChangeOfDisplacement(w, simulations.head.deltaTime)))))) +: simulations
+
+      override def incrementVirtualTime(): Unit =
+        simulations = simulations.head.updateClock(x => x.incrementVirtualTime()) +: simulations
 
   trait Interface extends Provider with Component
