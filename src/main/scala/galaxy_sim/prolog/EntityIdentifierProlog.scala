@@ -18,6 +18,7 @@ trait EntityIdentifierProlog:
 
 object EntityIdentifierProlog:
   def apply(): EntityIdentifierProlog = EntityIdentifierPrologImpl()
+
   private case class EntityIdentifierPrologImpl() extends EntityIdentifierProlog:
     private val engine = mkPrologEngine(Theory.parseLazilyWithStandardOperators(getClass.getResourceAsStream("/prolog/EntityIdentifier.pl")))
     

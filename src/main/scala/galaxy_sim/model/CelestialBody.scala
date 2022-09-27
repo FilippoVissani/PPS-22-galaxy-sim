@@ -62,11 +62,6 @@ enum CelestialBodyType:
   case RedSuperGiant
   case Supernova
   case BlackHole
-  case LowMassStar
-  case RedGiant
-  case PlanetaryNebula
-  case WhiteDwarf
-  case BlackDwarf
   case Planet
   case Asteroid
   case InterstellarCloud
