@@ -15,17 +15,22 @@ class MVCTest extends AnyFunSuite:
   test("Model operations") {
     val mvc = MVCAssembler()
     val celestialBody: CelestialBody = CelestialBodyGenerator.generateRandomCelestialBody(150)
-
+    val initialCelestialBodiesSize = mvc.model.simulation.celestialBodies.size
     mvc.model.simulation.clock shouldBe Clock()
-    mvc.model.simulation.celestialBodies.size shouldBe 2
     mvc.model.addCelestialBody(celestialBody)
-    mvc.model.simulation.celestialBodies.size shouldBe 3
+    mvc.model.simulation.celestialBodies.size shouldBe initialCelestialBodiesSize + 1
     mvc.model.removeCelestialBody(celestialBody)
-    mvc.model.simulation.celestialBodies.size shouldBe 2
+    mvc.model.simulation.celestialBodies.size shouldBe initialCelestialBodiesSize
     val body = mvc.model.simulation.celestialBodies.head
     mvc.model.updateCelestialBody(body)(b => b.updateName("Test"))
     mvc.model.simulation.celestialBodies.count(b => b.name == "Test") shouldBe 1
-    mvc.model.simulation.celestialBodies.size shouldBe 2
+    mvc.model.simulation.celestialBodies.size shouldBe initialCelestialBodiesSize
+    val actualVirtualTime = mvc.model.simulation.virtualTime
+    mvc.model.incrementVirtualTime()
+    mvc.model.simulation.virtualTime shouldBe actualVirtualTime + mvc.model.simulation.deltaTime
+    val interstellarCloud = mvc.model.simulation.celestialBodies.filter(x => x.name == "Interstellar Cloud").head
+    mvc.model.moveCelestialBodiesToNextPosition()
+    mvc.model.simulation.celestialBodies.count(x => x == interstellarCloud) shouldBe 0
   }
 
 class MVCAssembler extends ModelModule.Interface

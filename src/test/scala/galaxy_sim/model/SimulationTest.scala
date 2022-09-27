@@ -15,4 +15,5 @@ class SimulationTest  extends AnyFunSuite:
     simulation.celestialBodies.size shouldBe 10
     simulation.updateCelestialBodies(c => c.filter(b => b.name != "Star1")).celestialBodies.size shouldBe 0
     simulation.incrementVirtualTime().virtualTime shouldBe 0.1
+    simulation.updateClock(x => x.incrementVirtualTime()).virtualTime shouldBe 0.1
   }

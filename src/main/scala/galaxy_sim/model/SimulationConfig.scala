@@ -27,7 +27,7 @@ object SimulationConfig:
       temperature = 0,
       physicalEntity = PhysicalEntity(
         gForceVector = Pair(0, 0.98),
-        speedVector = Pair(100, 100),
+        speedVector = Pair(20, 20),
         mass = 750,
         pos = Pair(400, 400),
         aphelionSpeed = 20)

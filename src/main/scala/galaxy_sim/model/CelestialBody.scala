@@ -25,6 +25,17 @@ object Body:
                               override val radius: Radius,
                               override val temperature: Temperature) extends Body
 
+object BodyOperations:
+  extension (b: Body)
+    def updatePhysicalEntity(f: PhysicalEntity => PhysicalEntity): Body =
+      Body(f(b.physicalEntity), b.radius, b.temperature)
+      
+    def updateRadius(f: Radius => Radius): Body =
+      Body(b.physicalEntity, f(b.radius), b.temperature)
+
+    def updateTemperature(f: Temperature => Temperature): Body =
+      Body(b.physicalEntity, b.radius, f(b.temperature))
+
 trait CelestialBody extends RigidBody[CircleCollider]:
   def name: String
   def birthTime: Double
@@ -49,14 +60,11 @@ object CelestialBodyOperations:
     def updateName(name: String): CelestialBody =
       CelestialBody(name, c.birthTime, c.body)
 
-    def updateRadius(f: Double => Double): CelestialBody =
-      CelestialBody(c.name, c.birthTime, Body(c.body.physicalEntity, f(c.radius), c.temperature))
-
     def updateBirthTime(f: Double => Double): CelestialBody =
       CelestialBody(c.name, f(c.birthTime), c.body)
-
-    def updatePhysicalEntity(f: PhysicalEntity => PhysicalEntity): CelestialBody =
-      CelestialBody(c.name, c.birthTime, Body(f(c.body.physicalEntity), c.radius, c.temperature))
+      
+    def updateBody(f: Body => Body): CelestialBody =
+      CelestialBody(c.name, c.birthTime, f(c.body))
 
 enum CelestialBodyType:
   case MassiveStar
