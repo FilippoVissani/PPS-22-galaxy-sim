@@ -4,7 +4,7 @@ import galaxy_sim.prolog.EntityIdentifierProlog
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
-class StarLifecycleTest extends AnyFlatSpec with should.Matchers:
+class LifecycleTest extends AnyFlatSpec with should.Matchers:
 
   "entity with mass 10 and temperature 1010" should "be a blackDwarf" in {
     val entityIdentifierProlog = EntityIdentifierProlog()

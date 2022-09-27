@@ -4,12 +4,12 @@ import galaxy_sim.model.CelestialBodyOperations.*
 import galaxy_sim.model.CelestialBodyType.*
 import physics.dynamics.PhysicalEntity.changeMass
 
-class LifeCycleRules:
+class LifecycleRules:
 
-  trait EntityLifeCycle[A]:
+  trait EntityLifecycle[A]:
     def oneStep(entity: A): A
 
-  given EntityLifeCycle[CelestialBody] with
+  given EntityLifecycle[CelestialBody] with
     override def oneStep(celestialBody: CelestialBody): CelestialBody = celestialBody.typeOf match
       case MassiveStar => celestialBody.updatePhysicalEntity(b => changeMass(b, celestialBody.mass + 1))
       case RedSuperGiant => ???
@@ -19,4 +19,4 @@ class LifeCycleRules:
       case Asteroid => ???
       case InterstellarCloud => ???
 
-  def entityOneStep[A](entity: A)(using entityLifeCycle: EntityLifeCycle[A]): A = entityLifeCycle.oneStep(entity)
+  def entityOneStep[A](entity: A)(using entityLifeCycle: EntityLifecycle[A]): A = entityLifeCycle.oneStep(entity)
