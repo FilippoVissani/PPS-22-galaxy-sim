@@ -12,11 +12,6 @@ object Scala2P:
     case "redSuperGiant" => CelestialBodyType.RedSuperGiant
     case "supernova" => CelestialBodyType.Supernova
     case "blackHole" => CelestialBodyType.BlackHole
-    case "lowMassStar" => CelestialBodyType.LowMassStar
-    case "redGiant" => CelestialBodyType.RedGiant
-    case "planetaryNebula" => CelestialBodyType.PlanetaryNebula
-    case "whiteDwarf" => CelestialBodyType.WhiteDwarf
-    case "blackDwarf" => CelestialBodyType.BlackDwarf
     case "planet" => CelestialBodyType.Planet
     case "asteroid" => CelestialBodyType.Asteroid
     case "interstellarCloud" => CelestialBodyType.InterstellarCloud
