@@ -8,7 +8,7 @@ import javax.swing.{JFrame, JPanel}
 
 object ViewModule:
   trait View:
-    def update(entities: Seq[CelestialBody]): Unit
+    def update(entities: Set[CelestialBody]): Unit
     def start(): Unit
 
   trait Provider:
@@ -21,13 +21,13 @@ object ViewModule:
     class GraphicalView(windowWidth: Int, windowHeight: Int) extends View:
       val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight)
 
-      override def update(entities: Seq[CelestialBody]): Unit =
+      override def update(entities: Set[CelestialBody]): Unit =
         gui.update(entities)
 
       override def start(): Unit = context.controller.startSimulation()
 
     class TextualView extends View:
-      override def update(entities: Seq[CelestialBody]): Unit = ???
+      override def update(entities: Set[CelestialBody]): Unit = ???
 
       override def start(): Unit = ???
 

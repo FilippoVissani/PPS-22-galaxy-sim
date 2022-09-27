@@ -17,15 +17,15 @@ class MVCTest extends AnyFunSuite:
     val celestialBody: CelestialBody = CelestialBodyGenerator.generateRandomCelestialBody(150)
 
     mvc.model.simulation.clock shouldBe Clock()
-    mvc.model.simulation.celestialBodies.size shouldBe 10
+    mvc.model.simulation.celestialBodies.size shouldBe 2
     mvc.model.addCelestialBody(celestialBody)
-    mvc.model.simulation.celestialBodies.size shouldBe 11
+    mvc.model.simulation.celestialBodies.size shouldBe 3
     mvc.model.removeCelestialBody(celestialBody)
-    mvc.model.simulation.celestialBodies.size shouldBe 10
+    mvc.model.simulation.celestialBodies.size shouldBe 2
     val body = mvc.model.simulation.celestialBodies.head
     mvc.model.updateCelestialBody(body)(b => b.updateName("Test"))
     mvc.model.simulation.celestialBodies.count(b => b.name == "Test") shouldBe 1
-    mvc.model.simulation.celestialBodies.size shouldBe 10
+    mvc.model.simulation.celestialBodies.size shouldBe 2
   }
 
 class MVCAssembler extends ModelModule.Interface

@@ -8,7 +8,7 @@ import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, RenderingHints, 
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 
 trait SwingGUI:
-  def update(entities: Seq[CelestialBody]): Unit
+  def update(entities: Set[CelestialBody]): Unit
 
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
@@ -34,7 +34,7 @@ object SwingGUI:
     mainFrame.mainPanel.add(simulationPanel, BorderLayout.CENTER)
     mainFrame.setVisible(true)
 
-    override def update(entities: Seq[CelestialBody]): Unit =
+    override def update(entities: Set[CelestialBody]): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.entities_(entities)
       })
@@ -45,9 +45,9 @@ object SwingGUI:
     this.getContentPane.add(mainPanel)
 
   private class SimulationPanel extends JPanel:
-    var entities: Seq[CelestialBody] = Seq()
+    var entities: Set[CelestialBody] = Set()
 
-    def entities_(entities: Seq[CelestialBody]): Unit =
+    def entities_(entities: Set[CelestialBody]): Unit =
       this.entities = entities
       repaint()
 

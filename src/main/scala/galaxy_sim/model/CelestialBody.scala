@@ -1,6 +1,7 @@
 package galaxy_sim.model
 
 import galaxy_sim.model.BodyAliases.{Radius, Temperature}
+import galaxy_sim.prolog.EntityIdentifierProlog
 import physics.{GravityForceVector, Mass, Position, Speed, SpeedVector}
 import physics.collisions.Collisions.Colliders.CircleCollider
 import physics.collisions.Collisions.{P2d, RigidBody}
@@ -32,9 +33,9 @@ trait CelestialBody extends RigidBody[CircleCollider]:
 
 object CelestialBody:
   def apply(name: String,
-            birthTime: Double,
-            b: Body): CelestialBody =
-    CelestialBodyImpl(name, birthTime, b)
+            birthTime: Double = 0,
+            body: Body): CelestialBody =
+    CelestialBodyImpl(name, birthTime, body)
 
   private case class CelestialBodyImpl(override val name: String,
                                        override val birthTime: Double,
@@ -43,7 +44,7 @@ object CelestialBody:
 
 object CelestialBodyOperations:
   extension (c: CelestialBody)
-    def typeOf: CelestialBodyType = ???
+    def typeOf: CelestialBodyType = EntityIdentifierProlog().checkEntityType(c.mass, c.temperature)
 
     def updateName(name: String): CelestialBody =
       CelestialBody(name, c.birthTime, c.body)
