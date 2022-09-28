@@ -1,10 +1,11 @@
 package physics.collisions
 
+import physics.Pair
 import physics.collisions.CollisionDetection.Colliders.{CircleCollider, Collider}
 import physics.dynamics.PhysicalEntity
 
 object CollisionDetection:
-  type Position = P2d
+  type Position = Pair[Double, Double]
   case class P2d(x: Double, y: Double)
 
   object Colliders:

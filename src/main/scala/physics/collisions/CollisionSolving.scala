@@ -1,8 +1,7 @@
 package physics.collisions
 
-import physics.{GravityForceVector, Mass, Position, Speed, SpeedVector}
+import physics.{GravityForceVector, Mass, Pair, Position, Speed, SpeedVector}
 import physics.collisions.CollisionDetection.Colliders.{CircleCollider, Collider, RectangleCollider}
-import physics.collisions.CollisionDetection.P2d
 import physics.collisions.CollisionEngine.RigidBody
 import physics.dynamics.PhysicalEntity
 
@@ -24,7 +23,7 @@ object CollisionSolving:
                         override val speedVector: SpeedVector,
                         override val gForceVector: GravityForceVector,
                         radius: Double) extends RigidBody[CircleCollider]:
-    override def collider: CircleCollider = CircleCollider(P2d(position.x, position.y), radius)
+    override def collider: CircleCollider = CircleCollider(Pair(position.x, position.y), radius)
 
   object CollisionSolvers:
     given SphericalEntitySolver: CollisionSolver[SphericalEntity] with

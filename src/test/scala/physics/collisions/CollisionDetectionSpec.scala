@@ -2,6 +2,7 @@ package physics.collisions
 
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
+import physics.Pair
 import physics.collisions.CollisionDetection.Colliders.CircleCollider
 import physics.collisions.CollisionDetection.P2d
 import physics.collisions.CollisionDetection.CollisionDetectors.given
@@ -15,8 +16,8 @@ class CollisionDetectionSpec extends AnyFeatureSpec with GivenWhenThen with Coll
 
     Scenario("Two RigidBodies have colliders that overlap"){
       Given("Two RigidBodies")
-      val c1 = CircleCollider(P2d(0,0), 2)
-      val c2 = CircleCollider(P2d(1,1), 0.5)
+      val c1 = CircleCollider(Pair(0,0), 2)
+      val c2 = CircleCollider(Pair(1,1), 0.5)
       When("I try to detect a collision between them")
       val detection = testDetection(c1, c2)
       Then("I'm able to check that it is in place")
@@ -25,8 +26,8 @@ class CollisionDetectionSpec extends AnyFeatureSpec with GivenWhenThen with Coll
 
     Scenario("Two RigidBodies have colliders that don't overlap"){
       Given("Two RigidBodies")
-      val c1 = CircleCollider(P2d(0,0), 0.1)
-      val c2 = CircleCollider(P2d(1,1), 0.5)
+      val c1 = CircleCollider(Pair(0,0), 0.1)
+      val c2 = CircleCollider(Pair(1,1), 0.5)
       When("I try to detect a collision between them")
       val detection = testDetection(c1, c2)
       Then("I'm able to check that it is not in place")
