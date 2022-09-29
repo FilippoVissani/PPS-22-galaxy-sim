@@ -2,6 +2,8 @@ package galaxy_sim.controller
 
 import galaxy_sim.model.ModelModule
 import galaxy_sim.view.ViewModule
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 
 object ControllerModule:
   trait Controller:
@@ -22,6 +24,16 @@ object ControllerModule:
 
       override def startSimulation(): Unit =
         view.update(model.simulation.celestialBodies)
+        val r = new Runnable:
+          override def run(): Unit =
+            while true do
+              model.incrementVirtualTime()
+              model.moveCelestialBodiesToNextPosition()
+              view.update(model.simulation.celestialBodies)
+              Thread.sleep(200)
+
+        new Thread(r).start()
+      //for _ <- Future{ view.update(model.simulation.celestialBodies) } yield ()
       // for
       //  calculate next position
       //  calculate collisions
