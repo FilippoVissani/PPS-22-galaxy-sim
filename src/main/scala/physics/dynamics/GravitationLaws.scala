@@ -110,3 +110,25 @@ object GravitationLaws extends Constants:
    */
   def calculateChangeOfDisplacement(entity: PhysicalEntity, deltaTime: Double): Position =
     Pair(entity.speedVector.x * deltaTime, entity.speedVector.y * deltaTime)
+
+  /**
+   * Calculate the new speed vector of the entity reference
+   * @param entityReference PhysicalEntity, the entity around which other entities orbit
+   * @param entities Set[PhysicalEntity], set of the entities that orbits around the entity reference
+   * @param deltaTime Double, time passed
+   * @return the new speed vector of the entity reference
+   */
+  def entityReferenceSpeedVectorAfterTime(entityReference: PhysicalEntity, entities: Set[PhysicalEntity], deltaTime: Double): SpeedVector =
+    val speedVector = calculateEntityReferenceSpeedVector(entityReference, entities, deltaTime)
+    Pair(entityReference.speedVector.x + speedVector.x , entityReference.speedVector.y + speedVector.y)
+
+  /**
+   * Summary of the forces of the other entities that affect the entity reference's speed
+   * @param entityReference PhysicalEntity, the entity around which other entities orbit
+   * @param entities Set[PhysicalEntity], set of the entities that orbits around the entity reference
+   * @param deltaTime Double, time passed
+   * @return SpeedVector
+   */
+  def calculateEntityReferenceSpeedVector(entityReference: PhysicalEntity, entities: Set[PhysicalEntity], deltaTime: Double): SpeedVector =
+    Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / entityReference.mass,
+          - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / entityReference.mass)
