@@ -10,64 +10,26 @@ import math.{pow, sqrt}
  */
 trait Constants:
   val gravityConstant: Double = 6.67e-11
-  val daySec: Double = 24.0 * 60 * 60
-  val deltaYear: Double = daySec * 365
+  val daySec: Double = 24.0 * 60 * 60 //seconds in a day
+  val deltaYear: Double = daySec * 365 //one year
   val moduleConstant: Double = 1.5
   val astronomicUnit: Double = 1.5e11 //equals as earth-sun distance
 
+/**
+ * Fields characteristics of an entity in order to calculate gravitation laws
+ */
+trait PhysicalEntity:
+  def mass: Mass
+  def position: Position
+  def aphelionSpeed: Speed
+  def speedVector: SpeedVector
+  def gForceVector: GravityForceVector
+
+/**
+ * Functions to calculate the essential gravitation laws implied in basic object's movements in space.
+ * Includes vector and non-vector calculations
+ */
 object GravitationLaws extends Constants:
-
-  /**
-   *  NON VECTOR CALCULATIONS
-   */
-
-  /**
-   * Calculate the gravity force between two entities
-   * @param entitySubject PhysicalEntity, is the entity you want to move
-   * @param entityReference PhysicalEntity, is the reference entity, usually is bigger than the subject, we consider it as still
-   * @return Double, represent the gravity force impact of the entity reference on the entity subject
-   */
-  def forceBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    accelerationBetweenTwoEntities(entitySubject, entityReference) * entitySubject.mass
-
-  /**
-   * Calculate the acceleration of the entity subject
-   * @param entitySubject PhysicalEntity, is the entity you want to move
-   * @param entityReference PhysicalEntity, is the reference entity, usually is bigger than the subject, we consider it as still
-   * @return Double, represent the acceleration of the entity subject
-   */
-  def accelerationBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    val distance: Double = distanceBetweenTwoEntities(entitySubject, entityReference)
-    gravityConstant * (entityReference.mass / pow(distance, 2))
-
-  /**
-   * Calculate the speed of an entity after some time
-   * @param accelleration is only related to the mass of the entity subject and the distance between it and the entity reference
-   * @param deltaTime Double, time passed
-   * @return Double, the speed after time
-   */
-  def speedAfterDeltaTime(accelleration: Double, deltaTime: Double): Double =
-    accelleration * deltaTime
-
-  /**
-   * Calculate the change of displacement of an entity
-   * @param aphelionSpeed Double, aphelion speed of the entity
-   * @param deltaSpeed Double, space covered
-   * @param deltaTime Double, time passed
-   * @return Double, space to add to previous position
-   */
-  def changeOfDisplacement(aphelionSpeed: Double, deltaSpeed: Double, deltaTime: Double): Double =
-    (aphelionSpeed + deltaSpeed) * deltaTime
-
-  /**
-   * Calculate the distance between two points that are the two entities
-   * @param entitySubject PhysicalEntity, entity that orbits around another one
-   * @param entityReference PhysicalEntity, entity that has other entities that orbit around it
-   * @return Double, distance between them
-   */
-  def distanceBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    sqrt(pow(entitySubject.position.x - entityReference.position.x, 2) + pow(entitySubject.position.y - entityReference.position.y, 2))
-
 
   /**
    * VECTOR CALCULATIONS
