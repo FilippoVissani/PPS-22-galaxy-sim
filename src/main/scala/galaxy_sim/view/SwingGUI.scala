@@ -58,8 +58,8 @@ object SwingGUI:
       g2.setColor(java.awt.Color.BLACK)
       g2.fillRect(0, 0, this.getWidth, this.getHeight)
       g2.setColor(java.awt.Color.WHITE)
-      entities.foreach(e => g2.fillOval(e.body.position.x.toInt, e.body.position.y.toInt, e.radius.toInt, e.radius.toInt))
+      entities.foreach(e => g2.fillOval(e.position.x.toInt, e.position.y.toInt, e.radius.toInt, e.radius.toInt))
       g2.setColor(java.awt.Color.BLACK)
-      entities.foreach(e => g2.drawOval(e.body.position.x.toInt, e.body.position.y.toInt, e.radius.toInt, e.radius.toInt))
-      entities.foreach(e => g2.drawString(e.name, e.body.position.x.toInt, e.body.position.y.toInt))
+      entities.foreach(e => g2.drawOval(e.position.x.toInt, e.position.y.toInt, e.radius.toInt, e.radius.toInt))
+      entities.foreach(e => g2.drawString(e.name, e.position.x.toInt, e.position.y.toInt))
   end SimulationPanel

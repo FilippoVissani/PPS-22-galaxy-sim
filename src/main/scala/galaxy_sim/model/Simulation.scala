@@ -1,23 +1,8 @@
 package galaxy_sim.model
 
-trait Simulation:
-  def celestialBodies: Set[CelestialBody]
-  def bounds: Boundary
-  val clock: Clock
-  export clock.*
+import galaxy_sim.model.SimulationAliases.Time
 
-object Simulation:
-  def apply(celestialBodies: Set[CelestialBody] = Set(), bounds: Boundary, clock: Clock = Clock()): Simulation =
-    SimulationImpl(celestialBodies, bounds, clock)
+object SimulationAliases:
+  type Time = Double
 
-  private case class SimulationImpl(override val celestialBodies: Set[CelestialBody],
-                                    override val bounds: Boundary,
-                                    override val clock: Clock) extends Simulation
-
-object SimulationOperations:
-  extension (s: Simulation)
-    def updateCelestialBodies(f: Set[CelestialBody] => Set[CelestialBody]): Simulation =
-      Simulation(f(s.celestialBodies), s.bounds, s.clock)
-      
-    def updateClock(f: Clock => Clock): Simulation =
-      Simulation(s.celestialBodies, s.bounds, f(s.clock))
+case class Simulation(celestialBodies: Set[CelestialBody], bounds: Boundary, virtualTime: Time = 0, deltaTime: Time = 0.1)
