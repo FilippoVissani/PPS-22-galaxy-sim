@@ -6,7 +6,7 @@ import physics.{GravityForceVector, Mass, Pair, Position, Speed, SpeedVector}
 import physics.collisions.CollisionDetection.Colliders.{CircleCollider, Collider}
 import physics.collisions.CollisionDetection.CollisionDetectors.given
 import physics.collisions.CollisionSolving.CollisionSolvers.given
-import physics.collisions.CollisionDetection.{CollisionDetector, P2d}
+import physics.collisions.CollisionDetection.CollisionDetector
 import physics.collisions.CollisionEngine.{RigidBody, process}
 import physics.collisions.CollisionSolving.{CollisionSolver, SphericalEntity}
 import physics.dynamics.PhysicalEntity
