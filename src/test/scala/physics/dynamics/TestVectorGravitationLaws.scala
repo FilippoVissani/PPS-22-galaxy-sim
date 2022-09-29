@@ -1,91 +1,59 @@
 package physics.dynamics
 
-import org.scalatest.BeforeAndAfterAll
+import org.scalatest.{BeforeAndAfterAll, GivenWhenThen}
+import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.funsuite.AnyFunSuite
 import physics.*
 
 import scala.math.{Pi, pow, tan, tanh}
 
-class TestVectorGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
+case class PhysicalEntityImpl(override val mass: Mass = 1000,
+                              override val position: Position = Pair(0, 0),
+                              override val aphelionSpeed: Speed = 10000,
+                              override val speedVector: SpeedVector = Pair(0, 0),
+                              override val gForceVector: GravityForceVector = Pair(0, 0)) extends PhysicalEntity
+
+class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
   import GravitationLaws.*
-  import PhysicalEntity.*
 
-  val earthPos: Position = Pair(106, 106)
-  val sunPos: Position = Pair(0, 0)
-  val time: Double = 1 * daySec //one day
-  val earthMass: Mass = 5.972e24 //earth
-  val earthSpeed: Speed = 29290
-  val sunMass: Mass = 2.0e30 //sun
-  val sunSpeed: Speed = 0.0
+  Feature("The user can see an entity that moves around another one"){
+      info("As a programmer")
+      info("I want to check that the entity moves based on specific calculations")
 
-  var earth: PhysicalEntity = PhysicalEntity(earthMass, earthPos, earthSpeed)
-  var sun: PhysicalEntity = PhysicalEntity(sunMass, sunPos, sunSpeed)
-  var gravConstEarth: GForce = 0.0
-  var sunEarthPos: Position = Pair(0,0)
-  var module: Double = 0.0
-  var gForceEarth: GravityForceVector = Pair(0,0)
-  var earthSpeedVector: SpeedVector = Pair(0,0)
-  var changeDisplacement: Position = Pair(0,0)
+      Scenario("The entity moves after some time"){
+        Given("Two entities - the Earth and the Sun")
+        val earth = PhysicalEntityImpl(5.972e24, Pair(astronomicUnit, 0), 29290, Pair(0, 29290), Pair(0, 0))
+        val sun = PhysicalEntityImpl(2.0e30)
+        val time = daySec * 1 //one day
 
-  override protected def beforeAll(): Unit =
-    earth = changePosition(earth, Pair(astronomicUnit, 0))
-    earth = changeSpeedVector(earth, Pair(0,earth.aphelionSpeed))
-  
-  test("calculate position between two entities"){
-    val shouldPos: Position = Pair(earth.position.x - sun.position.x, earth.position.y - sun.position.y)
-    sunEarthPos = posBetweenTwoEntities(earth, sun)
-    println(s"sun-earth distance is ${sunEarthPos.toString}")
-    assert(sunEarthPos === shouldPos)
-  }
-  
-  test("calculate module of sun-earth distance"){
-    val shouldMod: Double = pow(pow(sunEarthPos.x, 2) + pow(sunEarthPos.y, 2), moduleConstant)
-    module = moduleOfDistance(sunEarthPos)
-    println(s"module is $module")
-    assert(module === shouldMod)
-  }
-  
-  test("calculate gravity constant between earth and sun"){
-    val shouldGravConst: GForce = gravityConstant * earth.mass * sun.mass
-    gravConstEarth = entitiesGravitationalConstant(earth, sun)
-    println(s"sun-earth gravity constant is $gravConstEarth")
-    assert(gravConstEarth === shouldGravConst)
-  }
-  
-  test("calculate the gravity force put on the earth's direction"){
-    val shouldGForce: GravityForceVector = Pair(- gravConstEarth * sunEarthPos.x / module, - gravConstEarth * sunEarthPos.y / module)
-    gForceEarth = gravitationalForceOnEntity(earth, sun)
-    earth = changeGForceVector(earth, gForceEarth)
-    println(s"earth gforce ${earth.gForceVector.toString}")
-    assert(earth.gForceVector === shouldGForce)
-  }
-  
-  test("calculate speed vector after some time"){
-    val speedVector: SpeedVector = calculateSpeedVectorAfterTime(earth, time)
-    val shouldSpeedVector: SpeedVector = Pair(earth.gForceVector.x * time / earth.mass, earth.gForceVector.y * time / earth.mass)
-    assert(speedVector === shouldSpeedVector)
-  }
-  
-  test("calculate earth new speed vector after some time "){
-    val shouldSpeedVector: SpeedVector = Pair(earth.speedVector.x + (earth.gForceVector.x * time / earth.mass), earth.speedVector.y + (earth.gForceVector.y * time / earth.mass))
-    println(s"earth mass ${earth.mass}")
-    earthSpeedVector = speedVectorAfterTime(earth, time)
-    earth = changeSpeedVector(earth, earthSpeedVector)
-    println(s"earth speed vector ${earth.speedVector.toString}")
-    assert(earth.speedVector === shouldSpeedVector)
-  }
-  
-  test("calculate change of displacement"){
-    val displacement: Position = calculateChangeOfDisplacement(earth, time)
-    val shouldDisplacement = Pair(earth.speedVector.x * time, earth.speedVector.y * time)
-    assert(displacement === shouldDisplacement)
-  }
-  
-  test("calculate vector change of displacement"){
-    val shouldChangeDisplacement: Position = Pair(earth.position.x + (earth.speedVector.x * time), earth.position.y + (earth.speedVector.y * time))
-    println(s"earth was at pos ${earth.position.toString}")
-    changeDisplacement = vectorChangeOfDisplacement(earth, time)
-    earth = changePosition(earth, changeDisplacement)
-    println(s"earth now is at pos ${earth.position.toString}")
-    assert(changeDisplacement === shouldChangeDisplacement)
-  }
+        When("I want to see the movement of the earth after some time")
+
+        val shouldDistance = Pair(earth.position.x - sun.position.x, earth.position.y - sun.position.y)
+        val sunEarthDistance = posBetweenTwoEntities(earth, sun)
+        assert(sunEarthDistance == shouldDistance)
+
+        val shouldMod = pow(pow(sunEarthDistance.x, 2) + pow(sunEarthDistance.y, 2), moduleConstant)
+        val module = moduleOfDistance(sunEarthDistance)
+        assert(module == shouldMod)
+
+        val shouldGravConst = gravityConstant * earth.mass * sun.mass
+        val earthGravConst = entitiesGravitationalConstant(earth, sun)
+        assert(earthGravConst == shouldGravConst)
+
+        val shouldGForce = Pair(- earthGravConst * sunEarthDistance.x / module, - earthGravConst * sunEarthDistance.y / module)
+        var earthFinal = earth.copy(gForceVector = gravitationalForceOnEntity(earth, sun))
+        assert(earthFinal.gForceVector == shouldGForce)
+
+        val shouldSpeedVector = Pair(earthFinal.speedVector.x + (earthFinal.gForceVector.x * time / earthFinal.mass), earthFinal.speedVector.y +(earthFinal.gForceVector.y * time / earthFinal.mass))
+        earthFinal = earthFinal.copy(speedVector = speedVectorAfterTime(earthFinal, time))
+        assert(earthFinal.speedVector == shouldSpeedVector)
+
+        val newPos = Pair(earthFinal.position.x + (earthFinal.speedVector.x * time), earthFinal.position.y + (earthFinal.speedVector.y * time))
+        earthFinal = earthFinal.copy(position = vectorChangeOfDisplacement(earthFinal, time))
+        assert(earthFinal.position == newPos)
+
+        Then("I'm able to move the entity in its new position, changing speed and gravity force on it")
+        val shouldEarth = PhysicalEntityImpl(5.972e24, newPos, 29290, shouldSpeedVector, shouldGForce)
+        assert(earthFinal === shouldEarth)
+      }
+    }

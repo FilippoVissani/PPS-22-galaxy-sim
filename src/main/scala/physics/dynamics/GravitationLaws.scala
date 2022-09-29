@@ -15,6 +15,20 @@ trait Constants:
   val moduleConstant: Double = 1.5
   val astronomicUnit: Double = 1.5e11 //equals as earth-sun distance
 
+/**
+ * Fields characteristics of an entity in order to calculate gravitation laws
+ */
+trait PhysicalEntity:
+  def mass: Mass
+  def position: Position
+  def aphelionSpeed: Speed
+  def speedVector: SpeedVector
+  def gForceVector: GravityForceVector
+  
+/**
+ * Functions to calculate the essential gravitation laws implied in basic object's movements in space.
+ * Includes vector and non-vector calculations
+ */
 object GravitationLaws extends Constants:
 
   /**
