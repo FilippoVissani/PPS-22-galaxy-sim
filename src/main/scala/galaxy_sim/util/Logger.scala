@@ -1,5 +1,7 @@
 package galaxy_sim.util
 
+import galaxy_sim.model.CelestialBody
+
 import java.io.{File, FileNotFoundException, FileOutputStream, PrintWriter}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -9,19 +11,26 @@ import java.time.format.DateTimeFormatter
  */
 trait Logger:
   /**
-   * Call this method when starting the simulation to log the date and time the simulation started
+   * Log the date and time the simulation started
    */
   def logSimulationStarted(): Unit
 
   /**
-   * Call this method when pausing the simulation to log the date and time the simulation paused
+   * Log the date and time the simulation paused
    */
   def logSimulationPaused(): Unit
 
   /**
-   * Call this method when terminating the simulation to log the date and time the simulation terminated
+   * Log the date and time the simulation terminated
    */
   def logSimulationTerminated(): Unit
+
+  /**
+   * Log a collision between two entities
+   * @param entity1 the entity that collided with entity2
+   * @param entity2 the entity that collided with entity1
+   */
+  def logCollision(entity1: CelestialBody, entity2: CelestialBody): Unit
 
 object Logger:
 
@@ -30,16 +39,19 @@ object Logger:
   private class LoggerImpl extends Logger:
 
     override def logSimulationStarted(): Unit =
-    log("SIMULATION STARTED " + dateTimeFormatted())
+    log("SIMULATION STARTED " + dateTime())
 
     override def logSimulationPaused(): Unit =
-    log("SIMULATION PAUSED " + dateTimeFormatted())
+    log("SIMULATION PAUSED " + dateTime())
 
     override def logSimulationTerminated(): Unit =
-    log("SIMULATION TERMINATED " + dateTimeFormatted())
+    log("SIMULATION TERMINATED " + dateTime())
     log("")
 
-    private def dateTimeFormatted(): String =
+    override def logCollision(entity1: CelestialBody, entity2: CelestialBody): Unit =
+      log(s"COLLISION DETECTED BETWEEN $entity1 AND $entity2 AT ${dateTime()}")
+
+    private def dateTime(): String =
       LocalDateTime.now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
 
     private def log(text: String): Unit =
