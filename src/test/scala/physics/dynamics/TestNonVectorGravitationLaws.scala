@@ -6,6 +6,7 @@ import physics.*
 
 import math.{Pi, pow, sqrt, tanh}
 
+
 class TestNonVectorGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
   import GravitationLaws.*
 
@@ -17,8 +18,8 @@ class TestNonVectorGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
   val sunMass: Mass = 2.0e30 //sun
   val sunSpeed: Speed = 0.0
 
-  var earth: PhysicalEntity = PhysicalEntity(earthMass, earthPos, earthSpeed)
-  var sun: PhysicalEntity = PhysicalEntity(sunMass, sunPos, sunSpeed)
+  var earth: PhysicalEntity = PhysicalEntityImpl(earthMass, earthPos, earthSpeed)
+  var sun: PhysicalEntity = PhysicalEntityImpl(sunMass, sunPos, sunSpeed)
 
   var dist: Double = 0.0
   var acceleration: Speed = 0.0
@@ -59,3 +60,4 @@ class TestNonVectorGravitationLaws extends AnyFunSuite with BeforeAndAfterAll:
     val shouldPos = (earth.aphelionSpeed + speed) * time
     assert(changeDisplacement === shouldPos)
   }
+
