@@ -4,7 +4,6 @@ import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.GivenWhenThen
 import physics.Pair
 import physics.collisions.CollisionDetection.Colliders.CircleCollider
-import physics.collisions.CollisionDetection.P2d
 import physics.collisions.CollisionDetection.CollisionDetectors.given
 import physics.collisions.CollisionDetectionTest
 
