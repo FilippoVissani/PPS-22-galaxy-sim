@@ -1,9 +1,8 @@
 package galaxy_sim.controller
 
-import galaxy_sim.model.ModelModule
+import galaxy_sim.model.{ModelModule, Simulation}
 import galaxy_sim.view.ViewModule
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.math.BigDecimal.double2bigDecimal
 
 object ControllerModule:
   trait Controller:
@@ -20,28 +19,30 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
-      var stop: Boolean = false
+
+      def iteration(): Unit =
+        (0d until 10e4 by 1d).foreach{_ =>
+          model.incrementVirtualTime()
+          model.moveCelestialBodiesToNextPosition()
+        }
+        view.display(model.simulation)
 
       override def startSimulation(): Unit =
-        view.display(model.simulation)
         val r = new Runnable:
           override def run(): Unit =
             while true do
-              model.incrementVirtualTime()
-              model.moveCelestialBodiesToNextPosition()
-              view.display(model.simulation)
-              //Thread.sleep(10)
+              iteration()
         new Thread(r).start()
-      //for _ <- Future{ view.update(model.simulation.celestialBodies) } yield ()
-      // for
-      //  calculate next position
-      //  calculate collisions
-      //  introduce new entities based on collisions
-      //  calculate lifecycle
-      //  update view
+/*      for _ <- Future{ view.update(model.simulation.celestialBodies) } yield ()
+       for
+        calculate next position
+        calculate collisions
+        introduce new entities based on collisions
+        calculate lifecycle
+        update view*/
 
 
-      override def stopSimulation(): Unit = stop = true
+      override def stopSimulation(): Unit = ???
 
       override def pauseSimulation(): Unit = ???
 

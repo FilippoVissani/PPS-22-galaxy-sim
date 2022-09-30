@@ -40,7 +40,7 @@ object SwingGUI:
     simulationPanelContainer.add(simulationPanel)
     mainFrame.setSize(frameSize)
     mainFrame.setResizable(false)
-    mainFrame.mainPanel.add(controlPanel, BorderLayout.NORTH)
+    mainFrame.mainPanel.add(controlPanel, BorderLayout.EAST)
     mainFrame.mainPanel.add(simulationPanelContainer, BorderLayout.CENTER)
     mainFrame.setVisible(true)
 

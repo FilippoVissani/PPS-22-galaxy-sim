@@ -26,7 +26,7 @@ object ViewModule:
 
       override def start(): Unit = context.controller.startSimulation()
 
-    class TextualView extends View:
+    class FakeView extends View:
       override def display(simulation: Simulation): Unit = ???
 
       override def start(): Unit = ???
