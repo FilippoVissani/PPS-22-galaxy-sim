@@ -1,14 +1,14 @@
 package galaxy_sim.view
 
 import galaxy_sim.controller.ControllerModule
-import galaxy_sim.model.CelestialBody
+import galaxy_sim.model.{CelestialBody, Simulation}
 
 import java.awt.{Dimension, Toolkit}
 import javax.swing.{JFrame, JPanel}
 
 object ViewModule:
   trait View:
-    def update(entities: Set[CelestialBody]): Unit
+    def display(entities: Simulation): Unit
     def start(): Unit
 
   trait Provider:
@@ -21,13 +21,13 @@ object ViewModule:
     class GraphicalView(windowWidth: Int, windowHeight: Int) extends View:
       val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight)
 
-      override def update(entities: Set[CelestialBody]): Unit =
-        gui.update(entities)
+      override def display(simulation: Simulation): Unit =
+        gui.update(simulation)
 
       override def start(): Unit = context.controller.startSimulation()
 
     class TextualView extends View:
-      override def update(entities: Set[CelestialBody]): Unit = ???
+      override def display(simulation: Simulation): Unit = ???
 
       override def start(): Unit = ???
 

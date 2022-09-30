@@ -23,15 +23,14 @@ object ControllerModule:
       var stop: Boolean = false
 
       override def startSimulation(): Unit =
-        view.update(model.simulation.celestialBodies)
+        view.display(model.simulation)
         val r = new Runnable:
           override def run(): Unit =
             while true do
               model.incrementVirtualTime()
               model.moveCelestialBodiesToNextPosition()
-              view.update(model.simulation.celestialBodies)
-              Thread.sleep(200)
-
+              view.display(model.simulation)
+              //Thread.sleep(10)
         new Thread(r).start()
       //for _ <- Future{ view.update(model.simulation.celestialBodies) } yield ()
       // for

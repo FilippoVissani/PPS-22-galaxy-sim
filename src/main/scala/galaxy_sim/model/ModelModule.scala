@@ -1,9 +1,8 @@
 package galaxy_sim.model
 
 import physics.Position
-import physics.dynamics.PhysicalEntity.changePosition
 import galaxy_sim.model.SimulationConfig.{blackHole, bounds, interstellarCloud}
-import physics.dynamics.GravitationLaws.{gravitationalForceOnEntity, vectorChangeOfDisplacement}
+import physics.dynamics.GravitationLaws.{astronomicUnit, daySec, gravitationalForceOnEntity, speedVectorAfterTime, vectorChangeOfDisplacement}
 import physics.dynamics.PhysicalEntity
 import physics.Pair.PairOperations.given
 
@@ -14,6 +13,7 @@ object ModelModule:
     def addCelestialBody(celestialBody: CelestialBody): Unit
     def updateCelestialBody(celestialBody: CelestialBody)(f: CelestialBody => CelestialBody): Unit
     def moveCelestialBodiesToNextPosition(): Unit
+    def resolveCollisions(): Unit
     def incrementVirtualTime(): Unit
 
   trait Provider:
@@ -21,25 +21,33 @@ object ModelModule:
 
   trait Component:
     class ModelImpl extends Model:
-      var simulations: Seq[Simulation] = Seq(
-        Simulation(celestialBodies = Set(blackHole, interstellarCloud),
-          bounds = bounds))
+      var actualSimulation: Simulation = Simulation(celestialBodies = Set(blackHole, interstellarCloud), bounds = bounds, deltaTime = 1)
 
-      override def simulation: Simulation = simulations.head
+      override def simulation: Simulation = actualSimulation
 
       override def addCelestialBody(celestialBody: CelestialBody): Unit =
-        simulations = simulation.copy(celestialBodies = simulation.celestialBodies + celestialBody) +: simulations
+        actualSimulation = actualSimulation.copy(celestialBodies = simulation.celestialBodies + celestialBody)
 
       override def removeCelestialBody(celestialBody: CelestialBody): Unit =
-        simulations = simulation.copy(celestialBodies = simulation.celestialBodies.filter(x => x != celestialBody)) +: simulations
+        actualSimulation = actualSimulation.copy(celestialBodies = simulation.celestialBodies.filter(x => x != celestialBody))
 
       override def updateCelestialBody(celestialBody: CelestialBody)(f: CelestialBody => CelestialBody): Unit =
-        simulations = simulation.copy(celestialBodies = simulation.celestialBodies.map(x => if x == celestialBody then f(x) else x)) +: simulations
+        actualSimulation = actualSimulation.copy(celestialBodies = simulation.celestialBodies.map(x => if x == celestialBody then f(x) else x))
 
       override def moveCelestialBodiesToNextPosition(): Unit =
-        simulations = simulation.copy(celestialBodies = simulation.celestialBodies.map(x => x.copy(position = vectorChangeOfDisplacement(x, simulation.deltaTime)))) +: simulations
+        val bh = simulation.celestialBodies.filter(x => x.name == blackHole.name).head
+        actualSimulation = actualSimulation.copy(celestialBodies = simulation.celestialBodies.map(x => {
+          var test = x
+          if x.name == interstellarCloud.name then
+            test = x.copy(gForceVector = gravitationalForceOnEntity(x, bh))
+            test = test.copy(speedVector = speedVectorAfterTime(x, simulation.deltaTime))
+            test = test.copy(position = vectorChangeOfDisplacement(x, simulation.deltaTime))
+          test
+        }))
+
+      override def resolveCollisions(): Unit = ???
 
       override def incrementVirtualTime(): Unit =
-        simulations = simulation.copy(virtualTime = simulation.virtualTime + simulation.deltaTime) +: simulations
+        actualSimulation = actualSimulation.copy(virtualTime = simulation.virtualTime + simulation.deltaTime)
 
   trait Interface extends Provider with Component
