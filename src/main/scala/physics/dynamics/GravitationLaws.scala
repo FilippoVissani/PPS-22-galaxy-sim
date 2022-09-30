@@ -2,7 +2,6 @@ package physics.dynamics
 
 import org.w3c.dom.EntityReference
 import physics.*
-
 import math.{pow, sqrt}
 
 /**
@@ -28,6 +27,20 @@ trait PhysicalEntity:
 /**
  * Functions to calculate the essential gravitation laws implied in basic object's movements in space.
  * Includes vector and non-vector calculations
+ *
+ * STEPS TO FOLLOW:
+ *
+ * 1) update the entity subject's gForceVector by using gravitationalForceOnEntity(entitySubject, ...)
+ *
+ * 2) update the entity subject's speedVector by using speedVectorAfterTime(entitySubject, ...)
+ *
+ * 3) update the entity subject's position by using vectorChangeOfDisplacement(entitySubject, ...)
+ *
+ * - when done you should also update the entity reference's fields:
+ *
+ * 4) update the entity reference's speedVector by using entityReferenceSpeedVectorAfterTime(entityReference, ...)
+ *
+ * 5) update the entity reference's position by using vectorChangeOfDisplacement(entityReference, ...)
  */
 object GravitationLaws extends Constants:
 
@@ -125,15 +138,6 @@ object GravitationLaws extends Constants:
    * @param deltaTime Double, time passed
    * @return SpeedVector
    */
-  def calculateEntityReferenceSpeedVector(entityReference: PhysicalEntity, entities: Set[PhysicalEntity], deltaTime: Double): SpeedVector =
+  def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](entityReference: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
     Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / entityReference.mass,
           - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / entityReference.mass)
-
-  def moveEntitySubjectAfterTime[A <: PhysicalEntity](entitySubject: A, entityReference: A, deltaTime: Double): A =
-    val gravityConstant = entitiesGravitationalConstant(entitySubject.mass, entityReference.mass)
-    val gForce = gravitationalForceOnEntity(entitySubject, entityReference)
-    val speedVector = speedVectorAfterTime(entitySubject, deltaTime)
-    val position = vectorChangeOfDisplacement(entitySubject, deltaTime)
-    ???
-
-  def moveEntityReferenceAfterTime[A <: PhysicalEntity](entityReference: A, entities: Set[A], deltaTime: Double): A = ???
