@@ -8,8 +8,6 @@ object ControllerModule:
   trait Controller:
     def startSimulation(): Unit
     def stopSimulation(): Unit
-    def pauseSimulation(): Unit
-    def resumeSimulation(): Unit
 
   trait Provider:
     val controller: Controller
@@ -19,6 +17,7 @@ object ControllerModule:
   trait Component:
     context: Requirements =>
     class ControllerImpl extends Controller:
+      var stop: Boolean = false
 
       def iteration(): Unit =
         (0d until 10e4 by 1d).foreach{_ =>
@@ -28,25 +27,15 @@ object ControllerModule:
         view.display(model.simulation)
 
       override def startSimulation(): Unit =
-        val r = new Runnable:
-          override def run(): Unit =
-            while true do
-              iteration()
-        new Thread(r).start()
-/*      for _ <- Future{ view.update(model.simulation.celestialBodies) } yield ()
-       for
-        calculate next position
-        calculate collisions
-        introduce new entities based on collisions
-        calculate lifecycle
-        update view*/
+        synchronized{
+          val r = new Runnable :
+            override def run(): Unit =
+              while !stop do
+                iteration()
+          new Thread(r).start()
+        }
 
-
-      override def stopSimulation(): Unit = ???
-
-      override def pauseSimulation(): Unit = ???
-
-      override def resumeSimulation(): Unit = ???
+      override def stopSimulation(): Unit = synchronized { stop = true }
 
   trait Interface extends Provider with Component:
     self: Requirements =>
