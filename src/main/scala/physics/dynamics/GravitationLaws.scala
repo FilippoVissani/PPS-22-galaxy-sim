@@ -32,17 +32,13 @@ trait PhysicalEntity:
 object GravitationLaws extends Constants:
 
   /**
-   * VECTOR CALCULATIONS
-   */
-
-  /**
    * Calculate the gravity constant between two entities
-   * @param entitySubject PhysicalEntity, is the entity that orbits around another one
-   * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
+   * @param entitySubjectMass Mass, of the entity that orbits around another one
+   * @param entityReferenceMass Mass, of the entity that has other entities that orbit around it
    * @return Double, the gravity constant between two entities
    */
-  def entitiesGravitationalConstant(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    gravityConstant * entitySubject.mass * entityReference.mass
+  def entitiesGravitationalConstant(entitySubjectMass: Mass, entityReferenceMass: Mass): Double =
+    gravityConstant * entitySubjectMass * entityReferenceMass
 
   /**
    * Calculate the distance between two entities
@@ -70,7 +66,7 @@ object GravitationLaws extends Constants:
   def gravitationalForceOnEntity(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): GravityForceVector =
     val distance = posBetweenTwoEntities(entitySubject, entityReference)
     val mod = moduleOfDistance(distance)
-    val gravConstEntitySubj = entitiesGravitationalConstant(entitySubject, entityReference)
+    val gravConstEntitySubj = entitiesGravitationalConstant(entitySubject.mass, entityReference.mass)
     Pair(- gravConstEntitySubj * distance.x / mod, - gravConstEntitySubj * distance.y / mod)
 
   /**
@@ -132,3 +128,12 @@ object GravitationLaws extends Constants:
   def calculateEntityReferenceSpeedVector(entityReference: PhysicalEntity, entities: Set[PhysicalEntity], deltaTime: Double): SpeedVector =
     Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / entityReference.mass,
           - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / entityReference.mass)
+
+  def moveEntitySubjectAfterTime[A <: PhysicalEntity](entitySubject: A, entityReference: A, deltaTime: Double): A =
+    val gravityConstant = entitiesGravitationalConstant(entitySubject.mass, entityReference.mass)
+    val gForce = gravitationalForceOnEntity(entitySubject, entityReference)
+    val speedVector = speedVectorAfterTime(entitySubject, deltaTime)
+    val position = vectorChangeOfDisplacement(entitySubject, deltaTime)
+    ???
+
+  def moveEntityReferenceAfterTime[A <: PhysicalEntity](entityReference: A, entities: Set[A], deltaTime: Double): A = ???

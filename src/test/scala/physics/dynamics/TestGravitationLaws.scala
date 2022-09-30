@@ -38,7 +38,7 @@ class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
       assert(module == shouldMod)
 
       val shouldGravConst = gravityConstant * earth.mass * sun.mass
-      val earthGravConst = entitiesGravitationalConstant(earth, sun)
+      val earthGravConst = entitiesGravitationalConstant(earth.mass, sun.mass)
       assert(earthGravConst == shouldGravConst)
 
       val shouldGForce = Pair(- earthGravConst * sunEarthDistance.x / module, - earthGravConst * sunEarthDistance.y / module)
