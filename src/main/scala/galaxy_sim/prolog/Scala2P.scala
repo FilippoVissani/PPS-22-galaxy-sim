@@ -2,19 +2,20 @@ package galaxy_sim.prolog
 
 import alice.tuprolog.*
 import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.model.CelestialBodyType.*
 
 object Scala2P:
 
   given Conversion[String, Term] = Term.createTerm(_)
   given Conversion[String, Theory] = Theory.parseLazilyWithStandardOperators(_)
   given Conversion[Term, CelestialBodyType] = _.toString match
-    case "massiveStar" => CelestialBodyType.MassiveStar
-    case "redSuperGiant" => CelestialBodyType.RedSuperGiant
-    case "supernova" => CelestialBodyType.Supernova
-    case "blackHole" => CelestialBodyType.BlackHole
-    case "planet" => CelestialBodyType.Planet
-    case "asteroid" => CelestialBodyType.Asteroid
-    case "interstellarCloud" => CelestialBodyType.InterstellarCloud
+    case "massiveStar" => MassiveStar
+    case "redSuperGiant" => RedSuperGiant
+    case "supernova" => Supernova
+    case "blackHole" => BlackHole
+    case "planet" => Planet
+    case "asteroid" => Asteroid
+    case "interstellarCloud" => InterstellarCloud
 
   def extractTerm(solveInfo: SolveInfo, s: String): Term =
     solveInfo.getTerm(s)
