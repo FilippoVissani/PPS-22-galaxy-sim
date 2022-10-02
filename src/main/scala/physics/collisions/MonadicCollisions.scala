@@ -21,8 +21,18 @@ object MonadicCollisions extends App:
     override def flatMap[C](f: A => Collision[C, B]): Collision[C, B] = FailedCollision()
     override def check(f: (A, B) => Boolean): Collision[A, B] = FailedCollision()
 
-  @main def main() =
+
+  object Collision:
+    def solve[A, B, C](c: Collision[A, B])(checker: (A, B) => Boolean)(mapper: A => C): Collision[C, B] =
+      c.check(checker).map(mapper)
+    def solveMany[A, B, C](l: List[Collision[A, B]])(checker: (A, B) => Boolean)(mapper: A => C): List[Collision[C, B]] =
+      l.collect(c => solve(c)(checker)(mapper))
+
+  @main def main(): Unit =
     val a = CircleCollider(Pair(0, 0), 2)
     val b = CircleCollider(Pair(1, 1), 0.5)
     val collider = SuccessfulCollision(a, b)
-    collider.check((_: CircleCollider, _: CircleCollider) => true).map { a => println(a) } //CircleCollider(Pair(0, 0), 2)
+    val check = for
+      x <- collider.check((_: CircleCollider, _: CircleCollider) => true)
+    yield x
+    println(check)
