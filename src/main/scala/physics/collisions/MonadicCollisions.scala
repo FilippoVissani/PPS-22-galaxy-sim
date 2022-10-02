@@ -17,15 +17,12 @@ object MonadicCollisions extends App:
     def flatMap[C](f: A => Collision[C, B]): Collision[C, B] = c match
       case Cons(a, _) => f(a)
       case None() => None()
-
-
+  
   object Collision:
     def apply[A, B](a: A, b: B): Collision[A, B] = Collision.Cons(a, b)
-
     def check[A, B](c: Collision[A, B], f: (A, B) => Boolean): Collision[A, B] = c match
       case Cons(a, b) => if f(a, b) then Collision(a, b) else None()
       case None() => None()
-
     def solve[A, B, C](c: Collision[A, B])(checker: (A, B) => Boolean)(mapper: A => C): Collision[C, B] =
       check(c, checker).map(mapper)
     def solveMany[A, B, C](l: List[Collision[A, B]])(checker: (A, B) => Boolean)(mapper: A => C): List[Collision[C, B]] =
@@ -34,8 +31,8 @@ object MonadicCollisions extends App:
   @main def main(): Unit =
     val a = CircleCollider(Pair(0, 0), 2)
     val b = CircleCollider(Pair(1, 1), 0.5)
-    val collider = Collision(a, b)
+    val c = Collision(a, b)
     val g = for
-      x <- check(collider, (_: CircleCollider, _: CircleCollider) => true)
+      x <- check(c, (_: CircleCollider, _: CircleCollider) => true)
     yield x
     println(g)
