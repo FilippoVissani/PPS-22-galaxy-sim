@@ -2,7 +2,6 @@ package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBody.*
 import galaxy_sim.model.CelestialBodyGenerator.random
-import physics.dynamics.PhysicalEntity.*
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.*
 import physics.GravityForceVector

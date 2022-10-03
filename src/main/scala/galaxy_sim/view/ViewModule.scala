@@ -10,6 +10,7 @@ object ViewModule:
   trait View:
     def display(entities: Simulation): Unit
     def start(): Unit
+    def stop(): Unit
 
   trait Provider:
     def view: View
@@ -26,10 +27,14 @@ object ViewModule:
 
       override def start(): Unit = context.controller.startSimulation()
 
-    class TextualView extends View:
+      override def stop(): Unit = context.controller.stopSimulation()
+
+    class FakeView extends View:
       override def display(simulation: Simulation): Unit = ???
 
       override def start(): Unit = ???
+
+      override def stop(): Unit = ???
 
   trait Interface extends Provider with Component:
     self: Requirements =>

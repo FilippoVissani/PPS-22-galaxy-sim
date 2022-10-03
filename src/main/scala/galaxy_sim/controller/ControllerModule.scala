@@ -1,16 +1,13 @@
 package galaxy_sim.controller
 
-import galaxy_sim.model.ModelModule
+import galaxy_sim.model.{ModelModule, Simulation}
 import galaxy_sim.view.ViewModule
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.math.BigDecimal.double2bigDecimal
 
 object ControllerModule:
   trait Controller:
     def startSimulation(): Unit
     def stopSimulation(): Unit
-    def pauseSimulation(): Unit
-    def resumeSimulation(): Unit
 
   trait Provider:
     val controller: Controller
@@ -22,30 +19,23 @@ object ControllerModule:
     class ControllerImpl extends Controller:
       var stop: Boolean = false
 
-      override def startSimulation(): Unit =
+      def iteration(): Unit =
+        (0d until 10e4 by 1d).foreach{_ =>
+          model.incrementVirtualTime()
+          model.moveCelestialBodiesToNextPosition()
+        }
         view.display(model.simulation)
-        val r = new Runnable:
-          override def run(): Unit =
-            while true do
-              model.incrementVirtualTime()
-              model.moveCelestialBodiesToNextPosition()
-              view.display(model.simulation)
-              //Thread.sleep(10)
-        new Thread(r).start()
-      //for _ <- Future{ view.update(model.simulation.celestialBodies) } yield ()
-      // for
-      //  calculate next position
-      //  calculate collisions
-      //  introduce new entities based on collisions
-      //  calculate lifecycle
-      //  update view
 
+      override def startSimulation(): Unit =
+        synchronized{
+          val r = new Runnable :
+            override def run(): Unit =
+              while !stop do
+                iteration()
+          new Thread(r).start()
+        }
 
-      override def stopSimulation(): Unit = stop = true
-
-      override def pauseSimulation(): Unit = ???
-
-      override def resumeSimulation(): Unit = ???
+      override def stopSimulation(): Unit = synchronized { stop = true }
 
   trait Interface extends Provider with Component:
     self: Requirements =>

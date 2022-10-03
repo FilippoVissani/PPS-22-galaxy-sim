@@ -22,17 +22,17 @@ object SwingGUI:
       windowHeight: Int
   ) extends SwingGUI:
     val frameSize: Dimension = Dimension(windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100, windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100)
-    //val frameSize: Dimension = Dimension(1000, 1000)
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
     val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
     val controlPanel: JPanel = JPanel()
     val startButton: JButton = JButton("Start Simulation")
-    val pauseButton: JButton = JButton("Pause Simulation")
+    val stopButton: JButton = JButton("Stop Simulation")
 
     startButton.addActionListener((_: ActionEvent) => view.start())
+    stopButton.addActionListener((_: ActionEvent) => view.stop())
     controlPanel.add(startButton)
-    controlPanel.add(pauseButton)
+    controlPanel.add(stopButton)
     mainFrame.addWindowListener(new WindowAdapter {
       override def windowClosing(windowEvent: WindowEvent): Unit =
         System.exit(0)
@@ -40,7 +40,7 @@ object SwingGUI:
     simulationPanelContainer.add(simulationPanel)
     mainFrame.setSize(frameSize)
     mainFrame.setResizable(false)
-    mainFrame.mainPanel.add(controlPanel, BorderLayout.NORTH)
+    mainFrame.mainPanel.add(controlPanel, BorderLayout.EAST)
     mainFrame.mainPanel.add(simulationPanelContainer, BorderLayout.CENTER)
     mainFrame.setVisible(true)
 
@@ -75,6 +75,7 @@ object SwingGUI:
         g2.setColor(java.awt.Color.BLACK)
         g2.fillRect(0, 0, this.getWidth, this.getHeight)
         g2.setColor(java.awt.Color.WHITE)
+        g2.drawString(simulation.get.virtualTime.toString, 10, 10)
         simulation.get.celestialBodies.foreach(e =>
           g2.fillOval(
             scaleX(e.position.x),
