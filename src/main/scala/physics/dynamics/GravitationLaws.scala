@@ -2,7 +2,6 @@ package physics.dynamics
 
 import org.w3c.dom.EntityReference
 import physics.*
-
 import math.{pow, sqrt}
 
 /**
@@ -14,6 +13,7 @@ trait Constants:
   val deltaYear: Double = daySec * 365 //one year
   val moduleConstant: Double = 1.5
   val astronomicUnit: Double = 1.5e11 //equals as earth-sun distance
+  val lightYear: Double = 9.461e12 //63241.1 * astronomicUnit
 
 /**
  * Fields characteristics of an entity in order to calculate gravitation laws
@@ -28,21 +28,31 @@ trait PhysicalEntity:
 /**
  * Functions to calculate the essential gravitation laws implied in basic object's movements in space.
  * Includes vector and non-vector calculations
+ *
+ * STEPS TO FOLLOW:
+ *
+ * 1) update the entity subject's gForceVector by using gravitationalForceOnEntity(entitySubject, ...)
+ *
+ * 2) update the entity subject's speedVector by using speedVectorAfterTime(entitySubject, ...)
+ *
+ * 3) update the entity subject's position by using vectorChangeOfDisplacement(entitySubject, ...)
+ *
+ * - when done you should also update the entity reference's fields:
+ *
+ * 4) update the entity reference's speedVector by using entityReferenceSpeedVectorAfterTime(entityReference, ...)
+ *
+ * 5) update the entity reference's position by using vectorChangeOfDisplacement(entityReference, ...)
  */
 object GravitationLaws extends Constants:
 
   /**
-   * VECTOR CALCULATIONS
-   */
-
-  /**
    * Calculate the gravity constant between two entities
-   * @param entitySubject PhysicalEntity, is the entity that orbits around another one
-   * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
+   * @param entitySubjectMass Mass, of the entity that orbits around another one
+   * @param entityReferenceMass Mass, of the entity that has other entities that orbit around it
    * @return Double, the gravity constant between two entities
    */
-  def entitiesGravitationalConstant(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    gravityConstant * entitySubject.mass * entityReference.mass
+  def entitiesGravitationalConstant(entitySubjectMass: Mass, entityReferenceMass: Mass): Double =
+    gravityConstant * entitySubjectMass * entityReferenceMass
 
   /**
    * Calculate the distance between two entities
@@ -70,7 +80,7 @@ object GravitationLaws extends Constants:
   def gravitationalForceOnEntity(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): GravityForceVector =
     val distance = posBetweenTwoEntities(entitySubject, entityReference)
     val mod = moduleOfDistance(distance)
-    val gravConstEntitySubj = entitiesGravitationalConstant(entitySubject, entityReference)
+    val gravConstEntitySubj = entitiesGravitationalConstant(entitySubject.mass, entityReference.mass)
     Pair(- gravConstEntitySubj * distance.x / mod, - gravConstEntitySubj * distance.y / mod)
 
   /**
@@ -110,3 +120,25 @@ object GravitationLaws extends Constants:
    */
   def calculateChangeOfDisplacement(entity: PhysicalEntity, deltaTime: Double): Position =
     Pair(entity.speedVector.x * deltaTime, entity.speedVector.y * deltaTime)
+
+  /**
+   * Calculate the new speed vector of the entity reference
+   * @param entityReference PhysicalEntity, the entity around which other entities orbit
+   * @param entities Set[PhysicalEntity], set of the entities that orbits around the entity reference
+   * @param deltaTime Double, time passed
+   * @return the new speed vector of the entity reference
+   */
+  def entityReferenceSpeedVectorAfterTime(entityReference: PhysicalEntity, entities: Set[PhysicalEntity], deltaTime: Double): SpeedVector =
+    val speedVector = calculateEntityReferenceSpeedVector(entityReference, entities, deltaTime)
+    Pair(entityReference.speedVector.x + speedVector.x , entityReference.speedVector.y + speedVector.y)
+
+  /**
+   * Summary of the forces of the other entities that affect the entity reference's speed
+   * @param entityReference PhysicalEntity, the entity around which other entities orbit
+   * @param entities Set[PhysicalEntity], set of the entities that orbits around the entity reference
+   * @param deltaTime Double, time passed
+   * @return SpeedVector
+   */
+  def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](entityReference: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
+    Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / entityReference.mass,
+          - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / entityReference.mass)
