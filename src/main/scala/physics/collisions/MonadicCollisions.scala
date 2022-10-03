@@ -25,10 +25,10 @@ object MonadicCollisions extends App:
     def apply[A, B](a: A, b: B): Collision[A, B] = Collision.Cons(a, b)
     def check[A, B](c: Collision[A, B])(using f: CollisionChecker[A, B]): Collision[A, B] =
       c.filter(f.check)
-    def solve[A, B, C](c: Collision[A, B])(using checker: CollisionChecker[A, B])(solver: CollisionSolver[A, B]): Collision[C, B] =
+    def solve[A, B, C](c: Collision[A, B])(using checker: CollisionChecker[A, B])(using solver: CollisionSolver[A, B]): Collision[C, B] =
       check(c).flatMap(_ => solver.solve(c))
-    def solveMany[A, B, C](l: List[Collision[A, B]])(using checker: CollisionChecker[A, B])(solver: CollisionSolver[A, B]): List[Collision[C, B]] =
-      l.collect(c => solve(c)(solver))
+    def solveMany[A, B, C](l: List[Collision[A, B]])(using checker: CollisionChecker[A, B])(using solver: CollisionSolver[A, B]): List[Collision[C, B]] =
+      l.collect(c => solve(c))
 
   trait CollisionChecker[A, B]:
     def check(a: A, b: B): Boolean
