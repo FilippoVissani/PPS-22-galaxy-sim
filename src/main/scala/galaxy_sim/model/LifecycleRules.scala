@@ -1,7 +1,6 @@
 package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBodyType.*
-import physics.dynamics.PhysicalEntity.changeMass
 
 class LifecycleRules:
 
