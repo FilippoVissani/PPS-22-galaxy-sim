@@ -21,7 +21,7 @@ object ModelModule:
 
   trait Component:
     class ModelImpl extends Model:
-      var actualSimulation: Simulation = Simulation(celestialBodies = Set(blackHole, interstellarCloud), bounds = bounds, deltaTime = 1)
+      var actualSimulation: Simulation = Simulation(celestialBodies = Set(blackHole, interstellarCloud), bounds = bounds, deltaTime = 1000)
 
       override def simulation: Simulation = actualSimulation
 
