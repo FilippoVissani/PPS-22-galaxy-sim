@@ -23,7 +23,29 @@ object SimulationConfig:
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 29290),
-      position = Pair(astronomicUnit * 1.0167, 0),
+      position = Pair(astronomicUnit, 0),
       name = "Interstellar Cloud",
       radius = 10,
       temperature = 0)
+
+  val interstellarCloud2: CelestialBody =
+    CelestialBody(mass = 5.972e24,
+      aphelionSpeed = 29290,
+      gForceVector = Pair(0, 0),
+      speedVector = Pair(0, 29290),
+      position = Pair(-(astronomicUnit/2), 0),
+      name = "Interstellar Cloud2",
+      radius = 10,
+      temperature = 0)
+
+  val groupOFInterstellarClouds: Set[CelestialBody] =
+    (0 until 100).map(x => {
+      CelestialBody(mass = 5.972e24 - Math.pow(10, x),
+        aphelionSpeed = 29290 - x * 1000,
+        gForceVector = Pair(0, 0),
+        speedVector = Pair(0, 29290 - x * 1000),
+        position = Pair(-(astronomicUnit - Math.pow(100, x)), 0),
+        name = "Interstellar CloudX",
+        radius = 10,
+        temperature = 0)
+    }).toSet
