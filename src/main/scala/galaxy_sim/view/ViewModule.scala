@@ -2,13 +2,12 @@ package galaxy_sim.view
 
 import galaxy_sim.controller.ControllerModule
 import galaxy_sim.model.{CelestialBody, Simulation}
-
 import java.awt.{Dimension, Toolkit}
 import javax.swing.{JFrame, JPanel}
 
 object ViewModule:
   trait View:
-    def display(entities: Simulation): Unit
+    def display(simulation: Simulation): Unit
     def start(): Unit
     def stop(): Unit
 
