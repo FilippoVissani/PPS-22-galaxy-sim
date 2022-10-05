@@ -39,14 +39,14 @@ object Logger:
   private class LoggerImpl extends Logger:
 
     override def logSimulationStarted(): Unit =
-    log("SIMULATION STARTED " + dateTime())
+      log("SIMULATION STARTED " + dateTime())
 
     override def logSimulationPaused(): Unit =
-    log("SIMULATION PAUSED " + dateTime())
+      log("SIMULATION PAUSED " + dateTime())
 
     override def logSimulationTerminated(): Unit =
-    log("SIMULATION TERMINATED " + dateTime())
-    log("")
+      log("SIMULATION TERMINATED " + dateTime())
+      log("")
 
     override def logCollision(entity1: CelestialBody, entity2: CelestialBody): Unit =
       log(s"COLLISION DETECTED BETWEEN $entity1 AND $entity2 AT ${dateTime()}")
