@@ -14,6 +14,8 @@ trait Constants:
   val moduleConstant: Double = 1.5
   val astronomicUnit: Double = 1.5e11 //equals as earth-sun distance
   val lightYear: Double = 9.461e12 //63241.1 * astronomicUnit
+  val solarMass: Double = 2.0e30 //unit reference for stars and blackholes
+  val earthMass: Double = 5.9722e24 //unit reference for planets and little objects
 
 /**
  * Fields characteristics of an entity in order to calculate gravitation laws
