@@ -37,7 +37,7 @@ object SimulationConfig:
       position = Pair(astronomicUnit * 1.0167, 0),
       name = "Earth",
       radius = 10,
-      temperature = 0)
+      temperature = 150)
 
   val blackHole: CelestialBody =
     CelestialBody(mass = solarMass * 4,
