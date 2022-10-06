@@ -32,6 +32,7 @@ trait Logger:
    */
   def logCollision(entity1: CelestialBody, entity2: CelestialBody): Unit
 
+//todo take the path of the file in the apply
 object Logger:
 
   def apply(): Logger = LoggerImpl()
