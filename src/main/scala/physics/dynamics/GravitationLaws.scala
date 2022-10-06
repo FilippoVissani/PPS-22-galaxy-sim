@@ -8,12 +8,14 @@ import math.{pow, sqrt}
  * Trait with different constants that can be useful
  */
 trait Constants:
-  val gravityConstant: Double = 6.67e-11
+  val gravityConstant: Double = 6.6743e-11
   val daySec: Double = 24.0 * 60 * 60 //seconds in a day
   val deltaYear: Double = daySec * 365 //one year
   val moduleConstant: Double = 1.5
   val astronomicUnit: Double = 1.5e11 //equals as earth-sun distance
   val lightYear: Double = 9.461e12 //63241.1 * astronomicUnit
+  val solarMass: Double = 2.0e30 //unit reference for stars and blackholes
+  val earthMass: Double = 5.9722e24 //unit reference for planets and little objects
 
 /**
  * Fields characteristics of an entity in order to calculate gravitation laws
@@ -60,7 +62,7 @@ object GravitationLaws extends Constants:
    * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
    * @return Position, the distance in a bi-dimensional space
    */
-  def posBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Position =
+  def distanceBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Position =
     Pair(entitySubject.position.x - entityReference.position.x, entitySubject.position.y - entityReference.position.y)
 
   /**
@@ -78,7 +80,7 @@ object GravitationLaws extends Constants:
    * @return a vector that represent the gravitational force of the entity subject in a bi-dimensional space
    */
   def gravitationalForceOnEntity(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): GravityForceVector =
-    val distance = posBetweenTwoEntities(entitySubject, entityReference)
+    val distance = distanceBetweenTwoEntities(entitySubject, entityReference)
     val mod = moduleOfDistance(distance)
     val gravConstEntitySubj = entitiesGravitationalConstant(entitySubject.mass, entityReference.mass)
     Pair(- gravConstEntitySubj * distance.x / mod, - gravConstEntitySubj * distance.y / mod)
@@ -128,7 +130,7 @@ object GravitationLaws extends Constants:
    * @param deltaTime Double, time passed
    * @return the new speed vector of the entity reference
    */
-  def entityReferenceSpeedVectorAfterTime(entityReference: PhysicalEntity, entities: Set[PhysicalEntity], deltaTime: Double): SpeedVector =
+  def entityReferenceSpeedVectorAfterTime[A <: PhysicalEntity](entityReference: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
     val speedVector = calculateEntityReferenceSpeedVector(entityReference, entities, deltaTime)
     Pair(entityReference.speedVector.x + speedVector.x , entityReference.speedVector.y + speedVector.y)
 
@@ -142,3 +144,21 @@ object GravitationLaws extends Constants:
   def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](entityReference: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
     Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / entityReference.mass,
           - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / entityReference.mass)
+
+  /**
+   *
+   * @param gravityForceVector
+   * @return
+   */
+  def calculateMagnitude(gravityForceVector: GravityForceVector): Double =
+    sqrt(pow(gravityForceVector.x, 2) + pow(gravityForceVector.y, 2))
+
+  /**
+   *
+   * @param entitySubject
+   * @param entityReference
+   * @return
+   */
+  def calculateSphereOfInfluence(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
+    val distance = distanceBetweenTwoEntities(entitySubject, entityReference)
+    calculateMagnitude(distance) * pow(entitySubject.mass / entityReference.mass, 2/5)

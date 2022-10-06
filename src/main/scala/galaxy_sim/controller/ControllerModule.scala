@@ -20,20 +20,30 @@ object ControllerModule:
       var stop: Boolean = false
 
       def iteration(): Unit =
-        (0d until 10e4 by 1d).foreach{_ =>
-          model.incrementVirtualTime()
-          model.moveCelestialBodiesToNextPosition()
-        }
-        view.display(model.simulation)
+        model.incrementVirtualTime()
+        model.moveCelestialBodiesToNextPosition()
 
       override def startSimulation(): Unit =
-        synchronized{
-          val r = new Runnable :
-            override def run(): Unit =
-              while !stop do
-                iteration()
-          new Thread(r).start()
-        }
+
+        /**
+         * iteration in the model
+         */
+        val r = new Runnable :
+          override def run(): Unit =
+            while !stop do
+              iteration()
+              Thread.sleep(1)
+        new Thread(r).start()
+
+        /**
+         * view 30fps
+         */
+        val v = new Runnable :
+          override def run(): Unit =
+            while !stop do
+              view.display(model.simulation)
+              Thread.sleep(33)
+        new Thread(v).start()
 
       override def stopSimulation(): Unit = synchronized { stop = true }
 
