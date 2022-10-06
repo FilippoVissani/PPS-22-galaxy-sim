@@ -30,7 +30,7 @@ class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
       When("I want to see the movement of the earth after some time")
 
       val shouldDistance = Pair(earth.position.x - sun.position.x, earth.position.y - sun.position.y)
-      val sunEarthDistance = posBetweenTwoEntities(earth, sun)
+      val sunEarthDistance = distanceBetweenTwoEntities(earth, sun)
       assert(sunEarthDistance == shouldDistance)
 
       val shouldMod = pow(pow(sunEarthDistance.x, 2) + pow(sunEarthDistance.y, 2), moduleConstant)
