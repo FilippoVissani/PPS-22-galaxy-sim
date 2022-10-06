@@ -17,7 +17,7 @@ object SimulationConfig:
     position = Pair(astronomicUnit * 1.0167 + 384400, 0),
     name = "Moon",
     radius = 5,
-    temperature = 40)
+    temperature = 110)
 
   val sun: CelestialBody =
     CelestialBody(mass = solarMass,

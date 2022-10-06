@@ -3,6 +3,8 @@ package galaxy_sim.utils
 import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation}
 import physics.Pair
 
+type Percentage = Int
+
 object Statistics:
 
   /**
@@ -12,7 +14,7 @@ object Statistics:
    * @return the number of celestial bodies of the desired type in the set
    */
   def quantityOfThisCelestialBody(celestialBodyType: CelestialBodyType, celestialBodies: Set[CelestialBody]): Int =
-    celestialBodies.map(body => body.typeOf).count(bType => bType.equals(celestialBodyType))
+    celestialBodies.count(body => body.typeOf.equals(celestialBodyType))
 
   /**
    * Count the number of celestial bodies for each type
@@ -21,4 +23,14 @@ object Statistics:
    */
   def numberOfCelestialBodiesForEachType(celestialBodies: Set[CelestialBody]):  Map[CelestialBodyType, Int] =
     CelestialBodyType.values.collect(bType => bType -> quantityOfThisCelestialBody(bType, celestialBodies)).toMap
-    
+
+  /**
+   * Percentage of celestial bodies for each type
+   * @param celestialBodies the set containing all the celestial bodies
+   * @return a map containing the percentage of celestial bodies for each type
+   */
+  def percentageOfCelestialBodiesForEachType(celestialBodies: Set[CelestialBody]): Map[CelestialBodyType, Percentage] =
+    numberOfCelestialBodiesForEachType(celestialBodies).mapValues(toPercentage(celestialBodies.size)).toMap
+
+  private def toPercentage(totalBodies: Int): Int => Percentage =
+    number => (number * 100.0 / totalBodies).round.toInt
