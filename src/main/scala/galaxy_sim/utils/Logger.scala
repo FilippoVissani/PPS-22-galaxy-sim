@@ -1,4 +1,4 @@
-package galaxy_sim.util
+package galaxy_sim.utils
 
 import galaxy_sim.model.CelestialBody
 
