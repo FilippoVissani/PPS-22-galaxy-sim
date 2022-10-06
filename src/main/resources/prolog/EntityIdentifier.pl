@@ -18,9 +18,9 @@ planet.
 asteroid.
 interstellarCloud.
 
-typeOfStar(Mass, blackHole) :- Mass > 1000, !.
-typeOfStar(Mass, supernova) :- Mass > 800, !.
-typeOfStar(Mass, redSuperGiant) :- Mass > 300, !.
+typeOfStar(Mass, blackHole) :- Mass > 10**40, !.
+typeOfStar(Mass, supernova) :- Mass > 10**20, !.
+typeOfStar(Mass, redSuperGiant) :- Mass > 10**10, !.
 typeOfStar(Mass, massiveStar) :- Mass > 0, !.
 
 typeOfEntity(Temp, Mass, X) :- 1000 < Temp, typeOfStar(Mass, X), !.
