@@ -7,6 +7,8 @@ import physics.dynamics.GravitationLaws.astronomicUnit
 
 object SimulationConfig:
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
+
+  val deltaTime = 1000d
   
   val blackHole: CelestialBody =
     CelestialBody(mass = 2.0e30,
