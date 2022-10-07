@@ -42,8 +42,7 @@ object SimulationManagerActor:
                 case Failure(_) => MoveToNextPositionAdaptedResponse(Option.empty)
               }
             })
-            SimulationManagerActor(celestialBodyActors, actualSimulation.copy(celestialBodies = Set(),
-                                                                              virtualTime = actualSimulation.virtualTime + actualSimulation.deltaTime))
+            SimulationManagerActor(celestialBodyActors, actualSimulation.copy(virtualTime = actualSimulation.virtualTime + actualSimulation.deltaTime))
           }
           case StopSimulation => Behaviors.same
           case CollisionChecked(celestialBody: Option[CelestialBody]) => Behaviors.same
