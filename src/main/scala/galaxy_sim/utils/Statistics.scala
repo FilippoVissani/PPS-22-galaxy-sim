@@ -33,5 +33,5 @@ object Statistics:
     numberOfCelestialBodiesForEachType(celestialBodies).map(toPercentage(celestialBodies.size))
 
   private def toPercentage(totalBodies: Int): ((CelestialBodyType, Int)) => (CelestialBodyType, Percentage) =
-    (bType, number) => (bType, (number * 100.0 / totalBodies).round.toInt)
+    element => (element._1, (element._2 * 100.0 / totalBodies).round.toInt)
 
