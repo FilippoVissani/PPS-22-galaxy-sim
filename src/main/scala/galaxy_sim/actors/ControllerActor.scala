@@ -39,7 +39,7 @@ object ControllerActor:
           Behaviors.receiveMessage[ControllerActorCommand](msg => msg match
             case Start => {
               simulationManagerActor ! StartIteration
-              timers.startTimerAtFixedRate(Tick, 1000.milliseconds)
+              timers.startTimerAtFixedRate(Tick, 100.milliseconds)
               Behaviors.same
             }
             case Stop => {

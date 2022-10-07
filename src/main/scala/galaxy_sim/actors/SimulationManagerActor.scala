@@ -29,7 +29,8 @@ object SimulationManagerActor:
   export SimulationManagerActorCommand.*
 
   def apply(celestialBodyActors: Set[ActorRef[CelestialBodyActorCommand]],
-            actualSimulation: Simulation): Behavior[SimulationManagerActorCommand] =
+            actualSimulation: Simulation,
+            tmpCelestialBodies: Set[CelestialBody] = Set()): Behavior[SimulationManagerActorCommand] =
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
         ctx.log.debug("simulation manager")
         implicit val timeout: Timeout = 1.seconds
@@ -47,12 +48,12 @@ object SimulationManagerActor:
           case StopSimulation => Behaviors.same
           case CollisionChecked(celestialBody: Option[CelestialBody]) => Behaviors.same
           case MoveToNextPositionAdaptedResponse(celestialBody: Option[CelestialBody]) => {
-            val tmp = actualSimulation.copy(celestialBodies = actualSimulation.celestialBodies + celestialBody.get)
-            if celestialBodyActors.size == tmp.celestialBodies.size then
+            val tmp = tmpCelestialBodies + celestialBody.get
+            if celestialBodyActors.size == tmp.size then
               ctx.self ! StartIteration
-              SimulationManagerActor(celestialBodyActors, actualSimulation.copy(celestialBodies = Set()))
+              SimulationManagerActor(celestialBodyActors, actualSimulation.copy(celestialBodies = tmp))
             else
-              SimulationManagerActor(celestialBodyActors, actualSimulation.copy(celestialBodies = tmp.celestialBodies))
+              SimulationManagerActor(celestialBodyActors, actualSimulation, tmp)
           }
           case AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) => {
             replyTo ! SimulationStateResponse(actualSimulation)
