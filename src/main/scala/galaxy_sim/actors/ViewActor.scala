@@ -27,14 +27,17 @@ object ViewActor:
 
       Behaviors.receiveMessage[ViewActorCommand](msg => msg match
         case Display(envelope: Envelope) => {
+          ctx.log.debug("Received Display")
           view.display(envelope)
           Behaviors.same
         }
         case StartPressed => {
+          ctx.log.debug("Received StartPressed")
           controllerActor ! Start
           Behaviors.same
         }
         case StopPressed => {
+          ctx.log.debug("Received StopPressed")
           controllerActor ! Stop
           Behaviors.same
         }

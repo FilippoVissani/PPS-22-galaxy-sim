@@ -22,13 +22,16 @@ object CelestialBodyActor:
 
   def apply(celestialBody: CelestialBody, bounds: Boundary, deltaTime: Double): Behavior[CelestialBodyActorCommand] =
     Behaviors.setup[CelestialBodyActorCommand](ctx =>
-      ctx.log.debug("Celestial Body")
       Behaviors.receiveMessage[CelestialBodyActorCommand](msg => msg match
         case AskMoveToNextPosition(replyTo: ActorRef[MoveToNextPositionResponse]) => {
+          ctx.log.debug("Received AskMoveToNextPosition")
           val newCelestialBody = if celestialBody.name.contains("Cloud") then celestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, blackHole), speedVector = speedVectorAfterTime(celestialBody, deltaTime), position = vectorChangeOfDisplacement(celestialBody, deltaTime)) else celestialBody
           replyTo ! MoveToNextPositionResponse(newCelestialBody)
           CelestialBodyActor(newCelestialBody, bounds, deltaTime)
         }
-        case CheckCollisions(otherBodies: Set[CelestialBody]) => Behaviors.same
+        case CheckCollisions(otherBodies: Set[CelestialBody]) => {
+          ctx.log.debug("Received CheckCollisions")
+          Behaviors.same
+        }
       )
     )

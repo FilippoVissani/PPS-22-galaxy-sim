@@ -34,27 +34,31 @@ object ControllerActor:
     simulationManagerActor: ActorRef[SimulationManagerActorCommand]): Behavior[ControllerActorCommand] =
       Behaviors.setup[ControllerActorCommand](ctx =>
         Behaviors.withTimers(timers =>
-          ctx.log.debug("Controller")
           implicit val timeout: Timeout = 1.seconds
           Behaviors.receiveMessage[ControllerActorCommand](msg => msg match
             case Start => {
+              ctx.log.debug("Received Start")
               simulationManagerActor ! StartIteration
-              timers.startTimerAtFixedRate(Tick, 100.milliseconds)
+              timers.startTimerAtFixedRate(Tick, 33.milliseconds)
               Behaviors.same
             }
             case Stop => {
+              ctx.log.debug("Received Stop")
               simulationManagerActor ! StopSimulation
               Behaviors.same
             }
             case SetView(viewActor: ActorRef[ViewActorCommand]) => {
+              ctx.log.debug("Received SetView")
               ControllerActor(Option(viewActor), simulationManagerActor)
             }
             case SimulationStateAdaptedResponse(simulation: Option[Simulation]) => {
+              ctx.log.debug("Received SimulationStateAdaptedResponse")
               if viewActor.isDefined && simulation.isDefined then
                 viewActor.get ! Display(Envelope(simulation.get.celestialBodies, simulation.get.bounds, simulation.get.virtualTime))
               Behaviors.same
             }
             case Tick => {
+              ctx.log.debug("Received Tick")
               ctx.ask(simulationManagerActor, AskSimulationState.apply){
                 case Success(SimulationStateResponse(simulation)) => SimulationStateAdaptedResponse(Option(simulation))
                 case Failure(_) => SimulationStateAdaptedResponse(Option.empty)

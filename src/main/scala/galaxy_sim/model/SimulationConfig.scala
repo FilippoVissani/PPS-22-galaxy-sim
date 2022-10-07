@@ -40,8 +40,8 @@ object SimulationConfig:
       radius = 10,
       temperature = 0)
 
-  val groupOFInterstellarClouds: Set[CelestialBody] =
-    (0 until 100).map(x => {
+  def groupOFInterstellarClouds(cloudsNumber: Int): Set[CelestialBody] =
+    (0 until cloudsNumber).map(x => {
       CelestialBody(mass = 5.972e24 - Math.pow(10, x),
         aphelionSpeed = 29290 - x * 1000,
         gForceVector = Pair(0, 0),

@@ -32,10 +32,10 @@ object SimulationManagerActor:
             actualSimulation: Simulation,
             tmpCelestialBodies: Set[CelestialBody] = Set()): Behavior[SimulationManagerActorCommand] =
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
-        ctx.log.debug("simulation manager")
         implicit val timeout: Timeout = 1.seconds
         Behaviors.receiveMessage[SimulationManagerActorCommand](msg => msg match
           case StartIteration => {
+            ctx.log.debug("Received StartIteration")
             celestialBodyActors.foreach(x => {
               ctx.ask(x, AskMoveToNextPosition.apply){
                 case Success(MoveToNextPositionResponse(celestialBody)) => MoveToNextPositionAdaptedResponse(Option(celestialBody))
@@ -47,6 +47,7 @@ object SimulationManagerActor:
           case StopSimulation => Behaviors.same
           case CollisionChecked(celestialBody: Option[CelestialBody]) => Behaviors.same
           case MoveToNextPositionAdaptedResponse(celestialBody: Option[CelestialBody]) => {
+            ctx.log.debug(s"Received MoveToNextPositionAdaptedResponse, ${tmpCelestialBodies.size}")
             val tmp = tmpCelestialBodies + celestialBody.get
             if celestialBodyActors.size == tmp.size then
               ctx.self ! StartIteration
@@ -55,6 +56,7 @@ object SimulationManagerActor:
               SimulationManagerActor(celestialBodyActors, actualSimulation, tmp)
           }
           case AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) => {
+            ctx.log.debug("Received AskSimulationState")
             replyTo ! SimulationStateResponse(actualSimulation)
             Behaviors.same
           }
