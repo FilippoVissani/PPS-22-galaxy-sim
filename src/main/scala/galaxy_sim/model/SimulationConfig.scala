@@ -6,9 +6,9 @@ import physics.SpeedVector
 import physics.dynamics.GravitationLaws.*
 
 object SimulationConfig:
-//  val bounds: Boundary = Boundary(0, astronomicUnit * 4, 0, astronomicUnit * 4)
   val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
   val blackHoleDistance = lightYear
+  val deltaTime = 1000d
 
   val moon: CelestialBody =
     CelestialBody(mass = earthMass * 0.0123,
@@ -50,34 +50,24 @@ object SimulationConfig:
       radius = 30,
       temperature = 10)
 
-/*
-val sun: CelestialBody =
-  CelestialBody(mass = 2.0e30,
-    aphelionSpeed = 60000,
-    gForceVector = Pair(0, 0),
-    speedVector = Pair(0, 60000),
-    position = Pair(astronomicUnit, 0), //Pair(26_000 * lightYear, 0)
-    name = "Sun",
-    radius = 20,
-    temperature = 1100)
+  val interstellarCloud2: CelestialBody =
+    CelestialBody(mass = 5.972e24,
+      aphelionSpeed = 29290,
+      gForceVector = Pair(0, 0),
+      speedVector = Pair(0, 29290),
+      position = Pair(-(astronomicUnit/2), 0),
+      name = "Interstellar Cloud2",
+      radius = 10,
+      temperature = 0)
 
-val earth: CelestialBody =
-  CelestialBody(mass = 5.972e24,
-    aphelionSpeed = 29290,
-    gForceVector = Pair(0, 0),
-    speedVector = Pair(0, 29290),
-    position = Pair(astronomicUnit * 1.0167, 0), //Pair(lightYear * astronomicUnit * 1.0167, 0)
-    name = "Earth",
-    radius = 10,
-    temperature = 0)
-
-val blackHole: CelestialBody =
-  CelestialBody(mass = 4_154_000,
-    aphelionSpeed = 0,
-    gForceVector = Pair(0, 0),
-    speedVector = Pair(0, 0),
-    position = Pair(0, 0),
-    name = "Black Hole",
-    radius = 20,
-    temperature = 10
-  )*/
+  def groupOFInterstellarClouds(cloudsNumber: Int): Set[CelestialBody] =
+    (0 until cloudsNumber).map(x => {
+      CelestialBody(mass = 5.972e24 - Math.pow(10, x),
+        aphelionSpeed = 29290 - x * 1000,
+        gForceVector = Pair(0, 0),
+        speedVector = Pair(0, 29290 - x * 1000),
+        position = Pair(-(astronomicUnit - Math.pow(100, x)), 0),
+        name = "Interstellar CloudX",
+        radius = 10,
+        temperature = 0)
+    }).toSet

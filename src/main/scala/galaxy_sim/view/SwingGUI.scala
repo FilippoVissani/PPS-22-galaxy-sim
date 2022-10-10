@@ -2,24 +2,22 @@ package galaxy_sim.view
 
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
-import galaxy_sim.view.ViewModule.View
 import physics.dynamics.GravitationLaws.astronomicUnit
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import java.awt.*
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 
 trait SwingGUI:
-  def update(simulation: Simulation): Unit
+  def display(envelope: Envelope): Unit
 
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
-    SwingSimulationGUIImpl(view: View, windowWidth: Int, windowHeight: Int)
+    SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int)
 
-  private class SwingSimulationGUIImpl(
-      view: View,
-      windowWidth: Int,
-      windowHeight: Int
-  ) extends SwingGUI:
+  private class SwingGUIImpl(
+    view: View,
+    windowWidth: Int,
+    windowHeight: Int) extends SwingGUI:
     val frameSize: Dimension = Dimension(windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100, windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100)
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
@@ -43,25 +41,25 @@ object SwingGUI:
     mainFrame.mainPanel.add(simulationPanelContainer, BorderLayout.CENTER)
     mainFrame.setVisible(true)
 
-    override def update(simulation: Simulation): Unit =
+    override def display(envelope: Envelope): Unit =
       SwingUtilities.invokeLater(() => {
-        simulationPanel.entities_(simulation: Simulation)
+        simulationPanel.display(envelope)
       })
-  end SwingSimulationGUIImpl
+  end SwingGUIImpl
 
   private class MainFrame extends JFrame:
     val mainPanel: JPanel = JPanel(BorderLayout())
     this.getContentPane.add(mainPanel)
 
   private class SimulationPanel extends JPanel:
-    var simulation: Option[Simulation] = Option.empty
+    var envelope: Option[Envelope] = Option.empty
 
-    def entities_(simulation: Simulation): Unit =
-      this.simulation = Option(simulation)
+    def display(envelope: Envelope): Unit =
+      this.envelope = Option(envelope)
       repaint()
 
     override def paint(g: Graphics): Unit =
-      if simulation.isDefined then
+      if envelope.isDefined then
         val g2: Graphics2D = g.asInstanceOf[Graphics2D]
         g2.setRenderingHint(
           RenderingHints.KEY_ANTIALIASING,
@@ -74,8 +72,8 @@ object SwingGUI:
         g2.setColor(java.awt.Color.BLACK)
         g2.fillRect(0, 0, this.getWidth, this.getHeight)
         g2.setColor(java.awt.Color.WHITE)
-        g2.drawString(simulation.get.virtualTime.toString, 10, 10)
-        simulation.get.celestialBodies.foreach(e =>
+        g2.drawString(envelope.get.virtualTime.toString, 10, 10)
+        envelope.get.celestialBodies.foreach(e =>
           g2.fillOval(
             scaleX(e.position.x),
             scaleY(e.position.y),
@@ -83,11 +81,11 @@ object SwingGUI:
             e.radius.toInt
           )
         )
-        simulation.get.celestialBodies.foreach(e =>
+        envelope.get.celestialBodies.foreach(e =>
           g2.drawString(e.name, scaleX(e.position.x), scaleY(e.position.y))
         )
         g2.setColor(java.awt.Color.BLACK)
-        simulation.get.celestialBodies.foreach(e =>
+        envelope.get.celestialBodies.foreach(e =>
           g2.drawOval(
             scaleX(e.position.x),
             scaleY(e.position.y),
@@ -103,12 +101,12 @@ object SwingGUI:
       Dimension(newSize, newSize)
 
     private def scaleX(value: Double): Int =
-      val percent = value * 100 / simulation.get.bounds.rightBound
+      val percent = value * 100 / envelope.get.bounds.rightBound
       val sizeOnDisplay = percent * this.getWidth / 100
       Math.round(sizeOnDisplay + this.getWidth / 2).toInt
 
     private def scaleY(value: Double): Int =
-      val percent = value * 100 / simulation.get.bounds.bottomBound
+      val percent = value * 100 / envelope.get.bounds.bottomBound
       val sizeOnDisplay = percent * this.getHeight / 100
       Math.round(sizeOnDisplay + this.getHeight / 2).toInt
   end SimulationPanel
