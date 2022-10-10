@@ -24,6 +24,7 @@ object CelestialBodyActor:
     Behaviors.setup[CelestialBodyActorCommand](ctx =>
       Behaviors.receiveMessage[CelestialBodyActorCommand](msg => msg match
         case AskMoveToNextPosition(replyTo: ActorRef[MoveToNextPositionResponse]) => {
+          //todo: in this message is needed the set of celestial bodies
           ctx.log.debug("Received AskMoveToNextPosition")
           val newCelestialBody = if celestialBody.name.contains("Cloud") then celestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, blackHole), speedVector = speedVectorAfterTime(celestialBody, deltaTime), position = vectorChangeOfDisplacement(celestialBody, deltaTime)) else celestialBody
           replyTo ! MoveToNextPositionResponse(newCelestialBody)
