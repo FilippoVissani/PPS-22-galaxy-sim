@@ -129,8 +129,8 @@ object GravitationLaws extends Constants:
    * @param deltaTime Double, time passed
    * @return the new speed vector of the entity reference
    */
-  def biggerEntitySpeedVectorAfterTime[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
-    val speedVector = calculatebiggerEntitySpeedVector(biggerEntity, entities, deltaTime)
+  def entityReferenceSpeedVectorAfterTime[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
+    val speedVector = calculateEntityReferenceSpeedVector(biggerEntity, entities, deltaTime)
     Pair(biggerEntity.speedVector.x + speedVector.x , biggerEntity.speedVector.y + speedVector.y)
 
   /**
@@ -140,7 +140,7 @@ object GravitationLaws extends Constants:
    * @param deltaTime Double, time passed
    * @return SpeedVector
    */
-  def calculatebiggerEntitySpeedVector[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
+  def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
     Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / biggerEntity.mass,
           - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / biggerEntity.mass)
 
