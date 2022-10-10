@@ -1,6 +1,5 @@
 package galaxy_sim.view
 
-import galaxy_sim.model.SimulationConfig.interstellarCloud
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import galaxy_sim.view.ViewModule.View
