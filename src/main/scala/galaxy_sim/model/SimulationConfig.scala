@@ -7,14 +7,15 @@ import physics.dynamics.GravitationLaws.*
 
 object SimulationConfig:
 //  val bounds: Boundary = Boundary(0, astronomicUnit * 4, 0, astronomicUnit * 4)
-  val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
+  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
+  val blackHoleDistance = lightYear
 
   val moon: CelestialBody =
-    CelestialBody(mass = earthMass * 1.2 / 100,
+    CelestialBody(mass = earthMass * 0.0123,
     aphelionSpeed = 3683,
     gForceVector = Pair(0,0),
-    speedVector = Pair(0, 3683),
-    position = Pair(astronomicUnit * 1.0167 + 384400, 0),
+    speedVector = Pair(0, 10),
+    position = Pair(blackHoleDistance + astronomicUnit * 1.0167 + 384400, 0),
     name = "Moon",
     radius = 5,
     temperature = 110)
@@ -24,7 +25,7 @@ object SimulationConfig:
       aphelionSpeed = 0,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 50000),
-      position = Pair(0, 0),
+      position = Pair(blackHoleDistance, 0),
       name = "Sun",
       radius = 30,
       temperature = 1100)
@@ -34,7 +35,7 @@ object SimulationConfig:
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 29290),
-      position = Pair(astronomicUnit * 1.0167, 0),
+      position = Pair(blackHoleDistance + astronomicUnit * 1.0167, 0),
       name = "Earth",
       radius = 10,
       temperature = 150)
