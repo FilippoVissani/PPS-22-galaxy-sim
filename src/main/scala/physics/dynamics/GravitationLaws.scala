@@ -1,8 +1,7 @@
 package physics.dynamics
 
-import org.w3c.dom.EntityReference
 import physics.*
-import math.{pow, sqrt}
+import math.{cbrt, pow, sqrt}
 
 /**
  * Trait with different constants that can be useful
@@ -33,37 +32,37 @@ trait PhysicalEntity:
  *
  * STEPS TO FOLLOW:
  *
- * 1) update the entity subject's gForceVector by using gravitationalForceOnEntity(entitySubject, ...)
+ * 1) update the entity subject's gForceVector by using gravitationalForceOnEntity(smallerEntity, ...)
  *
- * 2) update the entity subject's speedVector by using speedVectorAfterTime(entitySubject, ...)
+ * 2) update the entity subject's speedVector by using speedVectorAfterTime(smallerEntity, ...)
  *
- * 3) update the entity subject's position by using vectorChangeOfDisplacement(entitySubject, ...)
+ * 3) update the entity subject's position by using vectorChangeOfDisplacement(smallerEntity, ...)
  *
  * - when done you should also update the entity reference's fields:
  *
- * 4) update the entity reference's speedVector by using entityReferenceSpeedVectorAfterTime(entityReference, ...)
+ * 4) update the entity reference's speedVector by using biggerEntitySpeedVectorAfterTime(biggerEntity, ...)
  *
- * 5) update the entity reference's position by using vectorChangeOfDisplacement(entityReference, ...)
+ * 5) update the entity reference's position by using vectorChangeOfDisplacement(biggerEntity, ...)
  */
 object GravitationLaws extends Constants:
 
   /**
    * Calculate the gravity constant between two entities
-   * @param entitySubjectMass Mass, of the entity that orbits around another one
-   * @param entityReferenceMass Mass, of the entity that has other entities that orbit around it
+   * @param smallerEntityMass Mass, of the entity that orbits around another one
+   * @param biggerEntityMass Mass, of the entity that has other entities that orbit around it
    * @return Double, the gravity constant between two entities
    */
-  def entitiesGravitationalConstant(entitySubjectMass: Mass, entityReferenceMass: Mass): Double =
-    gravityConstant * entitySubjectMass * entityReferenceMass
+  def entitiesGravitationalConstant(smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
+    gravityConstant * smallerEntityMass * biggerEntityMass
 
   /**
    * Calculate the distance between two entities
-   * @param entitySubject PhysicalEntity, is the entity that orbits around another one
-   * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
+   * @param smallerEntity PhysicalEntity, is the entity that orbits around another one
+   * @param biggerEntity PhysicalEntity, is the entity that has other entities that orbit around it
    * @return Position, the distance in a bi-dimensional space
    */
-  def distanceBetweenTwoEntities(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Position =
-    Pair(entitySubject.position.x - entityReference.position.x, entitySubject.position.y - entityReference.position.y)
+  def distanceBetweenTwoEntities(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Position =
+    Pair(smallerEntity.position.x - biggerEntity.position.x, smallerEntity.position.y - biggerEntity.position.y)
 
   /**
    * Calculate the module of a Position (type) that represent the distance between two entities
@@ -75,14 +74,14 @@ object GravitationLaws extends Constants:
 
   /**
    * Calculate the gravity force put on entity subject direction
-   * @param entitySubject PhysicalEntity, is the entity that orbits around another one
-   * @param entityReference PhysicalEntity, is the entity that has other entities that orbit around it
+   * @param smallerEntity PhysicalEntity, is the entity that orbits around another one
+   * @param biggerEntity PhysicalEntity, is the entity that has other entities that orbit around it
    * @return a vector that represent the gravitational force of the entity subject in a bi-dimensional space
    */
-  def gravitationalForceOnEntity(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): GravityForceVector =
-    val distance = distanceBetweenTwoEntities(entitySubject, entityReference)
+  def gravitationalForceOnEntity(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): GravityForceVector =
+    val distance = distanceBetweenTwoEntities(smallerEntity, biggerEntity)
     val mod = moduleOfDistance(distance)
-    val gravConstEntitySubj = entitiesGravitationalConstant(entitySubject.mass, entityReference.mass)
+    val gravConstEntitySubj = entitiesGravitationalConstant(smallerEntity.mass, biggerEntity.mass)
     Pair(- gravConstEntitySubj * distance.x / mod, - gravConstEntitySubj * distance.y / mod)
 
   /**
@@ -125,40 +124,61 @@ object GravitationLaws extends Constants:
 
   /**
    * Calculate the new speed vector of the entity reference
-   * @param entityReference PhysicalEntity, the entity around which other entities orbit
+   * @param biggerEntity PhysicalEntity, the entity around which other entities orbit
    * @param entities Set[PhysicalEntity], set of the entities that orbits around the entity reference
    * @param deltaTime Double, time passed
    * @return the new speed vector of the entity reference
    */
-  def entityReferenceSpeedVectorAfterTime[A <: PhysicalEntity](entityReference: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
-    val speedVector = calculateEntityReferenceSpeedVector(entityReference, entities, deltaTime)
-    Pair(entityReference.speedVector.x + speedVector.x , entityReference.speedVector.y + speedVector.y)
+  def biggerEntitySpeedVectorAfterTime[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
+    val speedVector = calculatebiggerEntitySpeedVector(biggerEntity, entities, deltaTime)
+    Pair(biggerEntity.speedVector.x + speedVector.x , biggerEntity.speedVector.y + speedVector.y)
 
   /**
    * Summary of the forces of the other entities that affect the entity reference's speed
-   * @param entityReference PhysicalEntity, the entity around which other entities orbit
+   * @param biggerEntity PhysicalEntity, the entity around which other entities orbit
    * @param entities Set[PhysicalEntity], set of the entities that orbits around the entity reference
    * @param deltaTime Double, time passed
    * @return SpeedVector
    */
-  def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](entityReference: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
-    Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / entityReference.mass,
-          - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / entityReference.mass)
+  def calculatebiggerEntitySpeedVector[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
+    Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / biggerEntity.mass,
+          - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / biggerEntity.mass)
 
   /**
-   *
-   * @param gravityForceVector
+   * Calculate the magnitude of a vector
+   * @param vector
    * @return
    */
-  def calculateMagnitude(gravityForceVector: GravityForceVector): Double =
-    sqrt(pow(gravityForceVector.x, 2) + pow(gravityForceVector.y, 2))
+  def calculateMagnitude(vector: Pair[Double, Double]): Double =
+    sqrt(pow(vector.x, 2) + pow(vector.y, 2))
 
   /**
-   *
-   * @param entitySubject
-   * @param entityReference
+   * Calculate the sphere of influence of an entity
+   * @param smallerEntity
+   * @param biggerEntity
    * @return
    */
-  def calculateSphereOfInfluence(entitySubject: PhysicalEntity, entityReference: PhysicalEntity): Double =
-    val distance = distanceBetweenTwoEntities(entitySubject, entityReference)
-    calculateMagnitude(distance) * pow(entitySubject.mass / entityReference.mass, 2/5)
+  def calculateSphereOfInfluence(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Double =
+    val distance = distanceBetweenTwoEntities(smallerEntity, biggerEntity)
+    calculateMagnitude(distance) * pow(smallerEntity.mass, 0.4)
+
+  /**
+   * Calculate the radius of the sphere of influence with eccentricity of the orbit
+   * @param semiMayorAxis
+   * @param eccentricity
+   * @param smallerEntityMass
+   * @param biggerEntityMass
+   * @return
+   */
+  def radiusSphereOfInfluenceWithEccentricity(semiMayorAxis: Double, eccentricity: Double, smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
+    semiMayorAxis * (1 - eccentricity) * cbrt(smallerEntityMass / (biggerEntityMass * 3))
+
+  /**
+   * Calculate the radius of the sphere of influence without eccentricity of the orbit, means that the orbit it's circolar
+   * @param semiMayorAxis
+   * @param smallerEntityMass
+   * @param biggerEntityMass
+   * @return
+   */
+  def radiusSphereOfInfluence(semiMayorAxis: Double, smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
+    semiMayorAxis * cbrt(smallerEntityMass / (biggerEntityMass * 3))
