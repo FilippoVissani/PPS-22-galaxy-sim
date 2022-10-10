@@ -32,12 +32,11 @@ trait Logger:
    */
   def logCollision(entity1: CelestialBody, entity2: CelestialBody): Unit
 
-//todo take the path of the file in the apply
 object Logger:
 
-  def apply(): Logger = LoggerImpl()
+  def apply(pathName: String): Logger = LoggerImpl(pathName)
 
-  private class LoggerImpl extends Logger:
+  private class LoggerImpl(pathName: String) extends Logger:
 
     override def logSimulationStarted(): Unit =
       log("SIMULATION STARTED " + dateTime())
@@ -56,7 +55,7 @@ object Logger:
       LocalDateTime.now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
 
     private def log(text: String): Unit =
-      val out = new PrintWriter(new FileOutputStream(new File("simulation.log"), true))
+      val out = new PrintWriter(new FileOutputStream(new File(pathName), true))
       out.println(text)
       println(text)
       out.close()
