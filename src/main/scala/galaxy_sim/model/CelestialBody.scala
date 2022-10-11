@@ -2,9 +2,8 @@ package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBodyAliases.{Radius, Temperature}
 import galaxy_sim.prolog.EntityIdentifierProlog
+import physics.collisions.rigidbody.RigidBody.CircularEntity
 import physics.{GravityForceVector, Mass, Position, Speed, SpeedVector}
-import physics.collisions.CollisionDetection.Colliders.CircleCollider
-import physics.collisions.CollisionEngine.RigidBody
 
 object CelestialBodyAliases:
   type Temperature = Double
@@ -18,10 +17,7 @@ case class CelestialBody(override val mass: Mass,
                          name: String,
                          birthTime: Double = 0,
                          radius: Radius,
-                         temperature: Temperature) extends RigidBody[CircleCollider]:
-
-  override def collider: CircleCollider = CircleCollider(position, radius)
-
+                         temperature: Temperature) extends CircularEntity:
   def typeOf: CelestialBodyType = EntityIdentifierProlog().checkEntityType(mass, temperature)
 
 enum CelestialBodyType:
