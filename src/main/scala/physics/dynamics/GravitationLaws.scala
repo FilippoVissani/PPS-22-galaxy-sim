@@ -70,7 +70,8 @@ object GravitationLaws extends Constants:
    * @return Double
    */
   def moduleOfDistance(pos: Position): Double =
-   pow(pow(pos.x, 2) + pow(pos.y, 2), moduleConstant)
+    pow(pow(pos.x, 2) + pow(pos.y, 2), moduleConstant)
+//    sqrt(pow(pos.x, 2) + pow(pos.y, 2))
 
   /**
    * Calculate the gravity force put on entity subject direction
@@ -83,6 +84,11 @@ object GravitationLaws extends Constants:
     val mod = moduleOfDistance(distance)
     val gravConstEntitySubj = entitiesGravitationalConstant(smallerEntity.mass, biggerEntity.mass)
     Pair(- gravConstEntitySubj * distance.x / mod, - gravConstEntitySubj * distance.y / mod)
+    /*val rx = smallerEntity.position.x - biggerEntity.position.x
+    val ry = smallerEntity.position.y - biggerEntity.position.y
+    val Fx = ((gravityConstant * smallerEntity.mass * biggerEntity.mass) / pow(mod, 3)) * rx
+    val Fy = ((gravityConstant * smallerEntity.mass * biggerEntity.mass) / pow(mod, 3)) * ry
+    Pair(Fx, Fy)*/
 
   /**
    * Calculate entity's new velocity vector after some time
@@ -101,7 +107,7 @@ object GravitationLaws extends Constants:
    * @return SpeedVector, speed change after delta time
    */
   def calculateSpeedVectorAfterTime(entity: PhysicalEntity, deltaTime: Double): SpeedVector =
-    Pair(entity.gForceVector.x * deltaTime / entity.mass, entity.gForceVector.y * deltaTime / entity.mass)
+    Pair((entity.gForceVector.x * deltaTime) / entity.mass, (entity.gForceVector.y * deltaTime) / entity.mass)
 
   /**
    * Calculate entity's new position after some time
@@ -182,3 +188,13 @@ object GravitationLaws extends Constants:
    */
   def radiusSphereOfInfluence(semiMayorAxis: Double, smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
     semiMayorAxis * cbrt(smallerEntityMass / (biggerEntityMass * 3))
+
+  def newGravityForce(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Double =
+    val distance = Pair(smallerEntity.position.x - biggerEntity.position.x, smallerEntity.position.y - biggerEntity.position.y)
+    val magnDist = calculateMagnitude(distance).abs
+    val r2 = calculateMagnitude(smallerEntity.position)
+    val r1 = calculateMagnitude(biggerEntity.position)
+    val rcap = (r2 - r1) / (r2 - r1).abs
+    val F = - gravityConstant * ((smallerEntity.mass * biggerEntity.mass) / magnDist) * rcap
+    F
+
