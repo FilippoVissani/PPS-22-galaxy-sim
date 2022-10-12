@@ -19,13 +19,9 @@ object RootActor:
 
   def apply(): Behavior[RootActorCommand] =
     Behaviors.setup[RootActorCommand](ctx =>
-      var count = 0
-      val celestialBodies = Set(blackHole) ++ groupOFInterstellarClouds(1000)
-      val celestialBodyActors = celestialBodies.map(x => {
-        count = count + 1
-        ctx.spawn(CelestialBodyActor(x, bounds, deltaTime), s"celestialBody$count")
-      })
-      val simulationManagerActor = ctx.spawn(SimulationManagerActor(celestialBodyActors, Simulation(celestialBodies = celestialBodies, bounds, 0, 1000)), "simulationManager")
+      val celestialBodies = Set(sun, earth, moon, blackHole)
+      val celestialBodyActors = celestialBodies.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, bounds, deltaTime)))
+      val simulationManagerActor = ctx.spawn(SimulationManagerActor(celestialBodyActors, Simulation(celestialBodies = celestialBodies, bounds, 0, deltaTime)), "simulationManager")
       val controllerActor = ctx.spawn(ControllerActor(Option.empty, simulationManagerActor), "controller")
       val viewActor = ctx.spawn(ViewActor(controllerActor), "view")
       controllerActor ! SetView(viewActor)

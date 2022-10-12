@@ -9,6 +9,8 @@ import physics.dynamics.GravitationLaws.*
 import galaxy_sim.model.SimulationConfig.*
 import akka.actor.typed.ActorRef
 import galaxy_sim.actors.SimulationManagerActor.*
+import galaxy_sim.model.EntityReferenceDetector.*
+import galaxy_sim.model.EntityReferenceDetectors.given
 
 object CelestialBodyActor:
   sealed trait CelestialBodyActorCommand
@@ -25,8 +27,11 @@ object CelestialBodyActor:
           Behaviors.same
         }
         case MoveToNextPosition(celestialBodies: Set[CelestialBody], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          //ctx.log.debug("Received AskMoveToNextPosition")
-          val newCelestialBody = if celestialBody.name.contains("Cloud") then celestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, blackHole), speedVector = speedVectorAfterTime(celestialBody, deltaTime), position = vectorChangeOfDisplacement(celestialBody, deltaTime)) else celestialBody
+          val ref = getReference(celestialBody, celestialBodies.filter(x => x != celestialBody))
+          var newCelestialBody = celestialBody.copy()
+          newCelestialBody = newCelestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, ref))
+          newCelestialBody = newCelestialBody.copy(speedVector = speedVectorAfterTime(newCelestialBody, deltaTime))
+          newCelestialBody = newCelestialBody.copy(position = vectorChangeOfDisplacement(newCelestialBody, deltaTime))
           replyTo ! CelestialBodyState(newCelestialBody)
           CelestialBodyActor(newCelestialBody, bounds, deltaTime)
         }
