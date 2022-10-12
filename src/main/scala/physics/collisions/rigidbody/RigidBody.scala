@@ -9,4 +9,4 @@ object RigidBody:
     
   trait CircularEntity extends RigidBody:
     def radius: Double
-    override def collisionBox: CollisionBox = CircleCollisionBox(position, radius)
+    override def collisionBox: CircleCollisionBox = CircleCollisionBox(position, radius)
