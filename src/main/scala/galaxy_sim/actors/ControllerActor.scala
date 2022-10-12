@@ -6,28 +6,25 @@ import galaxy_sim.model.CelestialBody
 import akka.actor.typed.ActorRef
 import galaxy_sim.actors.ViewActor.ViewActorCommand
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
-import galaxy_sim.actors.SimulationManagerActor.SimulationManagerActorCommand
-import galaxy_sim.actors.SimulationManagerActor.SimulationManagerActorCommand.*
-import galaxy_sim.actors.SimulationManagerActor.SimulationStateResponse
 import galaxy_sim.model.Simulation
 import galaxy_sim.view.Envelope
-import galaxy_sim.actors.ViewActor.ViewActorCommand.*
 import concurrent.duration.DurationInt
 import scala.util.Failure
 import scala.util.Success
 import akka.pattern.StatusReply
 import akka.util.Timeout
+import galaxy_sim.actors.SimulationManagerActor.*
+import galaxy_sim.actors.ViewActor.*
 
 object ControllerActor:
+  val frameRate = 500
 
-  enum ControllerActorCommand:
-    case Start
-    case Stop
-    case SetView(viewActor: ActorRef[ViewActorCommand])
-    case SimulationStateAdaptedResponse(simulation: Option[Simulation])
-    case Tick
-
-  export ControllerActorCommand.*
+  sealed trait ControllerActorCommand
+  case object Start extends ControllerActorCommand
+  case object Stop extends ControllerActorCommand
+  case class SetView(viewActor: ActorRef[ViewActorCommand]) extends ControllerActorCommand
+  case class SimulationStateAdaptedResponse(simulation: Option[Simulation]) extends ControllerActorCommand
+  case object Tick extends ControllerActorCommand
 
   def apply(
     viewActor: Option[ActorRef[ViewActorCommand]],
@@ -38,8 +35,8 @@ object ControllerActor:
           Behaviors.receiveMessage[ControllerActorCommand](msg => msg match
             case Start => {
               ctx.log.debug("Received Start")
-              simulationManagerActor ! StartIteration
-              timers.startTimerAtFixedRate(Tick, 33.milliseconds)
+              simulationManagerActor ! StartSimulation
+              timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               Behaviors.same
             }
             case Stop => {

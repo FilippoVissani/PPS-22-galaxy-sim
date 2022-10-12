@@ -3,8 +3,9 @@ package galaxy_sim.view
 import galaxy_sim.model.CelestialBody
 import akka.actor.typed.ActorRef
 import galaxy_sim.actors.ViewActor.ViewActorCommand
-import galaxy_sim.actors.ViewActor.ViewActorCommand.*
 import galaxy_sim.model.Boundary
+import galaxy_sim.actors.ViewActor.StartPressed
+import galaxy_sim.actors.ViewActor.StopPressed
 
 trait View:
   def display(envelope: Envelope): Unit

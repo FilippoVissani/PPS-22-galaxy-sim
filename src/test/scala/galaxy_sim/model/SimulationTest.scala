@@ -5,7 +5,7 @@ import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.must.Matchers.compile
 import org.scalatest.matchers.should.Matchers.should
 
-class SimulationTest  extends AnyFunSuite:
+class SimulationTest extends AnyFunSuite:
   test("Simulation correctly defines constructors"){
-    "Simulation(celestialBodies = Set(blackHole), bounds = bounds)" should compile
+    "Simulation(celestialBodies = Set(blackHole), bounds = bounds, deltaTime = 1000)" should compile
   }
