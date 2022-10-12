@@ -6,42 +6,46 @@ import physics.SpeedVector
 import physics.dynamics.GravitationLaws.*
 
 object SimulationConfig:
-  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
-  val blackHoleDistance = lightYear
-  val deltaTime = 1000d
+  val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
+//  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
+  val blackHoleDistance = astronomicUnit * 5
+  val deltaTime = 10d
 
   val moon: CelestialBody =
     CelestialBody(mass = earthMass * 0.0123,
     aphelionSpeed = 3683,
     gForceVector = Pair(0,0),
-    speedVector = Pair(0, 10),
-    position = Pair(blackHoleDistance + astronomicUnit * 1.0167 + 384400, 0),
+    speedVector = Pair(0, 3683),
+    position = Pair(astronomicUnit * 1.0167 + 384400, 0),
     name = "Moon",
     radius = 5,
     temperature = 110)
+//    position = Pair(blackHoleDistance + astronomicUnit * 1.0167 + 384400, 0),
 
   val sun: CelestialBody =
     CelestialBody(mass = solarMass,
       aphelionSpeed = 0,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 50000),
-      position = Pair(blackHoleDistance, 0),
+      position = Pair(0, 0),
       name = "Sun",
-      radius = 30,
+      radius = 20,
       temperature = 1100)
+//      position = Pair(blackHoleDistance, 0),
 
   val earth: CelestialBody =
     CelestialBody(mass = earthMass,
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 29290),
-      position = Pair(blackHoleDistance + astronomicUnit * 1.0167, 0),
+      position = Pair(astronomicUnit * 1.0167, 0),
       name = "Earth",
       radius = 10,
       temperature = 150)
+//      position = Pair(blackHoleDistance + astronomicUnit * 1.0167, 0),
 
   val blackHole: CelestialBody =
-    CelestialBody(mass = solarMass * 4,
+    CelestialBody(mass = solarMass * 5,
       aphelionSpeed = 0,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 0),

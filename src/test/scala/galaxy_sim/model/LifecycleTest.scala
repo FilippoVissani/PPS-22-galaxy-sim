@@ -8,7 +8,7 @@ import org.scalatest.matchers.should
 
 class LifecycleTest extends AnyFlatSpec with should.Matchers:
 
-  val lifecycleRules: LifecycleRules = LifecycleRules()
+  val lifecycleRules = LifecycleRules
   val entityIdentifierProlog: EntityIdentifierProlog = EntityIdentifierProlog()
 
   "entity with mass 10 and temperature 1010" should "be a 'Massive Star'" in {
@@ -23,5 +23,5 @@ class LifecycleTest extends AnyFlatSpec with should.Matchers:
 
   "'Black Hole'" should "increase his mass by 1 after a Step" in {
     val celestialBody = SimulationConfig.blackHole
-    lifecycleRules.entityOneStep(celestialBody).mass shouldBe SimulationConfig.blackHole.mass + 1
+    lifecycleRules.entityOneStep(celestialBody).mass shouldBe SimulationConfig.blackHole.mass * 1.1
   }

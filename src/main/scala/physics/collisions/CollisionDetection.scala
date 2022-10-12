@@ -1,31 +1,29 @@
 package physics.collisions
 
 import physics.{Pair, Position}
-import physics.collisions.CollisionDetection.Colliders.{CircleCollider, Collider}
+import physics.collisions.CollisionDetection.CollisionBoxes.{CircleCollisionBox, CollisionBox, RectangleCollisionBox}
 import physics.dynamics.PhysicalEntity
 
 object CollisionDetection:
-  object Colliders:
-    trait Collider
-    case class CircleCollider(origin: Position, radius: Double) extends Collider
-    case class RectangleCollider(topLeft: Position, height: Double, width: Double) extends Collider
 
-  import Colliders.*
+  trait CollisionChecker[A, B]:
+    def check(a: A, b: B): Boolean
+  object CollisionBoxes:
+    trait CollisionBox
+    case class CircleCollisionBox(origin: Position, radius: Double) extends CollisionBox
+    case class RectangleCollisionBox(topLeft: Position, height: Double, width: Double) extends CollisionBox
 
-  trait CollisionDetector[A <: Collider, B<: Collider]:
-    def detect(c1: A, c2: B): Boolean
-
-  object CollisionDetectors:
-    given CircleToCircleDetector: CollisionDetector[CircleCollider, CircleCollider] with
-      override def detect(c1: CircleCollider, c2: CircleCollider): Boolean =
+  object CollisionCheckers:
+    given CircleToCircleChecker: CollisionChecker[CircleCollisionBox, CircleCollisionBox] with
+      override def check(c1: CircleCollisionBox, c2: CircleCollisionBox): Boolean =
         val dx = c1.origin.x - c2.origin.x
         val dy = c1.origin.y - c2.origin.y
-        val dist = Math.sqrt(dx*dx + dy*dy)
+        val dist = Math.sqrt(dx * dx + dy * dy)
         dist < c1.radius + c2.radius
 
-    given RectangleToRectangleDetector: CollisionDetector[RectangleCollider, RectangleCollider] with
-      override def detect(c1: RectangleCollider, c2: RectangleCollider): Boolean =
-        ! (c1.topLeft.x > c2.topLeft.x + c2.width ||
+    given RectangleToRectangleChecker: CollisionChecker[RectangleCollisionBox, RectangleCollisionBox] with
+      override def check(c1: RectangleCollisionBox, c2: RectangleCollisionBox): Boolean =
+        !(c1.topLeft.x > c2.topLeft.x + c2.width ||
           c1.topLeft.x + c1.width < c2.topLeft.x ||
           c1.topLeft.y > c2.topLeft.y + c2.height ||
           c1.height + c1.topLeft.y < c2.topLeft.y)
