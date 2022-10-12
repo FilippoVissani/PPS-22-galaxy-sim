@@ -9,22 +9,38 @@ object CelestialBodyAliases:
   type Temperature = Double
   type Radius = Double
 
-case class CelestialBody(override val mass: Mass,
-                         override val aphelionSpeed: Speed,
-                         override val gForceVector: GravityForceVector,
-                         override val speedVector: SpeedVector,
-                         override val position: Position,
-                         name: String,
-                         birthTime: Double = 0,
-                         radius: Radius,
-                         temperature: Temperature) extends CircularEntity:
-  def typeOf: CelestialBodyType = EntityIdentifierProlog().checkEntityType(mass, temperature)
+trait CelestialBody[A <: CelestialBodyType] extends CircularEntity:
+  def name: String
+  def birthTime: Double = 0
+  def radius: Radius
+  def temperature: Temperature
 
-enum CelestialBodyType:
-  case MassiveStar
-  case RedSuperGiant
-  case Supernova
-  case BlackHole
-  case Planet
-  case Asteroid
-  case InterstellarCloud
+object CelestialBody:
+  def apply[A <: CelestialBodyType](
+    mass: Mass,
+    aphelionSpeed: Speed,
+    gForceVector: GravityForceVector,
+    speedVector: SpeedVector,
+    position: Position,
+    name: String,
+    birthTime: Double = 0,
+    radius: Radius,
+    temperature: Temperature): CelestialBody[A] = CelestialBodyImpl(mass, aphelionSpeed, gForceVector, speedVector, position, name, birthTime, radius, temperature)
+  private case class CelestialBodyImpl[A <: CelestialBodyType](
+    override val mass: Mass,
+    override val aphelionSpeed: Speed, override val gForceVector: GravityForceVector,
+    override val speedVector: SpeedVector,
+    override val position: Position,
+    override val name: String,
+    override val birthTime: Double,
+    override val radius: Radius,
+    override val temperature: Temperature) extends CelestialBody[A]
+
+sealed trait CelestialBodyType
+case object MassiveStar extends CelestialBodyType 
+case object RedSuperGiant extends CelestialBodyType 
+case object Supernova extends CelestialBodyType 
+case object BlackHole extends CelestialBodyType 
+case object Planet extends CelestialBodyType 
+case object Asteroid extends CelestialBodyType 
+case object InterstellarCloud extends CelestialBodyType 
