@@ -12,8 +12,9 @@ import galaxy_sim.actors.ViewActor
 import galaxy_sim.actors.SimulationManagerActor
 import galaxy_sim.model.Simulation
 import galaxy_sim.model.CelestialBody
-import galaxy_sim.model.*
 import akka.actor.ActorRef
+import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.model.CelestialBodyType.*
 
 object Main extends App:
   ActorSystem(RootActor(), "root")

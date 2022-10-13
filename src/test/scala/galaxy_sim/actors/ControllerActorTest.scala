@@ -16,11 +16,12 @@ import galaxy_sim.actors.ControllerActor.Tick
 import galaxy_sim.actors.SimulationManagerActor.AskSimulationState
 import akka.util.Timeout
 import concurrent.duration.DurationInt
+import galaxy_sim.model.CelestialBodyType.*
 
 class ControllerActorTest extends AnyFunSuite:
   test("Start"){
-    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, bounds, deltaTime))
-    val simulationManager = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(celestialBodies = Set(sun), bounds, 0, deltaTime)))
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val simulationManager = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
     val testKit = BehaviorTestKit(ControllerActor(Option.empty, simulationManager.ref))
     testKit.run(Start)
     simulationManager.selfInbox().expectMessage(StartSimulation)
@@ -31,12 +32,12 @@ class ControllerActorTest extends AnyFunSuite:
   }
 
   test("SimulationStateAdaptedResponse"){
-    val simulation = Simulation(celestialBodies = Set(sun), bounds, 0, deltaTime)
-    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, bounds, deltaTime))
-    val simulationManager = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), simulation))
+    val simulation = Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val simulationManager = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), simulation))
     val testKit = BehaviorTestKit(ControllerActor(Option.empty, simulationManager.ref))
     val inbox = TestInbox[ViewActorCommand]()
     testKit.run(SetView(inbox.ref))
     testKit.run(SimulationStateAdaptedResponse(Option(simulation)))
-    inbox.expectMessage(Display(Envelope(simulation.celestialBodies, simulation.bounds, simulation.virtualTime)))
+    inbox.expectMessage(Display(simulation))
   }
