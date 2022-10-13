@@ -20,11 +20,11 @@ case class CelestialBody(override val mass: Mass,
                          temperature: Temperature) extends CircularEntity:
   def typeOf: CelestialBodyType = EntityIdentifierProlog().checkEntityType(mass, temperature)
 
-sealed trait CelestialBodyType
-case object MassiveStar extends CelestialBodyType
-case object RedSuperGiant extends CelestialBodyType
-case object Supernova extends CelestialBodyType
-case object BlackHole extends CelestialBodyType
-case object Planet extends CelestialBodyType
-case object Asteroid extends CelestialBodyType
-case object InterstellarCloud extends CelestialBodyType
+enum CelestialBodyType:
+  case MassiveStar
+  case RedSuperGiant
+  case Supernova
+  case BlackHole
+  case Planet
+  case Asteroid
+  case InterstellarCloud
