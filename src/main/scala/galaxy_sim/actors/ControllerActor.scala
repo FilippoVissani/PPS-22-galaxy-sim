@@ -7,7 +7,6 @@ import akka.actor.typed.ActorRef
 import galaxy_sim.actors.ViewActor.ViewActorCommand
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.model.Simulation
-import galaxy_sim.view.Envelope
 import concurrent.duration.DurationInt
 import scala.util.Failure
 import scala.util.Success
@@ -51,7 +50,7 @@ object ControllerActor:
             case SimulationStateAdaptedResponse(simulation: Option[Simulation]) => {
               ctx.log.debug("Received SimulationStateAdaptedResponse")
               if viewActor.isDefined && simulation.isDefined then
-                viewActor.get ! Display(Envelope(simulation.get.celestialBodies, simulation.get.bounds, simulation.get.virtualTime))
+                viewActor.get ! Display(simulation.get)
               Behaviors.same
             }
             case Tick => {
