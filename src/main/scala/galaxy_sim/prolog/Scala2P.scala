@@ -17,13 +17,18 @@ object Scala2P:
     case "asteroid" => Asteroid
     case "interstellarCloud" => InterstellarCloud
 
+  /**
+   * Extracts a Term
+   * @param solveInfo The solve info
+   * @param s The term to extract
+   * @return The extracted term
+   */
   def extractTerm(solveInfo: SolveInfo, s: String): Term =
     solveInfo.getTerm(s)
 
   def mkPrologEngine(theory: Theory): Term => LazyList[SolveInfo] =
     val engine = Prolog()
     engine.setTheory(theory)
-
     goal => new Iterable[SolveInfo] {
         override def iterator: Iterator[SolveInfo] = new Iterator[SolveInfo] {
           var solution: Option[SolveInfo] = Some(engine.solve(goal))

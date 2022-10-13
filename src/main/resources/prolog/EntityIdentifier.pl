@@ -10,6 +10,9 @@ the temperature defines if the entity is a Star, Planet, Asteroid or Interstella
 the mass defines the type of the Star.
 */
 
+/*
+entity types:
+
 massiveStar.
 redSuperGiant.
 supernova.
@@ -17,6 +20,7 @@ blackHole.
 planet.
 asteroid.
 interstellarCloud.
+*/
 
 typeOfStar(Mass, blackHole) :- Mass > 10**40, !.
 typeOfStar(Mass, supernova) :- Mass > 10**20, !.
