@@ -6,9 +6,10 @@ import galaxy_sim.actors.ViewActor.ViewActorCommand
 import galaxy_sim.model.Boundary
 import galaxy_sim.actors.ViewActor.StartPressed
 import galaxy_sim.actors.ViewActor.StopPressed
+import galaxy_sim.model.Simulation
 
 trait View:
-  def display(envelope: Envelope): Unit
+  def display(simulation: Simulation): Unit
   def start(): Unit
   def stop(): Unit
 
@@ -19,8 +20,8 @@ object View:
   private class ViewImpl(viewActor: ActorRef[ViewActorCommand], windowWidth: Int, windowHeight: Int) extends View:
     val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight)
 
-    override def display(envelope: Envelope): Unit =
-      gui.display(envelope)
+    override def display(simulation: Simulation): Unit =
+      gui.display(simulation)
 
     override def start(): Unit = viewActor ! StartPressed
 

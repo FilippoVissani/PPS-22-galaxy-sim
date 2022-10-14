@@ -8,13 +8,13 @@ import akka.actor.typed.scaladsl.Behaviors
 import galaxy_sim.view.SwingGUI
 import galaxy_sim.view.View
 import galaxy_sim.model.Boundary
-import galaxy_sim.view.Envelope
 import galaxy_sim.actors.ControllerActor.*
+import galaxy_sim.model.Simulation
 
 object ViewActor:
 
   sealed trait ViewActorCommand
-  case class Display(envelope: Envelope) extends ViewActorCommand
+  case class Display(simulation: Simulation) extends ViewActorCommand
   case object StartPressed extends ViewActorCommand
   case object StopPressed extends ViewActorCommand
 
@@ -24,9 +24,9 @@ object ViewActor:
       val view = View(ctx.self, 90, 90)
 
       Behaviors.receiveMessage[ViewActorCommand](msg => msg match
-        case Display(envelope: Envelope) => {
+        case Display(simulation: Simulation) => {
           ctx.log.debug("Received Display")
-          view.display(envelope)
+          view.display(simulation)
           Behaviors.same
         }
         case StartPressed => {

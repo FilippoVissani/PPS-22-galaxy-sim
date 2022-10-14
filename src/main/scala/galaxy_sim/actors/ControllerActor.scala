@@ -7,7 +7,6 @@ import akka.actor.typed.ActorRef
 import galaxy_sim.actors.ViewActor.ViewActorCommand
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.model.Simulation
-import galaxy_sim.view.Envelope
 import concurrent.duration.DurationInt
 import scala.util.Failure
 import scala.util.Success
@@ -15,6 +14,8 @@ import akka.pattern.StatusReply
 import akka.util.Timeout
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
+import akka.actor.PoisonPill
+import akka.actor.Kill
 
 object ControllerActor:
   val frameRate = 500
@@ -42,7 +43,7 @@ object ControllerActor:
             case Stop => {
               ctx.log.debug("Received Stop")
               simulationManagerActor ! StopSimulation
-              Behaviors.same
+              Behaviors.stopped
             }
             case SetView(viewActor: ActorRef[ViewActorCommand]) => {
               ctx.log.debug("Received SetView")
@@ -51,7 +52,7 @@ object ControllerActor:
             case SimulationStateAdaptedResponse(simulation: Option[Simulation]) => {
               ctx.log.debug("Received SimulationStateAdaptedResponse")
               if viewActor.isDefined && simulation.isDefined then
-                viewActor.get ! Display(Envelope(simulation.get.celestialBodies, simulation.get.bounds, simulation.get.virtualTime))
+                viewActor.get ! Display(simulation.get)
               Behaviors.same
             }
             case Tick => {

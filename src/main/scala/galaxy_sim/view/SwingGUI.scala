@@ -8,7 +8,7 @@ import java.awt.*
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 
 trait SwingGUI:
-  def display(envelope: Envelope): Unit
+  def display(simulation: Simulation): Unit
 
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
@@ -41,9 +41,9 @@ object SwingGUI:
     mainFrame.mainPanel.add(simulationPanelContainer, BorderLayout.CENTER)
     mainFrame.setVisible(true)
 
-    override def display(envelope: Envelope): Unit =
+    override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
-        simulationPanel.display(envelope)
+        simulationPanel.display(simulation)
       })
   end SwingGUIImpl
 
@@ -52,14 +52,14 @@ object SwingGUI:
     this.getContentPane.add(mainPanel)
 
   private class SimulationPanel extends JPanel:
-    var envelope: Option[Envelope] = Option.empty
+    var simulation: Option[Simulation] = Option.empty
 
-    def display(envelope: Envelope): Unit =
-      this.envelope = Option(envelope)
+    def display(simulation: Simulation): Unit =
+      this.simulation = Option(simulation)
       repaint()
 
     override def paint(g: Graphics): Unit =
-      if envelope.isDefined then
+      if simulation.isDefined then
         val g2: Graphics2D = g.asInstanceOf[Graphics2D]
         g2.setRenderingHint(
           RenderingHints.KEY_ANTIALIASING,
@@ -72,25 +72,30 @@ object SwingGUI:
         g2.setColor(java.awt.Color.BLACK)
         g2.fillRect(0, 0, this.getWidth, this.getHeight)
         g2.setColor(java.awt.Color.WHITE)
-        g2.drawString(envelope.get.virtualTime.toString, 10, 10)
-        envelope.get.celestialBodies.foreach(e =>
-          g2.fillOval(
+        g2.drawString(simulation.get.virtualTime.toString, 10, 10)
+        simulation.get.celestialBodies.foreach((k, v) =>
+          v.foreach(e =>
+            g2.fillOval(
             scaleX(e.position.x),
             scaleY(e.position.y),
             e.radius.toInt,
             e.radius.toInt
+          ))
+        )
+        simulation.get.celestialBodies.values.foreach(v =>
+          v.foreach(e => 
+            g2.drawString(e.name, scaleX(e.position.x), scaleY(e.position.y))
           )
         )
-        envelope.get.celestialBodies.foreach(e =>
-          g2.drawString(e.name, scaleX(e.position.x), scaleY(e.position.y))
-        )
         g2.setColor(java.awt.Color.BLACK)
-        envelope.get.celestialBodies.foreach(e =>
-          g2.drawOval(
+        simulation.get.celestialBodies.values.foreach(v =>
+          v.foreach(e =>
+            g2.drawOval(
             scaleX(e.position.x),
             scaleY(e.position.y),
             e.radius.toInt,
             e.radius.toInt
+            )
           )
         )
 
@@ -101,12 +106,12 @@ object SwingGUI:
       Dimension(newSize, newSize)
 
     private def scaleX(value: Double): Int =
-      val percent = value * 100 / envelope.get.bounds.rightBound
+      val percent = value * 100 / simulation.get.bounds.rightBound
       val sizeOnDisplay = percent * this.getWidth / 100
       Math.round(sizeOnDisplay + this.getWidth / 2).toInt
 
     private def scaleY(value: Double): Int =
-      val percent = value * 100 / envelope.get.bounds.bottomBound
+      val percent = value * 100 / simulation.get.bounds.bottomBound
       val sizeOnDisplay = percent * this.getHeight / 100
       Math.round(sizeOnDisplay + this.getHeight / 2).toInt
   end SimulationPanel
