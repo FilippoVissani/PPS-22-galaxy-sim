@@ -4,6 +4,7 @@ import galaxy_sim.model.CelestialBodyAliases.{Radius, Temperature}
 import galaxy_sim.prolog.EntityIdentifierProlog
 import physics.collisions.rigidbody.RigidBody.CircularEntity
 import physics.{GravityForceVector, Mass, Position, Speed, SpeedVector}
+import CelestialBodyType.*
 
 object CelestialBodyAliases:
   type Temperature = Double
@@ -28,3 +29,14 @@ enum CelestialBodyType:
   case Planet
   case Asteroid
   case InterstellarCloud
+
+def galaxyStructure[A](): Map[CelestialBodyType, Set[A]] =
+  Map(
+    MassiveStar -> Set(),
+    RedSuperGiant -> Set(),
+    Supernova -> Set(),
+    BlackHole -> Set(),
+    Planet -> Set(),
+    Asteroid -> Set(),
+    InterstellarCloud -> Set(),
+    )

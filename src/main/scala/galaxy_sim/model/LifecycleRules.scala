@@ -19,7 +19,7 @@ object LifecycleRules:
         case Planet => (celestialBody.copy(), bType)
         case Asteroid => {
           val newCelestialBody = celestialBody.copy(mass = celestialBody.mass * 1.1)
-          val newbType = EntityIdentifierProlog().checkEntityType(newCb.mass, newCb.temperature)
+          val newbType = EntityIdentifierProlog().checkEntityType(newCelestialBody.mass, newCelestialBody.temperature)
           (newCelestialBody, newbType)
         }
         case InterstellarCloud => (celestialBody.copy(), bType)

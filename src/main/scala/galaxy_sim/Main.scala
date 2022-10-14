@@ -15,6 +15,7 @@ import galaxy_sim.model.CelestialBody
 import akka.actor.ActorRef
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
+import model.galaxyStructure
 
 object Main extends App:
   ActorSystem(RootActor(), "root")
@@ -23,7 +24,7 @@ object RootActor:
 
   def apply(): Behavior[RootActorCommand] =
     Behaviors.setup[RootActorCommand](ctx =>
-      val celestialBodies: Map[CelestialBodyType, Set[CelestialBody]] = Map(
+      val celestialBodies = galaxyStructure[CelestialBody]() ++ Map(
         MassiveStar -> Set(sun),
         Planet -> Set(earth, moon),
         BlackHole -> Set(blackHole),
