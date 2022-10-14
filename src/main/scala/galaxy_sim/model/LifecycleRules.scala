@@ -12,8 +12,17 @@ object LifecycleRules:
   private val entityIdentifierProlog = EntityIdentifierProlog()
 
   trait EntityLifecycle[A]:
+    /**
+     * This method modify the properties of the entity. The modifies are based on the type.
+     * @param entity the celestial body
+     * @param bodyType the type of celestial body
+     * @return a tuple (celestialBody, bodyType) with the modified entity and the type. The type is calculated based on the new entity properties.
+     */
     def oneStep(entity: CelestialBody, bodyType: A): (CelestialBody, A)
 
+  /**
+   * This given is used to modify the properties of the entity, based on the type.
+   */
   given EntityLifecycle[CelestialBodyType] with
     override def oneStep(celestialBody: CelestialBody, bodyType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bodyType match
       case MassiveStar => (celestialBody.copy(), bodyType)
