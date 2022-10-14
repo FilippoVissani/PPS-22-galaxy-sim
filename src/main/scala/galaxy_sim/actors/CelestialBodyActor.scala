@@ -42,7 +42,7 @@ object CelestialBodyActor:
             val tmp = gravitationalForceOnEntity(celestialBody, x)
             Math.sqrt(Math.pow(tmp.x, 2) + Math.pow(tmp.y, 2))
           })
-          println((celestialBody, ref))
+          ctx.log.debug((celestialBody, ref).toString())
           var newCelestialBody = celestialBody.copy()
           newCelestialBody = newCelestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, ref))
           newCelestialBody = newCelestialBody.copy(speedVector = speedVectorAfterTime(newCelestialBody, deltaTime))
