@@ -14,6 +14,8 @@ import akka.pattern.StatusReply
 import akka.util.Timeout
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
+import akka.actor.PoisonPill
+import akka.actor.Kill
 
 object ControllerActor:
   val frameRate = 500
@@ -41,7 +43,7 @@ object ControllerActor:
             case Stop => {
               ctx.log.debug("Received Stop")
               simulationManagerActor ! StopSimulation
-              Behaviors.same
+              Behaviors.stopped
             }
             case SetView(viewActor: ActorRef[ViewActorCommand]) => {
               ctx.log.debug("Received SetView")

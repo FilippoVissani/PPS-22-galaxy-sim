@@ -14,6 +14,8 @@ import galaxy_sim.actors.CelestialBodyActor.GetCelestialBodyState
 import galaxy_sim.actors.CelestialBodyActor.MoveToNextPosition
 import galaxy_sim.actors.CelestialBodyActor.CheckCollisions
 import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.actors.CelestialBodyActor.Kill
+import akka.actor.typed.javadsl.Behaviors
 
 class SimulationManagerActorTest extends AnyFunSuite:
   test("StartSimulation"){
@@ -24,7 +26,11 @@ class SimulationManagerActorTest extends AnyFunSuite:
   }
 
   test("StopSimulation"){
-    fail()
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val testKit = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
+    testKit.run(StopSimulation)
+    celestialBody.selfInbox().expectMessage(Kill)
+    testKit.returnedBehavior shouldBe Behaviors.stopped
   }
 
   test("IterationStep"){

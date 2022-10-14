@@ -18,6 +18,7 @@ object CelestialBodyActor:
   case class GetCelestialBodyState(replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
   case class MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
   case class CheckCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
+  case object Kill extends CelestialBodyActorCommand
 
   def apply(
     celestialBody: CelestialBody,
@@ -33,8 +34,7 @@ object CelestialBodyActor:
           Behaviors.same
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          val ref = getReference(celestialBody, celestialBodies.values.flatMap(x => x).toSet.filter(x => x.name != celestialBody.name))
-          println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+(celestialBody.name, ref.name))
+          val ref = getReference(celestialBody, celestialBodies.values.flatten.toSet.filter(x => x.name != celestialBody.name))
           var newCelestialBody = celestialBody.copy()
           newCelestialBody = newCelestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, ref))
           newCelestialBody = newCelestialBody.copy(speedVector = speedVectorAfterTime(newCelestialBody, deltaTime))
@@ -46,6 +46,10 @@ object CelestialBodyActor:
           //ctx.log.debug("Received CheckCollisions")
           replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
           Behaviors.same
+        }
+        case Kill => {
+          ctx.log.debug("Kill")
+          Behaviors.stopped
         }
       )
     )

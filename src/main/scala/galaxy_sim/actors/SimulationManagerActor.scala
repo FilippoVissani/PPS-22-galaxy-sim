@@ -14,6 +14,7 @@ import akka.pattern.StatusReply
 import galaxy_sim.actors.CelestialBodyActor.*
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.galaxyStructure
+import akka.actor.PoisonPill
 
 object SimulationManagerActor:
 
@@ -42,7 +43,10 @@ object SimulationManagerActor:
             ctx.self ! IterationStep
             Behaviors.same
           }
-          case StopSimulation => Behaviors.same
+          case StopSimulation => {
+            celestialBodyActors.values.flatten.foreach(x => x ! Kill)
+            Behaviors.stopped
+          }
           case IterationStep => {
             ctx.log.debug(s"Iteration step ${iterationState.head}")
             iterationState.head match
