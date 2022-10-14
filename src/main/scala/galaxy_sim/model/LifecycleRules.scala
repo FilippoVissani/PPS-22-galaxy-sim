@@ -6,9 +6,16 @@ import galaxy_sim.prolog.EntityIdentifierProlog
 
 object LifecycleRules:
 
+  private val entityIdentifierProlog = EntityIdentifierProlog()
+
+  /*
   trait EntityLifecycle[A, B]:
     def oneStep(entity: A, bType: B): (A, B)
+*/
+  trait EntityLifecycle[A]:
+    def oneStep(entity: CelestialBody, bodyType: A): (CelestialBody, A)
 
+  /*
   given EntityLifecycle[CelestialBody, CelestialBodyType] with
     override def oneStep(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) =
       bType match
@@ -19,10 +26,28 @@ object LifecycleRules:
         case Planet => (celestialBody.copy(), bType)
         case Asteroid => {
           val newCelestialBody = celestialBody.copy(mass = celestialBody.mass * 1.1)
-          val newbType = EntityIdentifierProlog().checkEntityType(newCelestialBody.mass, newCelestialBody.temperature)
+          val newbType = entityIdentifierProlog.checkEntityType(newCelestialBody.mass, newCelestialBody.temperature)
           (newCelestialBody, newbType)
         }
         case InterstellarCloud => (celestialBody.copy(), bType)
+*/
 
-  def entityOneStep[A, B](entity: A, bType: B)(using entityLifeCycle: EntityLifecycle[A, B]): (A, B) =
+  given EntityLifecycle[CelestialBodyType] with
+    override def oneStep(celestialBody: CelestialBody, bodyType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bodyType match
+      case MassiveStar => (celestialBody.copy(), bodyType)
+      case RedSuperGiant => (celestialBody.copy(), bodyType)
+      case Supernova => (celestialBody.copy(), bodyType)
+      case BlackHole => (celestialBody.copy(), bodyType)
+      case Planet => (celestialBody.copy(), bodyType)
+      case Asteroid => {
+        val newCelestialBody = celestialBody.copy(mass = celestialBody.mass * 1.1)
+        val newbType = entityIdentifierProlog.checkEntityType(newCelestialBody.mass, newCelestialBody.temperature)
+        (newCelestialBody, newbType)
+      }
+      case InterstellarCloud => (celestialBody.copy(), bodyType)
+
+  /*def entityOneStep[A, B](entity: A, bType: B)(using entityLifeCycle: EntityLifecycle[A, B]): (A, B) =
     entityLifeCycle.oneStep(entity, bType)
+    */
+  def entityOneStep[A](entity: CelestialBody, bodyType: A)(using entityLifeCycle: EntityLifecycle[A]): (CelestialBody, A) =
+    entityLifeCycle.oneStep(entity, bodyType)
