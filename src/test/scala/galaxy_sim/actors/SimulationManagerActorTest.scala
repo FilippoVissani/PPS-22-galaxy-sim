@@ -35,14 +35,14 @@ class SimulationManagerActorTest extends AnyFunSuite:
   }
 
   test("CelestialBodyState"){
-val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
     val testKit = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
     testKit.run(CelestialBodyState(sun, MassiveStar))
     testKit.selfInbox().expectMessage(IterationStep)
   }
 
   test("AskSimulationState"){
-val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
     val testKit = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
     val inbox = TestInbox[SimulationStateResponse]()
     testKit.run(AskSimulationState(inbox.ref))

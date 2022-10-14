@@ -11,7 +11,6 @@ import galaxy_sim.actors.ViewActor.ViewActorCommand
 import akka.actor.testkit.typed.scaladsl.TestInbox
 import galaxy_sim.actors.ControllerActor.SetView
 import galaxy_sim.actors.ViewActor.Display
-import galaxy_sim.view.Envelope
 import galaxy_sim.actors.ControllerActor.Tick
 import galaxy_sim.actors.SimulationManagerActor.AskSimulationState
 import akka.util.Timeout

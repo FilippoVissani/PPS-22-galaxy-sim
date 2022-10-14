@@ -13,6 +13,7 @@ import scala.util.Success
 import akka.pattern.StatusReply
 import galaxy_sim.actors.CelestialBodyActor.*
 import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.model.galaxyStructure
 
 object SimulationManagerActor:
 
@@ -33,7 +34,7 @@ object SimulationManagerActor:
   def apply(celestialBodyActors: Map[CelestialBodyType, Set[ActorRef[CelestialBodyActorCommand]]],
             actualSimulation: Simulation,
             iterationState: Seq[IterationState] = Seq(Start, StateAsked, PositionsUpdated),
-            tmpCelestialBodies: Map[CelestialBodyType, Set[CelestialBody]] = Map()): Behavior[SimulationManagerActorCommand] =
+            tmpCelestialBodies: Map[CelestialBodyType, Set[CelestialBody]] = galaxyStructure[CelestialBody]()): Behavior[SimulationManagerActorCommand] =
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
         Behaviors.receiveMessage[SimulationManagerActorCommand](msg => msg match
           case StartSimulation => {
@@ -51,7 +52,7 @@ object SimulationManagerActor:
             SimulationManagerActor(celestialBodyActors, actualSimulation.copy(celestialBodies = tmpCelestialBodies), iterationState.tail :+ iterationState.head)
           }
           case CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) => {
-            val newCelestialBodies: Map[CelestialBodyType, Set[CelestialBody]] = tmpCelestialBodies.map((k, v) => if k == celestialBodyType then (k, v + celestialBody) else (k, v))
+            val newCelestialBodies = tmpCelestialBodies.map((k, v) => if k == celestialBodyType then (k, v + celestialBody) else (k, v))
             if newCelestialBodies.values.map(x => x.size).sum == celestialBodyActors.values.map(x => x.size).sum then ctx.self ! IterationStep
             SimulationManagerActor(celestialBodyActors, actualSimulation, iterationState, newCelestialBodies)
           }
