@@ -3,9 +3,8 @@ package galaxy_sim.prolog
 import alice.tuprolog.Theory
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.prolog.Scala2P.{*, given}
-
-type Mass = Double
-type Temperature = Double
+import physics.Mass
+import galaxy_sim.model.CelestialBodyAliases.Temperature
 
 trait EntityIdentifierProlog:
   /**
