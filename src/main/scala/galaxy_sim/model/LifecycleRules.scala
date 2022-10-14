@@ -29,16 +29,21 @@ object LifecycleRules:
       case RedSuperGiant => (celestialBody.copy(), bodyType)
       case Supernova => (celestialBody.copy(), bodyType)
       case BlackHole => (celestialBody.copy(), bodyType)
-      case Planet => (celestialBody.copy(), bodyType)
+      case Planet => {
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.1).updateTemperature(temperature => temperature * 1.1)
+        (newCelestialBody, getBodyType(newCelestialBody))
+      }
       case Asteroid => {
         val newCelestialBody = celestialBody.updateMass(mass => mass * 1.1).updateTemperature(temperature => temperature * 1.1)
-        val newBodyType = entityIdentifierProlog.checkEntityType(newCelestialBody.mass, newCelestialBody.temperature)
-        (newCelestialBody, newBodyType)
+        (newCelestialBody, getBodyType(newCelestialBody))
       }
       case InterstellarCloud => (celestialBody.copy(), bodyType)
 
   def entityOneStep[A](entity: CelestialBody, bodyType: A)(using entityLifeCycle: EntityLifecycle[A]): (CelestialBody, A) =
     entityLifeCycle.oneStep(entity, bodyType)
+
+  private def getBodyType(celestialBody: CelestialBody): CelestialBodyType =
+    entityIdentifierProlog.checkEntityType(celestialBody.mass, celestialBody.temperature)
 
 object operationsOnCelestialBody:
   extension (celestialBody: CelestialBody)
