@@ -9,7 +9,7 @@ type Temperature = Double
 
 trait EntityIdentifierProlog:
   /**
-   * 
+   * Function to check the entity type.
    * @param mass the mass of the entity
    * @param temperature the temperature of the entity
    * @return the entity type as EntityType
