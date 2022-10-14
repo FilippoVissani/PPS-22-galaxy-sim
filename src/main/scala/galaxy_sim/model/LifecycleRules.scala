@@ -11,29 +11,8 @@ object LifecycleRules:
 
   private val entityIdentifierProlog = EntityIdentifierProlog()
 
-  /*
-  trait EntityLifecycle[A, B]:
-    def oneStep(entity: A, bType: B): (A, B)
-*/
   trait EntityLifecycle[A]:
     def oneStep(entity: CelestialBody, bodyType: A): (CelestialBody, A)
-
-  /*
-  given EntityLifecycle[CelestialBody, CelestialBodyType] with
-    override def oneStep(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) =
-      bType match
-        case MassiveStar => (celestialBody.copy(), bType)
-        case RedSuperGiant => (celestialBody.copy(), bType)
-        case Supernova => (celestialBody.copy(), bType)
-        case BlackHole => (celestialBody.copy(), bType)
-        case Planet => (celestialBody.copy(), bType)
-        case Asteroid => {
-          val newCelestialBody = celestialBody.copy(mass = celestialBody.mass * 1.1)
-          val newbType = entityIdentifierProlog.checkEntityType(newCelestialBody.mass, newCelestialBody.temperature)
-          (newCelestialBody, newbType)
-        }
-        case InterstellarCloud => (celestialBody.copy(), bType)
-*/
 
   given EntityLifecycle[CelestialBodyType] with
     override def oneStep(celestialBody: CelestialBody, bodyType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bodyType match
@@ -49,9 +28,6 @@ object LifecycleRules:
       }
       case InterstellarCloud => (celestialBody.copy(), bodyType)
 
-  /*def entityOneStep[A, B](entity: A, bType: B)(using entityLifeCycle: EntityLifecycle[A, B]): (A, B) =
-    entityLifeCycle.oneStep(entity, bType)
-    */
   def entityOneStep[A](entity: CelestialBody, bodyType: A)(using entityLifeCycle: EntityLifecycle[A]): (CelestialBody, A) =
     entityLifeCycle.oneStep(entity, bodyType)
 
