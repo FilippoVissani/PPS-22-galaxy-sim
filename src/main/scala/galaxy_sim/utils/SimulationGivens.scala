@@ -9,19 +9,18 @@ import physics.collisions.rigidbody.RigidBody.CircularEntity
 
 object SimulationGivens:
 
+  /** Collision Checking */
   given CircularEntityChecker : CollisionChecker[CircularEntity, CircularEntity] with
     override def check(a: CircularEntity, b: CircularEntity): Boolean =
       CircleToCircleChecker.check(a.collisionBox, b.collisionBox)
 
-  given IncreaseMassSolver : CollisionSolver[CelestialBody, CelestialBody, CelestialBody] with
-    override def solve(a: CelestialBody, b: CelestialBody): CelestialBody =
-      val (bigger, smaller) = if a.mass > b.mass then (a, b) else (b, a)
-      bigger.copy(mass = bigger.mass + smaller.mass)
+  /** Collision Solving */
+  private def absorb(bigger: CelestialBody, smaller: CelestialBody): CelestialBody =
+    bigger.copy(mass = bigger.mass + smaller.mass / 2)
 
-  given ByTypeSolver : CollisionSolver[CelestialBody, CelestialBody, CelestialBody] with
-    override def solve(a: CelestialBody, b: CelestialBody): CelestialBody = (a.typeOf, b.typeOf) match
-      case (MassiveStar, InterstellarCloud) => IncreaseMassSolver.solve(a, b)
-      case (MassiveStar, Planet) => IncreaseMassSolver.solve(a, b)
-      case (BlackHole, MassiveStar) => IncreaseMassSolver.solve(a, b)
-      case (BlackHole, Planet) => IncreaseMassSolver.solve(a, b)
-      case (_, Planet) => b.copy(mass = b.mass / 2) 
+  private def disintegrate(smaller: CelestialBody): CelestialBody =
+    smaller.copy(mass = smaller.mass / 2)
+
+  given CelestialBodySolver: CollisionSolver[CelestialBody, CelestialBody, CelestialBody] with
+    override def solve(a: CelestialBody, b: CelestialBody): CelestialBody =
+      if a.mass >= b.mass then absorb(a, b) else disintegrate(a)
