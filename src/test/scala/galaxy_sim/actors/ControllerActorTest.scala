@@ -16,6 +16,10 @@ import galaxy_sim.actors.SimulationManagerActor.AskSimulationState
 import akka.util.Timeout
 import concurrent.duration.DurationInt
 import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.actors.SimulationManagerActor.StopSimulation
+import galaxy_sim.actors.ControllerActor.Stop
+import akka.actor.typed.javadsl.Behaviors
+import org.scalatest.matchers.should.Matchers.shouldBe
 
 class ControllerActorTest extends AnyFunSuite:
   test("Start"){
@@ -27,7 +31,12 @@ class ControllerActorTest extends AnyFunSuite:
   }
 
   test("Stop"){
-    fail()
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val simulationManager = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
+    val testKit = BehaviorTestKit(ControllerActor(Option.empty, simulationManager.ref))
+    testKit.run(Stop)
+    simulationManager.selfInbox().expectMessage(StopSimulation)
+    testKit.returnedBehavior shouldBe Behaviors.stopped
   }
 
   test("SimulationStateAdaptedResponse"){
