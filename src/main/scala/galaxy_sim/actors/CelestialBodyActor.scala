@@ -12,7 +12,6 @@ import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.utils.EntityReferenceDetector.*
 import galaxy_sim.utils.EntityReferenceDetectors.given
 import galaxy_sim.model.CelestialBodyType
-import galaxy_sim.model.MockOrbit.*
 import physics.collisions.Collider.*
 import physics.collisions.CollisionDetection.CollisionBoxes.CircleCollisionBox
 import physics.collisions.CollisionDetection.CollisionCheckers.CircleToCircleChecker
