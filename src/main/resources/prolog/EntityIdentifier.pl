@@ -3,9 +3,9 @@ Mass and Temperature defines the entity type.
 
 the temperature defines if the entity is a Star, Planet, Asteroid or InterstellarCloud:
 	1000 < Temp <= _ 		is a Star.
-	100 < Temp <= 1000 		is a Planet
-	0 	< Temp <= 100 		is an Asteroid
-		_ < Temp <= 0 		is an InterstellarCloud
+	100 < Temp <= 1000 		is a InterstellarCloud
+	0 	< Temp <= 100 		is an Planet
+		_ < Temp <= 0 		is an Asteroid
 
 the mass defines the type of the Star.
 */
