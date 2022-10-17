@@ -27,7 +27,6 @@ object RootActor:
       val galaxy = emptyGalaxy ++ Map(
         MassiveStar -> Set(sun),
         Planet -> Set(earth, moon),
-        BlackHole -> Set(blackHole),
       )
       val celestialBodyActors = galaxy
       .map((k, v) => (k, v.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, k, bounds, deltaTime)))))

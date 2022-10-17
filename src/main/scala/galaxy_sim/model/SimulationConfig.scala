@@ -18,7 +18,7 @@ object SimulationConfig:
     speedVector = Pair(0, 3683),
     position = Pair(astronomicUnit * 1.0167 + 384400, 0),
     name = "Moon",
-    radius = 5,
+    radius = 1_737.5,
     temperature = 110)
 //    position = Pair(blackHoleDistance + astronomicUnit * 1.0167 + 384400, 0),
 
@@ -29,7 +29,7 @@ object SimulationConfig:
       speedVector = Pair(0, 50000),
       position = Pair(0, 0),
       name = "Sun",
-      radius = 20,
+      radius = 695_508,
       temperature = 1100)
 //      position = Pair(blackHoleDistance, 0),
 
@@ -40,7 +40,7 @@ object SimulationConfig:
       speedVector = Pair(1, 29290),
       position = Pair(astronomicUnit * 1.0167, 0),
       name = "Earth",
-      radius = 10,
+      radius = 6_371,
       temperature = 150)
 
   val earth2: CelestialBody =

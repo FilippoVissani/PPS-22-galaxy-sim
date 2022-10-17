@@ -76,25 +76,25 @@ object SwingGUI:
         simulation.get.galaxy.foreach((k, v) =>
           v.foreach(e =>
             g2.fillOval(
-            scaleX(e.position.x),
-            scaleY(e.position.y),
-            e.radius.toInt,
-            e.radius.toInt
+            scaleXPosition(e.position.x),
+            scaleYPosition(e.position.y),
+            scaleXSize(e.radius.toInt),
+            scaleYSize(e.radius.toInt)
           ))
         )
         simulation.get.galaxy.values.foreach(v =>
           v.foreach(e => 
-            g2.drawString(e.name, scaleX(e.position.x), scaleY(e.position.y))
+            g2.drawString(e.name, scaleXPosition(e.position.x), scaleYPosition(e.position.y))
           )
         )
         g2.setColor(java.awt.Color.BLACK)
         simulation.get.galaxy.values.foreach(v =>
           v.foreach(e =>
             g2.drawOval(
-            scaleX(e.position.x),
-            scaleY(e.position.y),
-            e.radius.toInt,
-            e.radius.toInt
+            scaleXPosition(e.position.x),
+            scaleYPosition(e.position.y),
+            scaleXSize(e.radius.toInt),
+            scaleYSize(e.radius.toInt)
             )
           )
         )
@@ -105,12 +105,20 @@ object SwingGUI:
       newSize = if newSize == 0 then 100 else newSize
       Dimension(newSize, newSize)
 
-    private def scaleX(value: Double): Int =
+    private def scaleXSize(value: Double): Int =
+      val percent = value * 100 / simulation.get.bounds.rightBound
+      Math.round(percent * this.getWidth / 100).toInt
+
+    private def scaleYSize(value: Double): Int =
+      val percent = value * 100 / simulation.get.bounds.bottomBound
+      Math.round(percent * this.getHeight() / 100).toInt
+
+    private def scaleXPosition(value: Double): Int =
       val percent = value * 100 / simulation.get.bounds.rightBound
       val sizeOnDisplay = percent * this.getWidth / 100
       Math.round(sizeOnDisplay + this.getWidth / 2).toInt
 
-    private def scaleY(value: Double): Int =
+    private def scaleYPosition(value: Double): Int =
       val percent = value * 100 / simulation.get.bounds.bottomBound
       val sizeOnDisplay = percent * this.getHeight / 100
       Math.round(sizeOnDisplay + this.getHeight / 2).toInt
