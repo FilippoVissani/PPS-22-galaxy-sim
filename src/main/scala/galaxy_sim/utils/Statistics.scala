@@ -30,7 +30,7 @@ object Statistics:
    * @return a map containing the percentage of celestial bodies for each type
    */
   def percentageOfCelestialBodiesForEachType(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]]): Map[CelestialBodyType, Percentage] =
-    numberOfCelestialBodiesForEachType(celestialBodies).map(toPercentage(celestialBodies.flatMap((_,v) => v).size))
+    numberOfCelestialBodiesForEachType(celestialBodies).map(toPercentage(celestialBodies.values.flatten.size))
 
   private def toPercentage(totalBodies: Int): ((CelestialBodyType, Int)) => (CelestialBodyType, Percentage) =
     element => (element._1, (element._2 * 100.0 / totalBodies).round.toInt)
