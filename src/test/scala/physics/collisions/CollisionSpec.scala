@@ -80,4 +80,15 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       ))
       assert(result equals expectedResult)
     }
+
+    Scenario("Two entities with real world data") {
+      Given("Two planet earths")
+      val e1 = Planet(Pair(0,0), 6_371, 10000)
+      val e2 = Planet(Pair(7_567, 8_898), 6_371, 10000)
+      When("They come close enough")
+      val col = Collider(e1) >< e2
+      Then("I can see they crashed into a bigger planet")
+      println(col)
+      assert(col == Some(Planet(Pair(0.0,0.0),7008.1,15000.0)))
+    }
   }
