@@ -2,7 +2,7 @@ package galaxy_sim.model
 
 import galaxy_sim.prolog.EntityIdentifierProlog
 import galaxy_sim.model.SimulationConfig
-import galaxy_sim.model.LifecycleRules
+import galaxy_sim.model.Lifecycle
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
@@ -22,5 +22,5 @@ class LifecycleTest extends AnyFlatSpec with should.Matchers:
 
   "'Black Hole'" should "increase his mass by 1 after a Step" in {
     val celestialBody = SimulationConfig.blackHole
-    LifecycleRules.entityOneStep(celestialBody).mass shouldBe SimulationConfig.blackHole.mass * 1.1
+    Lifecycle.entityOneStep(celestialBody, CelestialBodyType.BlackHole)._1.mass shouldBe SimulationConfig.blackHole.mass * 1.1
   }
