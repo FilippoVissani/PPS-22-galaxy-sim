@@ -73,7 +73,7 @@ object SwingGUI:
         g2.fillRect(0, 0, this.getWidth, this.getHeight)
         g2.setColor(java.awt.Color.WHITE)
         g2.drawString(simulation.get.virtualTime.toString, 10, 10)
-        simulation.get.celestialBodies.foreach((k, v) =>
+        simulation.get.galaxy.foreach((k, v) =>
           v.foreach(e =>
             g2.fillOval(
             scaleX(e.position.x),
@@ -82,13 +82,13 @@ object SwingGUI:
             e.radius.toInt
           ))
         )
-        simulation.get.celestialBodies.values.foreach(v =>
+        simulation.get.galaxy.values.foreach(v =>
           v.foreach(e => 
             g2.drawString(e.name, scaleX(e.position.x), scaleY(e.position.y))
           )
         )
         g2.setColor(java.awt.Color.BLACK)
-        simulation.get.celestialBodies.values.foreach(v =>
+        simulation.get.galaxy.values.foreach(v =>
           v.foreach(e =>
             g2.drawOval(
             scaleX(e.position.x),

@@ -34,7 +34,15 @@ object CelestialBodyActor:
           Behaviors.same
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          val ref = getReference(celestialBody, celestialBodies.values.flatten.toSet.filter(x => x.name != celestialBody.name))
+          val ref = celestialBodies
+          .values
+          .flatten
+          .toSet
+          .filter(x => x.name != celestialBody.name).maxBy(x => {
+            val tmp = gravitationalForceOnEntity(celestialBody, x)
+            Math.sqrt(Math.pow(tmp.x, 2) + Math.pow(tmp.y, 2))
+          })
+          ctx.log.debug((celestialBody, ref).toString())
           var newCelestialBody = celestialBody.copy()
           newCelestialBody = newCelestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, ref))
           newCelestialBody = newCelestialBody.copy(speedVector = speedVectorAfterTime(newCelestialBody, deltaTime))

@@ -24,7 +24,7 @@ import org.scalatest.matchers.should.Matchers.shouldBe
 class ControllerActorTest extends AnyFunSuite:
   test("Start"){
     val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
-    val simulationManager = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
+    val simulationManager = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
     val testKit = BehaviorTestKit(ControllerActor(Option.empty, simulationManager.ref))
     testKit.run(Start)
     simulationManager.selfInbox().expectMessage(StartSimulation)
@@ -32,7 +32,7 @@ class ControllerActorTest extends AnyFunSuite:
 
   test("Stop"){
     val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
-    val simulationManager = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
+    val simulationManager = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
     val testKit = BehaviorTestKit(ControllerActor(Option.empty, simulationManager.ref))
     testKit.run(Stop)
     simulationManager.selfInbox().expectMessage(StopSimulation)
@@ -40,9 +40,9 @@ class ControllerActorTest extends AnyFunSuite:
   }
 
   test("SimulationStateAdaptedResponse"){
-    val simulation = Simulation(celestialBodies = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)
+    val simulation = Simulation(galaxy = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)
     val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
-    val simulationManager = BehaviorTestKit(SimulationManagerActor(Map(MassiveStar -> Set(celestialBody.ref)), simulation))
+    val simulationManager = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), simulation))
     val testKit = BehaviorTestKit(ControllerActor(Option.empty, simulationManager.ref))
     val inbox = TestInbox[ViewActorCommand]()
     testKit.run(SetView(inbox.ref))

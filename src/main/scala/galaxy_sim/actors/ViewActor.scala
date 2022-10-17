@@ -19,9 +19,10 @@ object ViewActor:
   case object StopPressed extends ViewActorCommand
 
   def apply(controllerActor: ActorRef[ControllerActorCommand]): Behavior[ViewActorCommand] =
+    val percentSize = 90
     Behaviors.setup[ViewActorCommand](ctx =>
       ctx.log.debug("View")
-      val view = View(ctx.self, 90, 90)
+      val view = View(ctx.self, percentSize, percentSize)
 
       Behaviors.receiveMessage[ViewActorCommand](msg => msg match
         case Display(simulation: Simulation) => {

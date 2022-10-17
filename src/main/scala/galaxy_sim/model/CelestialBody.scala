@@ -29,14 +29,3 @@ enum CelestialBodyType:
   case Planet
   case Asteroid
   case InterstellarCloud
-
-def galaxyStructure[A](): Map[CelestialBodyType, Set[A]] =
-  Map(
-    MassiveStar -> Set(),
-    RedSuperGiant -> Set(),
-    Supernova -> Set(),
-    BlackHole -> Set(),
-    Planet -> Set(),
-    Asteroid -> Set(),
-    InterstellarCloud -> Set(),
-    )
