@@ -9,7 +9,7 @@ object SimulationConfig:
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
 //  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
   val blackHoleDistance = astronomicUnit * 5
-  val deltaTime = 10d
+  val deltaTime = 4
 
   val moon: CelestialBody =
     CelestialBody(mass = earthMass * 0.0123,
@@ -37,8 +37,18 @@ object SimulationConfig:
     CelestialBody(mass = earthMass,
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
-      speedVector = Pair(0, 29290),
+      speedVector = Pair(1, 29290),
       position = Pair(astronomicUnit * 1.0167, 0),
+      name = "Earth",
+      radius = 10,
+      temperature = 150)
+
+  val earth2: CelestialBody =
+    CelestialBody(mass = earthMass,
+      aphelionSpeed = 29290,
+      gForceVector = Pair(0, 0),
+      speedVector = Pair(-1, 29290),
+      position = Pair(-astronomicUnit * 1.0167, 0),
       name = "Earth",
       radius = 10,
       temperature = 150)

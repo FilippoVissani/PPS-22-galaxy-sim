@@ -18,7 +18,7 @@ import akka.actor.PoisonPill
 import akka.actor.Kill
 
 object ControllerActor:
-  val frameRate = 500
+  val frameRate = 33
 
   sealed trait ControllerActorCommand
   case object Start extends ControllerActorCommand

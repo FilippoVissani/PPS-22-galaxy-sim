@@ -18,7 +18,8 @@ case class CelestialBody(override val mass: Mass,
                          name: String,
                          birthTime: Double = 0,
                          radius: Radius,
-                         temperature: Temperature) extends CircularEntity:
+                         temperature: Temperature,
+                         ) extends CircularEntity:
   def typeOf: CelestialBodyType = EntityIdentifierProlog().checkEntityType(mass, temperature)
 
 enum CelestialBodyType:

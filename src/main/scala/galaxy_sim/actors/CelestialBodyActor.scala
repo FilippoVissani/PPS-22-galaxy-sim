@@ -9,9 +9,14 @@ import physics.dynamics.GravitationLaws.*
 import galaxy_sim.model.SimulationConfig.*
 import akka.actor.typed.ActorRef
 import galaxy_sim.actors.SimulationManagerActor.*
-import galaxy_sim.model.EntityReferenceDetector.*
-import galaxy_sim.model.EntityReferenceDetectors.given
+import galaxy_sim.utils.EntityReferenceDetector.*
+import galaxy_sim.utils.EntityReferenceDetectors.given
 import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.model.MockOrbit.*
+import physics.collisions.Collider.*
+import physics.collisions.CollisionDetection.CollisionBoxes.CircleCollisionBox
+import physics.collisions.CollisionDetection.CollisionCheckers.CircleToCircleChecker
+import galaxy_sim.utils.SimulationGivens.given
 
 object CelestialBodyActor:
   sealed trait CelestialBodyActorCommand
@@ -34,26 +39,30 @@ object CelestialBodyActor:
           Behaviors.same
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          val ref = celestialBodies
-          .values
-          .flatten
-          .toSet
-          .filter(x => x.name != celestialBody.name).maxBy(x => {
-            val tmp = gravitationalForceOnEntity(celestialBody, x)
-            Math.sqrt(Math.pow(tmp.x, 2) + Math.pow(tmp.y, 2))
-          })
-          ctx.log.debug((celestialBody, ref).toString())
+          /* val reference = computeEntityReference(celestialBody, celestialBodies.values.flatten.toSet)
+          val newCelestialBody = if reference.isEmpty then celestialBody else computeNextPosition(celestialBody, reference.get, deltaTime) */
+          val ref = getReference(celestialBody, celestialBodies.values.flatten.filter(x => x.name != celestialBody.name).toSet)
           var newCelestialBody = celestialBody.copy()
-          newCelestialBody = newCelestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, ref))
+          newCelestialBody = newCelestialBody.copy(gForceVector = gravitationalForceOnEntity(newCelestialBody, ref))
           newCelestialBody = newCelestialBody.copy(speedVector = speedVectorAfterTime(newCelestialBody, deltaTime))
           newCelestialBody = newCelestialBody.copy(position = vectorChangeOfDisplacement(newCelestialBody, deltaTime))
           replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
           CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
         }
         case CheckCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          //ctx.log.debug("Received CheckCollisions")
+/*           ctx.log.debug(celestialBodies
+          .values
+          .flatten
+          .filter(x => x != celestialBody)
+          .map(x => Collider(celestialBody) % x).toString())
+          val newCelestialBody = if celestialBodies
+          .values
+          .flatten
+          .filter(x => x != celestialBody)
+          .map(x => Collider(celestialBody) % x)
+          .count(x => x != Collider.None()) > 0 then celestialBody.copy(name = "Collided") else celestialBody */
           replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
-          Behaviors.same
+          CelestialBodyActor(celestialBody,celestialBodyType,bounds,deltaTime)
         }
         case Kill => {
           ctx.log.debug("Kill")
