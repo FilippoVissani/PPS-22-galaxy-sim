@@ -11,9 +11,9 @@ trait Constants:
   val daySec: Double = 24.0 * 60 * 60 //seconds in a day
   val deltaYear: Double = daySec * 365 //one year
   val moduleConstant: Double = 1.5
-  val astronomicUnit: Double = 1.5e11 //equals as earth-sun distance
+  val astronomicUnit: Double = 1.5e11 //meters, equals as earth-sun distance
   val lightYear: Double = 9.461e12 //63241.1 * astronomicUnit
-  val solarMass: Double = 2.0e30 //unit reference for stars and blackholes
+  val solarMass: Double = 2.0e30 //unit reference for stars and black holes
   val earthMass: Double = 5.9722e24 //unit reference for planets and little objects
 
 /**
@@ -27,7 +27,7 @@ trait PhysicalEntity:
   def gForceVector: GravityForceVector
 
 /**
- * Functions to calculate the essential gravitation laws implied in basic object's movements in space.
+ * Functions to calculate the essential gravitation laws implied in basic object's movements in 2D space.
  * Includes vector and non-vector calculations
  *
  * STEPS TO FOLLOW:
@@ -84,11 +84,6 @@ object GravitationLaws extends Constants:
     val mod = moduleOfDistance(distance)
     val gravConstEntitySubj = entitiesGravitationalConstant(smallerEntity.mass, biggerEntity.mass)
     Pair(- gravConstEntitySubj * distance.x / mod, - gravConstEntitySubj * distance.y / mod)
-    /*val rx = smallerEntity.position.x - biggerEntity.position.x
-    val ry = smallerEntity.position.y - biggerEntity.position.y
-    val Fx = ((gravityConstant * smallerEntity.mass * biggerEntity.mass) / pow(mod, 3)) * rx
-    val Fy = ((gravityConstant * smallerEntity.mass * biggerEntity.mass) / pow(mod, 3)) * ry
-    Pair(Fx, Fy)*/
 
   /**
    * Calculate entity's new velocity vector after some time
@@ -189,12 +184,11 @@ object GravitationLaws extends Constants:
   def radiusSphereOfInfluence(semiMayorAxis: Double, smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
     semiMayorAxis * cbrt(smallerEntityMass / (biggerEntityMass * 3))
 
-  def newGravityForce(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Double =
-    val distance = Pair(smallerEntity.position.x - biggerEntity.position.x, smallerEntity.position.y - biggerEntity.position.y)
-    val magnDist = calculateMagnitude(distance).abs
-    val r2 = calculateMagnitude(smallerEntity.position)
-    val r1 = calculateMagnitude(biggerEntity.position)
-    val rcap = (r2 - r1) / (r2 - r1).abs
-    val F = - gravityConstant * ((smallerEntity.mass * biggerEntity.mass) / magnDist) * rcap
-    F
-
+  /**
+   * Calculate the euclidean distance of two points in 3 dimension (x, y, z)
+   * @param pos1
+   * @param pos2
+   * @return
+   */
+  def euclideanDistance(pos1: Position, pos2: Position): Double =
+    sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2))
