@@ -10,6 +10,7 @@ object SimulationConfig:
 //  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
   val blackHoleDistance = astronomicUnit * 5
   val deltaTime = 4
+  val radiusScale = 10e3
 
   val moon: CelestialBody =
     CelestialBody(mass = earthMass * 0.0123,
@@ -18,7 +19,7 @@ object SimulationConfig:
     speedVector = Pair(0, 3683),
     position = Pair(astronomicUnit * 1.0167 + 384400, 0),
     name = "Moon",
-    radius = 1_737.5,
+    radius = 1_737.5 * radiusScale,
     temperature = 110)
 //    position = Pair(blackHoleDistance + astronomicUnit * 1.0167 + 384400, 0),
 
@@ -29,7 +30,7 @@ object SimulationConfig:
       speedVector = Pair(0, 50000),
       position = Pair(0, 0),
       name = "Sun",
-      radius = 695_508,
+      radius = 695_508 * radiusScale,
       temperature = 1100)
 //      position = Pair(blackHoleDistance, 0),
 
@@ -40,7 +41,7 @@ object SimulationConfig:
       speedVector = Pair(1, 29290),
       position = Pair(astronomicUnit * 1.0167, 0),
       name = "Earth",
-      radius = 6_371,
+      radius = 6_371 * radiusScale,
       temperature = 150)
 
   val earth2: CelestialBody =

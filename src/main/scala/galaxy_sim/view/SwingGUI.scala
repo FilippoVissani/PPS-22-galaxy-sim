@@ -78,8 +78,8 @@ object SwingGUI:
             g2.fillOval(
             scaleXPosition(e.position.x),
             scaleYPosition(e.position.y),
-            scaleXSize(e.radius.toInt),
-            scaleYSize(e.radius.toInt)
+            scaleXSize(e.radius),
+            scaleYSize(e.radius)
           ))
         )
         simulation.get.galaxy.values.foreach(v =>
@@ -93,8 +93,8 @@ object SwingGUI:
             g2.drawOval(
             scaleXPosition(e.position.x),
             scaleYPosition(e.position.y),
-            scaleXSize(e.radius.toInt),
-            scaleYSize(e.radius.toInt)
+            scaleXSize(e.radius),
+            scaleYSize(e.radius)
             )
           )
         )
