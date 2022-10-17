@@ -1,11 +1,11 @@
-package galaxy_sim.model
+package galaxy_sim.utils
 
-import galaxy_sim.model.SimulationConfig.{blackHole, bounds, earth, moon, sun}
+import galaxy_sim.model.SimulationConfig.*
+import galaxy_sim.model.CelestialBody
 import physics.*
-import physics.dynamics.PhysicalEntity
 import physics.dynamics.GravitationLaws.*
+import physics.dynamics.PhysicalEntity
 
-import javax.security.auth.Subject
 import scala.language.postfixOps
 
 trait EntityReferenceDetector:
@@ -34,13 +34,15 @@ object EntityReferenceDetectors:
       reference
 
 
-object test extends App:
-  import EntityReferenceDetector.*
-  import EntityReferenceDetectors.given
-  val entities = Set(sun, earth, moon, blackHole)
-
-  println("TRYING CHOOSE REFERENCE")
-  entities.foreach( e =>
-    val ref = getReference(e, entities)
-    println(s">>>>${e.name.toUpperCase}'s reference is ${ref.name.toUpperCase}\n")
+  /*val reference: Option[mutable.Set[CelestialBody]] = Option(mutable.Set.empty)
+  entities.filter(e => e.mass > entity.mass).foreach(e =>
+    val distance = calculateMagnitude(distanceBetweenTwoEntities(entity, e))
+    val rSOI = calculateSphereOfInfluence(entity, e)
+    if distance <= rSOI &&
+      (distance < refDistance || refDistance == 0) &&
+      (refSOI > rSOI || refSOI == 0) then
+        refSOI = rSOI
+        refDistance = distance
+        reference += e.copy()
   )
+  Option(reference.head)*/
