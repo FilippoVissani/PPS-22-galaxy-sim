@@ -41,16 +41,13 @@ object Lifecycle:
         val newCelestialBody = celestialBody.updateMass(mass => mass * 1.15).updateTemperature(temperature => temperature * 1.02)
         (newCelestialBody, bodyType(newCelestialBody))
       }
-      case Planet => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.1).updateTemperature(temperature => temperature * 1.1)
-        (newCelestialBody, bodyType(newCelestialBody))
-      }
+      case Planet => (celestialBody, bType)
       case Asteroid => {
         val newCelestialBody = celestialBody.updateMass(mass => mass * 0.98)
         (newCelestialBody, bodyType(newCelestialBody))
       }
       case InterstellarCloud => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 0.95)
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.1).updateTemperature(temperature => temperature * 1.1)
         (newCelestialBody, bodyType(newCelestialBody))
       }
 
