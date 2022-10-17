@@ -28,6 +28,6 @@ typeOfStar(Mass, redSuperGiant) :- Mass > 10**10, !.
 typeOfStar(Mass, massiveStar) :- Mass > 0, !.
 
 typeOfEntity(Temp, Mass, X) :- 1000 < Temp, typeOfStar(Mass, X), !.
-typeOfEntity(Temp, _, planet) :- 100 < Temp, !.
-typeOfEntity(Temp, _, asteroid) :- 0 < Temp, !.
-typeOfEntity(Temp, _, interstellarCloud).
+typeOfEntity(Temp, _, interstellarCloud) :- 100 < Temp, !.
+typeOfEntity(Temp, _, planet) :- 0 < Temp, !.
+typeOfEntity(Temp, _, asteroid).

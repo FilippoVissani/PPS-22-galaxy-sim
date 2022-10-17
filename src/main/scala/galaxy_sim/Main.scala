@@ -11,6 +11,11 @@ import galaxy_sim.model.SimulationConfig.*
 import galaxy_sim.actors.ViewActor
 import galaxy_sim.actors.SimulationManagerActor
 import galaxy_sim.model.Simulation
+import galaxy_sim.model.CelestialBody
+import akka.actor.ActorRef
+import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.model.CelestialBodyType.*
+import model.emptyGalaxy
 
 object Main extends App:
   ActorSystem(RootActor(), "root")
@@ -19,13 +24,17 @@ object RootActor:
 
   def apply(): Behavior[RootActorCommand] =
     Behaviors.setup[RootActorCommand](ctx =>
-      var count = 0
-      val celestialBodies = Set(blackHole) ++ groupOFInterstellarClouds(1000)
-      val celestialBodyActors = celestialBodies.map(x => {
-        count = count + 1
-        ctx.spawn(CelestialBodyActor(x, bounds, deltaTime), s"celestialBody$count")
-      })
-      val simulationManagerActor = ctx.spawn(SimulationManagerActor(celestialBodyActors, Simulation(celestialBodies = celestialBodies, bounds, 0, 1000)), "simulationManager")
+      val galaxy = emptyGalaxy ++ Map(
+        MassiveStar -> Set(sun),
+        Planet -> Set(earth, moon),
+        BlackHole -> Set(blackHole),
+      )
+      val celestialBodyActors = galaxy
+      .map((k, v) => (k, v.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, k, bounds, deltaTime)))))
+      .values
+      .flatten
+      .toSet
+      val simulationManagerActor = ctx.spawn(SimulationManagerActor(celestialBodyActors, Simulation(galaxy = galaxy, bounds, 0, deltaTime)), "simulationManager")
       val controllerActor = ctx.spawn(ControllerActor(Option.empty, simulationManagerActor), "controller")
       val viewActor = ctx.spawn(ViewActor(controllerActor), "view")
       controllerActor ! SetView(viewActor)
