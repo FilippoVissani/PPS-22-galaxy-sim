@@ -3,13 +3,12 @@ package galaxy_sim.prolog
 import alice.tuprolog.Theory
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.prolog.Scala2P.{*, given}
-
-type Mass = Double
-type Temperature = Double
+import physics.Mass
+import galaxy_sim.model.CelestialBodyAliases.Temperature
 
 trait EntityIdentifierProlog:
   /**
-   * 
+   * Function to check the entity type.
    * @param mass the mass of the entity
    * @param temperature the temperature of the entity
    * @return the entity type as EntityType

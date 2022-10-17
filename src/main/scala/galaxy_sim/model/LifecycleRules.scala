@@ -1,44 +1,51 @@
 package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.prolog.EntityIdentifierProlog
+import physics.Mass
+import galaxy_sim.model.CelestialBodyAliases.Temperature
+import operationsOnCelestialBody.{updateMass, updateTemperature}
 
 object LifecycleRules:
 
+  private val entityIdentifierProlog = EntityIdentifierProlog()
+
   trait EntityLifecycle[A]:
-    def oneStep(entity: A): A
+    /**
+     * This method modify the properties of the entity. The modifies are based on the type.
+     * @param entity the celestial body
+     * @param bodyType the type of celestial body
+     * @return a tuple (celestialBody, bodyType) with the modified entity and the type. The type is calculated based on the new entity properties.
+     */
+    def oneStep(entity: CelestialBody, bodyType: A): (CelestialBody, A)
 
-  given EntityLifecycle[CelestialBody] with
-    override def oneStep(celestialBody: CelestialBody): CelestialBody = celestialBody.typeOf match
-      case MassiveStar => celestialBody.copy()
-      case RedSuperGiant => celestialBody.copy()
-      case Supernova => celestialBody.copy()
-      case BlackHole => celestialBody.copy()
-      case Planet => celestialBody.copy()
-      case Asteroid => celestialBody.copy(mass = celestialBody.mass * 1.1)
-      case InterstellarCloud => celestialBody.copy()
+  /**
+   * This given is used to modify the properties of the entity, based on the type.
+   */
+  given EntityLifecycle[CelestialBodyType] with
+    override def oneStep(celestialBody: CelestialBody, bodyType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bodyType match
+      case MassiveStar => (celestialBody.copy(), bodyType)
+      case RedSuperGiant => (celestialBody.copy(), bodyType)
+      case Supernova => (celestialBody.copy(), bodyType)
+      case BlackHole => (celestialBody.copy(), bodyType)
+      case Planet => {
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.1).updateTemperature(temperature => temperature * 1.1)
+        (newCelestialBody, getBodyType(newCelestialBody))
+      }
+      case Asteroid => {
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.1).updateTemperature(temperature => temperature * 1.1)
+        (newCelestialBody, getBodyType(newCelestialBody))
+      }
+      case InterstellarCloud => (celestialBody.copy(), bodyType)
 
-  /*
-  given EntityLifecycle[MassiveStar] with
-    override def oneStep(entity: MassiveStar): MassiveStar = ???
+  def entityOneStep[A](entity: CelestialBody, bodyType: A)(using entityLifeCycle: EntityLifecycle[A]): (CelestialBody, A) =
+    entityLifeCycle.oneStep(entity, bodyType)
 
-  given EntityLifecycle[RedSuperGiant] with
-    override def oneStep(entity: RedSuperGiant): RedSuperGiant = ???
+  private def getBodyType(celestialBody: CelestialBody): CelestialBodyType =
+    entityIdentifierProlog.checkEntityType(celestialBody.mass, celestialBody.temperature)
 
-  given EntityLifecycle[Supernova] with
-    override def oneStep(entity: Supernova): Supernova = ???
-
-  given EntityLifecycle[BlackHole] with
-    override def oneStep(entity: BlackHole): BlackHole = ???
-
-  given EntityLifecycle[Planet] with
-    override def oneStep(entity: Planet): Planet = ???
-
-  given EntityLifecycle[Asteroid] with
-    override def oneStep(entity: Asteroid): Asteroid = ???
-
-  given EntityLifecycle[InterstellarCloud] with
-    override def oneStep(entity: InterstellarCloud): InterstellarCloud = ???
-
-  */
-
-  def entityOneStep[A](entity: A)(using entityLifeCycle: EntityLifecycle[A]): A = entityLifeCycle.oneStep(entity)
+object operationsOnCelestialBody:
+  extension (celestialBody: CelestialBody)
+    def updateMass(f: Mass => Mass): CelestialBody = celestialBody.copy(mass = f(celestialBody.mass))
+    def updateTemperature(f: Temperature => Temperature): CelestialBody = celestialBody.copy(temperature = f(celestialBody.temperature))
