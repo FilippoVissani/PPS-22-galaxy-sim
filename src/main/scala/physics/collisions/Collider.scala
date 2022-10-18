@@ -31,6 +31,9 @@ object Collider extends App:
       check(c, other)(f).map(a => g(a, other))
     def checkMany[A, B](c: Collider[A], others: B*)(using f: CollisionChecker[A, B]): Collider[A] =
       others.foldLeft(c)((acc, b) => check(acc, b)(f.check))
+    def get[A](c: Collider[A]): A = c match
+      case Some(a) => a
+      case None() => throw Exception()
 
     extension [A](c: Collider[A])
       @targetName("check")
@@ -39,3 +42,4 @@ object Collider extends App:
       @targetName("solve")
       def ><[B, C](other: B)(using col: CollisionChecker[A, B])(using sol: CollisionSolver[A, B, C]): Collider[C] =
         solve(c, other)(col.check)(sol.solve)
+      def subject(): A = get(c)
