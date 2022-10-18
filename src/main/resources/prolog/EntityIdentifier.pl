@@ -22,15 +22,12 @@ asteroid.
 interstellarCloud.
 */
 
-minMassBlackHole(10**40, blackHole).
-minMassSupernova(10**20, supernova).
-minMassRedSuperGiant(10**10, redSuperGiant).
-minMassMassiveStar(0, massiveStar).
+minMass(10**40, blackHole).
+minMass(10**20, supernova).
+minMass(10**10, redSuperGiant).
+minMass(0, massiveStar).
 
-typeOfStar(Mass, blackHole) :- minMassBlackHole(X, blackHole), Mass > X, !.
-typeOfStar(Mass, supernova) :- minMassSupernova(X, supernova), Mass > X, !.
-typeOfStar(Mass, redSuperGiant) :- minMassRedSuperGiant(X, redSuperGiant), Mass > X, !.
-typeOfStar(Mass, massiveStar) :- minMassMassiveStar(X, massiveStar), Mass > X, !.
+typeOfStar(Mass, Star) :- minMass(MinMass, Star), Mass > MinMass.
 
 typeOfEntity(Temp, Mass, X) :- 1000 < Temp, typeOfStar(Mass, X), !.
 typeOfEntity(Temp, _, interstellarCloud) :- 100 < Temp, !.
