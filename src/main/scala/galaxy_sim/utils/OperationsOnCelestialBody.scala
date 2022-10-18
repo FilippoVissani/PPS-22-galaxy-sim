@@ -9,9 +9,11 @@ object OperationsOnCelestialBody:
     /**
      * Update the mass applying the given function
      */
-    def updateMass(f: Mass => Mass): CelestialBody = celestialBody.copy(mass = f(celestialBody.mass))
+    def updateMass(f: Mass => Mass): CelestialBody = 
+      celestialBody.copy(mass = f(celestialBody.mass))
 
     /**
      * Update the temperature applying the given function
      */
-    def updateTemperature(f: Temperature => Temperature): CelestialBody = celestialBody.copy(temperature = f(celestialBody.temperature))
+    def updateTemperature(f: Temperature => Temperature): CelestialBody = 
+      celestialBody.copy(temperature = f(celestialBody.temperature))
