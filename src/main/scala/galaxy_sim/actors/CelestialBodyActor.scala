@@ -9,8 +9,8 @@ import physics.dynamics.GravitationLaws.*
 import galaxy_sim.model.SimulationConfig.*
 import akka.actor.typed.ActorRef
 import galaxy_sim.actors.SimulationManagerActor.*
-import galaxy_sim.model.EntityReferenceDetector.*
-import galaxy_sim.model.EntityReferenceDetectors.given
+import galaxy_sim.utils.EntityReferenceDetector.*
+import galaxy_sim.utils.EntityReferenceDetectors.given
 import galaxy_sim.model.CelestialBodyType
 
 object CelestialBodyActor:
