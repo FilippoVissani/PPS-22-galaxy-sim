@@ -11,10 +11,15 @@ trait EntityIdentifierProlog:
    * Function to check the entity type.
    * @param mass the mass of the entity
    * @param temperature the temperature of the entity
-   * @return the entity type as EntityType
+   * @return the entity type as CelestialBodyType
    */
   def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType
 
+  /**
+   * Get the minimum mass value for a given celestial body type
+   * @param celestialBodyType the celestial body type
+   * @return the minimum mass
+   */
   def minMassFor(celestialBodyType: CelestialBodyType): Mass
 
 object EntityIdentifierProlog:
