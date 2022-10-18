@@ -4,12 +4,17 @@ import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.prolog.EntityIdentifierProlog
 import physics.Mass
+import physics.dynamics.GravitationLaws.solarMass
 import galaxy_sim.model.CelestialBodyAliases.Temperature
-import operationsOnCelestialBody.{updateMass, updateTemperature}
+import galaxy_sim.utils.OperationsOnCelestialBody.{updateMass, updateTemperature}
+
+import scala.annotation.targetName
+import scala.util.Random
 
 object Lifecycle:
 
   private val entityIdentifierProlog = EntityIdentifierProlog()
+  private val deltaMass = 7 * 10e-14 * solarMass
 
   trait LifecycleRules[A]:
     /**
@@ -25,29 +30,17 @@ object Lifecycle:
    */
   given LifecycleRules[CelestialBodyType] with
     override def oneStep(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bType match
-      case MassiveStar => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.12).updateTemperature(temperature => temperature * 1.06)
-        (newCelestialBody, bodyType(newCelestialBody))
-      }
-      case RedSuperGiant => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.05).updateTemperature(temperature => temperature * 1.07)
-        (newCelestialBody, bodyType(newCelestialBody))
-      }
-      case Supernova => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.2).updateTemperature(temperature => temperature * 1.05)
-        (newCelestialBody, bodyType(newCelestialBody))
-      }
-      case BlackHole => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.15).updateTemperature(temperature => temperature * 1.02)
-        (newCelestialBody, bodyType(newCelestialBody))
-      }
       case Planet => (celestialBody, bType)
       case Asteroid => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 0.98)
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 0.99)
         (newCelestialBody, bodyType(newCelestialBody))
       }
       case InterstellarCloud => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.1).updateTemperature(temperature => temperature * 1.1)
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.01).updateTemperature(temperature => temperature * 1.01)
+        (newCelestialBody, bodyType(newCelestialBody))
+      }
+      case _ => {
+        val newCelestialBody = celestialBody.updateMass(mass => mass +- deltaMass)
         (newCelestialBody, bodyType(newCelestialBody))
       }
 
@@ -65,14 +58,10 @@ object Lifecycle:
   private def bodyType(celestialBody: CelestialBody): CelestialBodyType =
     entityIdentifierProlog.checkEntityType(celestialBody.mass, celestialBody.temperature)
 
-object operationsOnCelestialBody:
-  extension (celestialBody: CelestialBody)
-    /**
-     * Update the mass applying the given function
-     */
-    def updateMass(f: Mass => Mass): CelestialBody = celestialBody.copy(mass = f(celestialBody.mass))
-
-    /**
-     * Update the temperature applying the given function
-     */
-    def updateTemperature(f: Temperature => Temperature): CelestialBody = celestialBody.copy(temperature = f(celestialBody.temperature))
+  /**
+   * Extension method for Mass
+   */
+  extension (n: Mass)
+    @targetName("addOrSubtract")
+    def +-(otherN: Mass): Mass =
+      if Random.nextBoolean then {n + otherN} else {n - otherN}
