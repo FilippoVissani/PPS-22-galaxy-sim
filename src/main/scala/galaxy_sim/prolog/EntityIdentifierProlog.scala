@@ -15,6 +15,8 @@ trait EntityIdentifierProlog:
    */
   def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType
 
+  def minMassFor(celestialBodyType: CelestialBodyType): Mass
+
 object EntityIdentifierProlog:
   def apply(): EntityIdentifierProlog = EntityIdentifierPrologImpl()
 
@@ -24,3 +26,12 @@ object EntityIdentifierProlog:
     override def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType =
       val goal = s"typeOfEntity($temperature, $mass, E)"
       solveOneAndGetTerm(engine, goal, "E")
+
+    override def minMassFor(celestialBodyType: CelestialBodyType): Mass =
+      val goal = s"minMass(E, $celestialBodyType)"
+      val term = solveOneAndGetTerm(engine, goal, "E")
+      val numbers = ("""\d+""".r findAllIn term.toString).toList
+      if numbers.size == 1 then
+        numbers.head.toDouble
+      else
+        scala.math.pow(numbers.head.toDouble, numbers.last.toDouble)

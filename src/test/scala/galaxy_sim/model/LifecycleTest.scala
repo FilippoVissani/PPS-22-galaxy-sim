@@ -14,16 +14,16 @@ class LifecycleTest extends AnyFlatSpec with should.Matchers:
       entityIdentifierProlog.checkEntityType(10, 1010) shouldBe CelestialBodyType.MassiveStar
     }
 
-  "entity with mass 10e11 and temperature 1010" should "be a 'redSuperGiant'" in {
-    entityIdentifierProlog.checkEntityType(10e11, 1010) shouldBe CelestialBodyType.RedSuperGiant
+  "entity with mass 1e11 and temperature 1010" should "be a 'redSuperGiant'" in {
+    entityIdentifierProlog.checkEntityType(1e11, 1010) shouldBe CelestialBodyType.RedSuperGiant
   }
 
-  "entity with mass 10e21 and temperature 1010" should "be a 'supernova'" in {
-    entityIdentifierProlog.checkEntityType(10e21, 1010) shouldBe CelestialBodyType.Supernova
+  "entity with mass 1e21 and temperature 1010" should "be a 'supernova'" in {
+    entityIdentifierProlog.checkEntityType(1e21, 1010) shouldBe CelestialBodyType.Supernova
   }
 
-  "entity with mass 10e41 and temperature 1010" should "be a 'blackHole'" in {
-    entityIdentifierProlog.checkEntityType(10e41, 1010) shouldBe CelestialBodyType.BlackHole
+  "entity with mass 1e41 and temperature 1010" should "be a 'blackHole'" in {
+    entityIdentifierProlog.checkEntityType(1e41, 1010) shouldBe CelestialBodyType.BlackHole
   }
 
   "entity with mass 10 and temperature 101" should "be a 'InterstellarCloud'" in {
@@ -38,13 +38,20 @@ class LifecycleTest extends AnyFlatSpec with should.Matchers:
     entityIdentifierProlog.checkEntityType(10, 0) shouldBe CelestialBodyType.Asteroid
   }
 
-  "'Massive Star'" should "become 'Red Supergiant'"
+  "minimum mass for BlackHole" should "be 1e40" in{
+    entityIdentifierProlog.minMassFor(CelestialBodyType.BlackHole) shouldBe 1e40
+  }
 
   "'Red Supergiant'" should "become 'Supernova'"
 
   "'Supernova'" should "become 'Black Hole'"
 
-  "'Black Hole'" should "increase his mass by 1 after a Step" in {
-    val celestialBody = SimulationConfig.blackHole
-    Lifecycle.entityOneStep(celestialBody, CelestialBodyType.BlackHole)._1.mass shouldBe SimulationConfig.blackHole.mass * 1.1
+  /*
+  "Mass" should "change" in {
+    var cb = (SimulationConfig.blackHole, CelestialBodyType.BlackHole)
+
+    for (_ <- 1 to 10e10.toInt)
+      cb = Lifecycle.entityOneStep(cb._1, cb._2)
+      println((cb._1.mass, cb._2))
   }
+*/

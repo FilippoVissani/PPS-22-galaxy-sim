@@ -41,7 +41,10 @@ object Lifecycle:
       }
       case _ => {
         val newCelestialBody = celestialBody.updateMass(mass => mass +- deltaMass)
-        (newCelestialBody, bodyType(newCelestialBody))
+        if newCelestialBody.mass > entityIdentifierProlog.minMassFor(BlackHole) then
+          (newCelestialBody, BlackHole)
+        else
+          (newCelestialBody, bodyType(newCelestialBody))
       }
 
   /**
