@@ -12,14 +12,15 @@ object Collider extends App:
   export Collider.*
 
   extension [A](c: Collider[A])
-    def map[B](f: A => B): Collider[B] = c match
-      case Some(a) => Collider(f(a))
-      case None() => None()
     def flatMap[B](f: A => Collider[B]): Collider[B] = c match
       case Some(a) => f(a)
       case None() => None()
+    def map[B](f: A => B): Collider[B] =
+      c.flatMap(a => Collider(f(a)))
     def filter(f: A => Boolean): Collider[A] =
       c.flatMap(a => if f(a) then Collider(a) else None())
+    def foreach(f: A => Unit): Collider[A] =
+      c.map(a => { f(a) ; a })
 
   object Collider:
     def apply[A](a: A): Collider[A] = Collider.Some(a)

@@ -21,6 +21,15 @@ object CollisionMockups:
     override def check(a: Star, b: Nebula): Boolean =
       CircleToCircleChecker.check(a.collisionBox, b.collisionBox)
       
+  given PlanetToPlanetChecker: CollisionChecker[Planet, Planet] with
+    override def check(a: Planet, b: Planet): Boolean =
+      CircleToCircleChecker.check(a.collisionBox, b.collisionBox)
+      
   given StarToNebulaSolver: CollisionSolver[Star, Nebula, System] with
     override def solve(a: Star, b: Nebula): System =
       System(a.origin, a.copy(mass = a.mass/2), List(Planet(a.origin + Pair(1, 1), 0.1, a.mass/10), Planet(a.origin + Pair(0.5, 1.5), 0.01, a.mass/100)))
+      
+  given PlanetToPlanetSolver: CollisionSolver[Planet, Planet, Planet] with
+    override def solve(a: Planet, b: Planet): Planet =
+      val bigger = if a.mass >= b.mass then a else b
+      Planet(bigger.origin, bigger.radius * 1.1, bigger.mass * 1.5)
