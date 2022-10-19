@@ -11,6 +11,7 @@ import galaxy_sim.model.SimulationConfig.*
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.slf4j.event.Level
+import galaxy_sim.actors.CelestialBodyActor.UpdateCelestialBodyType
 
 class SimulationManagerActorTest extends AnyFunSuite:
   test("StartSimulation"){
@@ -32,7 +33,7 @@ class SimulationManagerActorTest extends AnyFunSuite:
     val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
     testKit.run(IterationStep)
-    celestialBody.selfInbox().expectMessage(GetCelestialBodyState(testKit.ref))
+    celestialBody.selfInbox().expectMessage(UpdateCelestialBodyType(testKit.ref))
   }
 
   test("CelestialBodyState"){
