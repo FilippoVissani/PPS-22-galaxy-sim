@@ -15,14 +15,52 @@ import physics.collisions.CollisionDetection.CollisionBoxes.CircleCollisionBox
 import physics.collisions.CollisionDetection.CollisionCheckers.CircleToCircleChecker
 import physics.dynamics.GravitationLaws.*
 
+/** In this object is defined the behaviour of celestial body actor.
+ *
+ * A CelestialBodyActor manages the behaviour of a single CelestialBody.
+ * This actor is designed to communicate only with SimulationManagerActor.
+ */
 object CelestialBodyActor:
+
+  /** Defines the messages that can be sent to CelestialBodyActor. */
   sealed trait CelestialBodyActorCommand
+
+  /** Requests the current CelestialBody state.
+   * 
+   *  @param replyTo the SimulationManagerActor reference to reply.
+  */
   case class GetCelestialBodyState(replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
+  
+  /** Updates CelestialBody stats and type.
+   * 
+   *  @param replyTo the SimulationManagerActor reference to reply.
+  */
   case class UpdateCelestialBodyType(replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
+  
+  /** Moves the CelestialBody to the next position.
+   * 
+   *  @param celestialBodies current state of the other celestial bodies.
+   *  @param replyTo the SimulationManagerActor reference to reply.
+  */
   case class MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
+  
+  /** Solve collisions with other celestial bodies.
+   * 
+   *  @param celestialBodies current state of the other celestial bodies.
+   *  @param replyTo the SimulationManagerActor reference to reply.
+  */
   case class SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
+  
+  /** Kills this actor. */
   case object Kill extends CelestialBodyActorCommand
 
+  /** Creates a CelestialBodyActor.
+   *
+   *  @param celestialBody current state of the CelestialBody.
+   *  @param celestialBodyType current type of the CelestialBody.
+   *  @param bounds bounds that define the limits of the movement of the body.
+   *  @param deltaTime used to compute next position every time.
+   */
   def apply(
     celestialBody: CelestialBody,
     celestialBodyType: CelestialBodyType,
