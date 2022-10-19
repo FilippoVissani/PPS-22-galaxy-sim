@@ -3,9 +3,12 @@ package galaxy_sim.view
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.StatisticsFrame.StatisticsPanel
 import galaxy_sim.view.View
+
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import java.awt.*
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
+import org.jfree.chart.{ChartFactory, ChartPanel, JFreeChart}
+import org.jfree.data.general.DefaultPieDataset
 
 trait StatisticsFrame:
   def display(simulation: Simulation): Unit
@@ -13,7 +16,6 @@ trait StatisticsFrame:
 object StatisticsFrame:
   def apply(view: View, windowPercentualWidth: Int, windowPercentualHeight: Int): StatisticsFrame =
     StatisticsFrameImpl(view: View, windowPercentualWidth: Int, windowPercentualHeight: Int)
-
 
   private class StatisticsFrameImpl(
                               view: View,
@@ -79,4 +81,24 @@ object StatisticsFrame:
       val percent = value * 100 / simulation.get.bounds.bottomBound
       val sizeOnDisplay = percent * this.getHeight / 100
       Math.round(sizeOnDisplay + this.getHeight / 2).toInt
+
+    private def pieChart(): Unit =
+      val dataset = DefaultPieDataset[String]()
+      dataset.setValue("IPhone 5s", 5.0)
+      dataset.setValue("SamSung Grand", 20.0)
+
+
+      val chart = ChartFactory.createPieChart(
+        "Mobile Sales", // chart title
+        dataset, // data
+        true, // include legend
+        true,
+        false);
+
+      chart.setBackgroundPaint(new GradientPaint(new Point(0, 0),
+        new Color(20, 20, 20), new Point(400, 200), Color.DARK_GRAY));
+
+      chart.getPlot
+
+
   end StatisticsPanel

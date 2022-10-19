@@ -13,6 +13,7 @@ lazy val root = (project in file("."))
     "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
     "com.typesafe.akka" %% "akka-actor-testkit-typed" % AkkaVersion % Test,
     "ch.qos.logback" % "logback-classic" % "1.2.3",
+    "org.jfree" % "jfreechart" % "1.5.3"
     ),
     assembly / mainClass := Some("galaxy_sim.Main"),
     assembly / assemblyJarName := "galaxy-sim.jar",
