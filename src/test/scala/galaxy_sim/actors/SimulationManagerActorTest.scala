@@ -1,21 +1,17 @@
 package galaxy_sim.actors
 
-import org.scalatest.funsuite.AnyFunSuite
-import galaxy_sim.model.SimulationConfig.*
-import akka.actor.testkit.typed.scaladsl.BehaviorTestKit
-import galaxy_sim.actors.SimulationManagerActor.*
-import akka.actor.testkit.typed.scaladsl.TestInbox
-import galaxy_sim.model.Simulation
 import akka.actor.testkit.typed.CapturedLogEvent
-import org.slf4j.event.Level
-import org.scalatest.matchers.should.Matchers.shouldBe
-import galaxy_sim.model.test
-import galaxy_sim.actors.CelestialBodyActor.GetCelestialBodyState
-import galaxy_sim.actors.CelestialBodyActor.MoveToNextPosition
-import galaxy_sim.actors.CelestialBodyActor.CheckCollisions
-import galaxy_sim.model.CelestialBodyType.*
-import galaxy_sim.actors.CelestialBodyActor.Kill
+import akka.actor.testkit.typed.scaladsl.{BehaviorTestKit, TestInbox}
 import akka.actor.typed.javadsl.Behaviors
+import galaxy_sim.actors.CelestialBodyActor.{GetCelestialBodyState, Kill, MoveToNextPosition, SolveCollisions}
+import galaxy_sim.actors.SimulationManagerActor.*
+import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.model.Simulation
+import galaxy_sim.model.SimulationConfig.*
+import org.scalatest.funsuite.AnyFunSuite
+import org.scalatest.matchers.should.Matchers.shouldBe
+import org.slf4j.event.Level
+import galaxy_sim.actors.CelestialBodyActor.UpdateCelestialBodyType
 
 class SimulationManagerActorTest extends AnyFunSuite:
   test("StartSimulation"){
@@ -37,7 +33,7 @@ class SimulationManagerActorTest extends AnyFunSuite:
     val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
     testKit.run(IterationStep)
-    celestialBody.selfInbox().expectMessage(GetCelestialBodyState(testKit.ref))
+    celestialBody.selfInbox().expectMessage(UpdateCelestialBodyType(testKit.ref))
   }
 
   test("CelestialBodyState"){

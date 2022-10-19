@@ -1,15 +1,14 @@
 package galaxy_sim.model
 
-import physics.dynamics.PhysicalEntity
-import physics.Pair
-import physics.SpeedVector
+import physics.{Pair, SpeedVector}
 import physics.dynamics.GravitationLaws.*
+import physics.dynamics.PhysicalEntity
 
 object SimulationConfig:
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
 //  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
   val blackHoleDistance = astronomicUnit * 5
-  val deltaTime = 4
+  val deltaTime = 10e-9
   val radiusScale = 10e3
 
   val moon: CelestialBody =
@@ -41,7 +40,7 @@ object SimulationConfig:
       speedVector = Pair(1, 29290),
       position = Pair(astronomicUnit * 1.0167, 0),
       name = "Earth",
-      radius = 6_371 * radiusScale,
+      radius = 695_508 * radiusScale,
       temperature = 150)
 
   val earth2: CelestialBody =
@@ -51,7 +50,7 @@ object SimulationConfig:
       speedVector = Pair(-1, 29290),
       position = Pair(-astronomicUnit * 1.0167, 0),
       name = "Earth",
-      radius = 10,
+      radius = 695_508 * radiusScale,
       temperature = 150)
 //      position = Pair(blackHoleDistance + astronomicUnit * 1.0167, 0),
 

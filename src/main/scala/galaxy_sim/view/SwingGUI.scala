@@ -3,8 +3,9 @@ package galaxy_sim.view
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import physics.dynamics.GravitationLaws.astronomicUnit
-import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
+
 import java.awt.*
+import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 
 trait SwingGUI:
@@ -72,7 +73,7 @@ object SwingGUI:
         g2.setColor(java.awt.Color.BLACK)
         g2.fillRect(0, 0, this.getWidth, this.getHeight)
         g2.setColor(java.awt.Color.WHITE)
-        g2.drawString(simulation.get.virtualTime.toString, 10, 10)
+        g2.drawString("Virtual Time: " + simulation.get.virtualTime.toString, 10, 10)
         simulation.get.galaxy.foreach((k, v) =>
           v.foreach(e =>
             g2.fillOval(
