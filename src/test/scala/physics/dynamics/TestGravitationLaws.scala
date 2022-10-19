@@ -4,8 +4,9 @@ import org.scalatest.{BeforeAndAfterAll, GivenWhenThen}
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.funsuite.AnyFunSuite
 import physics.*
+import GravitationLaws.*
 
-import scala.math.{pow, sqrt}
+import scala.math.{cbrt, pow, sqrt}
 
 case class PhysicalEntityImpl(override val mass: Mass = 1000,
                               override val position: Position = Pair(0, 0),
@@ -13,9 +14,33 @@ case class PhysicalEntityImpl(override val mass: Mass = 1000,
                               override val speedVector: SpeedVector = Pair(0, 0),
                               override val gForceVector: GravityForceVector = Pair(0, 0)) extends PhysicalEntity
 
-class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
-  import GravitationLaws.*
+class TestGravitationLawsMath extends AnyFunSuite:
+  val earth = PhysicalEntityImpl(5.972e24, Pair(astronomicUnit * 10167, 0), 29290, Pair(0, 29290), Pair(0, 0))
+  val sun = PhysicalEntityImpl(2.0e30)
+  val semiMayorAxis = 149.60e6
+  val earthEccentricity = 0.0167
 
+  test("Euclidean distance between Earth and Sun") {
+    val euDist = euclideanDistance(earth.position, sun.position)
+    val shouldEuDist = sqrt(pow(earth.position.x - sun.position.x, 2) + pow(earth.position.y - sun.position.y, 2))
+    assert(euDist == shouldEuDist)
+  }
+
+  test("Radius of the sphere of influence without eccentricity"){
+    val rSOI = radiusSphereOfInfluence(semiMayorAxis , earth.mass, sun.mass)
+    val shouldSOI = semiMayorAxis * cbrt(earth.mass / (sun.mass * 3))
+    assert(rSOI == shouldSOI)
+  }
+
+  test("Radius of the sphere of influence with eccentricity"){
+    val rSOI = radiusSphereOfInfluenceWithEccentricity(semiMayorAxis,earthEccentricity, earth.mass, sun.mass)
+    val shouldSOI = semiMayorAxis * (1 - earthEccentricity) * cbrt(earth.mass / (sun.mass * 3))
+    assert(rSOI == shouldSOI)
+  }
+
+
+
+class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
   info("As a programmer")
   info("Considering some entities in the space")
   info("I want to move entities around others")
