@@ -147,17 +147,17 @@ object GravitationLaws extends Constants:
 
   /**
    * Calculate the magnitude of a vector
-   * @param vector
-   * @return
+   * @param vector Pair[Double, Double]
+   * @return double
    */
   def calculateMagnitude(vector: Pair[Double, Double]): Double =
     sqrt(pow(vector.x, 2) + pow(vector.y, 2))
 
   /**
    * Calculate the sphere of influence of an entity
-   * @param smallerEntity
-   * @param biggerEntity
-   * @return
+   * @param smallerEntity Physical Entity, the entity that orbits the bigger one
+   * @param biggerEntity Physical Entity, the entity around which the smaller orbtis
+   * @return Double, the radius of the sphere of influence
    */
   def calculateSphereOfInfluence(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Double =
     val distance = distanceBetweenTwoEntities(smallerEntity, biggerEntity)
@@ -165,30 +165,30 @@ object GravitationLaws extends Constants:
 
   /**
    * Calculate the radius of the sphere of influence with eccentricity of the orbit
-   * @param semiMayorAxis
-   * @param eccentricity
-   * @param smallerEntityMass
-   * @param biggerEntityMass
-   * @return
+   * @param semiMayorAxis Double, the bigger axis of the elliptical orbit
+   * @param eccentricity Double, between [0,1] represent how much elliptical the orbit is
+   * @param smallerEntityMass Mass, the mass of the smaller entity
+   * @param biggerEntityMass Mass, the mass of the bigger entity
+   * @return Double, the radius of the sphere of influence
    */
   def radiusSphereOfInfluenceWithEccentricity(semiMayorAxis: Double, eccentricity: Double, smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
     semiMayorAxis * (1 - eccentricity) * cbrt(smallerEntityMass / (biggerEntityMass * 3))
 
   /**
    * Calculate the radius of the sphere of influence without eccentricity of the orbit, means that the orbit it's circolar
-   * @param semiMayorAxis
-   * @param smallerEntityMass
-   * @param biggerEntityMass
-   * @return
+   * @param semiMayorAxisDouble  , the bigger axis of the elliptical orbit
+   * @param smallerEntityMass   Mass, the mass of the smaller entity
+   * @param biggerEntityMass    Mass, the mass of the bigger entity
+   * @return Double, the radius of the sphere of influence
    */
   def radiusSphereOfInfluence(semiMayorAxis: Double, smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
     semiMayorAxis * cbrt(smallerEntityMass / (biggerEntityMass * 3))
 
   /**
-   * Calculate the euclidean distance of two points in 3 dimension (x, y, z)
-   * @param pos1
-   * @param pos2
-   * @return
+   * Calculate the euclidean distance of two points (entities) in 2 dimension (x, y)
+   * @param pos1 Position of the entity 1
+   * @param pos2 Position of the entity 2
+   * @return the euclidean distance between the two positions
    */
   def euclideanDistance(pos1: Position, pos2: Position): Double =
     sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2))
