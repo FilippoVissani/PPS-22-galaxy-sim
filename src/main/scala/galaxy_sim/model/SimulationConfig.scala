@@ -1,9 +1,8 @@
 package galaxy_sim.model
 
-import physics.dynamics.PhysicalEntity
-import physics.Pair
-import physics.SpeedVector
+import physics.{Pair, SpeedVector}
 import physics.dynamics.GravitationLaws.*
+import physics.dynamics.PhysicalEntity
 
 object SimulationConfig:
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)

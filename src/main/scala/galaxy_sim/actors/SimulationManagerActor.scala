@@ -1,20 +1,16 @@
 package galaxy_sim.actors
 
-import akka.actor.typed.scaladsl.Behaviors
-import akka.actor.typed.ActorRef
-import akka.actor.typed.Behavior
-import galaxy_sim.model.CelestialBody
-import galaxy_sim.model.Simulation
-import galaxy_sim.actors.ControllerActor.ControllerActorCommand
-import akka.util.Timeout
-import concurrent.duration.DurationInt
-import scala.util.Failure
-import scala.util.Success
-import akka.pattern.StatusReply
-import galaxy_sim.actors.CelestialBodyActor.*
-import galaxy_sim.model.CelestialBodyType
-import galaxy_sim.model.emptyGalaxy
 import akka.actor.PoisonPill
+import akka.actor.typed.{ActorRef, Behavior}
+import akka.actor.typed.scaladsl.Behaviors
+import akka.pattern.StatusReply
+import akka.util.Timeout
+import galaxy_sim.actors.CelestialBodyActor.*
+import galaxy_sim.actors.ControllerActor.ControllerActorCommand
+import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation, emptyGalaxy}
+
+import scala.concurrent.duration.DurationInt
+import scala.util.{Failure, Success}
 
 object SimulationManagerActor:
 

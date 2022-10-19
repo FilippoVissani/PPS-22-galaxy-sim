@@ -1,10 +1,10 @@
 package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBodyAliases.{Radius, Temperature}
+import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.prolog.EntityIdentifierProlog
 import physics.collisions.rigidbody.RigidBody.CircularEntity
-import physics.{GravityForceVector, Mass, Position, Speed, SpeedVector}
-import CelestialBodyType.*
+import physics.*
 
 object CelestialBodyAliases:
   type Temperature = Double

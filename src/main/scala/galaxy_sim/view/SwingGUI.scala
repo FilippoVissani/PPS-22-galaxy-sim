@@ -3,8 +3,9 @@ package galaxy_sim.view
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import physics.dynamics.GravitationLaws.astronomicUnit
-import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
+
 import java.awt.*
+import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 
 trait SwingGUI:

@@ -1,21 +1,17 @@
 package galaxy_sim.actors
 
-import akka.actor.typed.Behavior
+import akka.actor.{Kill, PoisonPill}
+import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
-import galaxy_sim.model.CelestialBody
-import akka.actor.typed.ActorRef
-import galaxy_sim.actors.ViewActor.ViewActorCommand
-import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
-import galaxy_sim.model.Simulation
-import concurrent.duration.DurationInt
-import scala.util.Failure
-import scala.util.Success
 import akka.pattern.StatusReply
 import akka.util.Timeout
+import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
-import akka.actor.PoisonPill
-import akka.actor.Kill
+import galaxy_sim.model.{CelestialBody, Simulation}
+
+import scala.concurrent.duration.DurationInt
+import scala.util.{Failure, Success}
 
 object ControllerActor:
   val frameRate = 33

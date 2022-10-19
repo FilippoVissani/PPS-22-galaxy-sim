@@ -1,21 +1,13 @@
 package galaxy_sim
 
-import akka.actor.typed.ActorSystem
-import akka.actor.typed.Behavior
-import akka.actor.typed.scaladsl.Behaviors
-import akka.actor.typed.Terminated
-import galaxy_sim.actors.ControllerActor
-import galaxy_sim.actors.ControllerActor.*
-import galaxy_sim.actors.CelestialBodyActor
-import galaxy_sim.model.SimulationConfig.*
-import galaxy_sim.actors.ViewActor
-import galaxy_sim.actors.SimulationManagerActor
-import galaxy_sim.model.Simulation
-import galaxy_sim.model.CelestialBody
 import akka.actor.ActorRef
-import galaxy_sim.model.CelestialBodyType
+import akka.actor.typed.{ActorSystem, Behavior, Terminated}
+import akka.actor.typed.scaladsl.Behaviors
+import galaxy_sim.actors.ControllerActor.*
+import galaxy_sim.actors.{CelestialBodyActor, ControllerActor, SimulationManagerActor, ViewActor}
 import galaxy_sim.model.CelestialBodyType.*
-import model.emptyGalaxy
+import galaxy_sim.model.SimulationConfig.*
+import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation, emptyGalaxy}
 
 object Main extends App:
   ActorSystem(RootActor(), "root")

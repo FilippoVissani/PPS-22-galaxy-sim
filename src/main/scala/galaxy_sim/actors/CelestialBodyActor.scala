@@ -1,23 +1,19 @@
 package galaxy_sim.actors
 
-import galaxy_sim.model.CelestialBody
-import akka.actor.typed.Behavior
+import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
-import galaxy_sim.model.Boundary
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
-import physics.dynamics.GravitationLaws.*
-import galaxy_sim.model.SimulationConfig.*
-import akka.actor.typed.ActorRef
 import galaxy_sim.actors.SimulationManagerActor.*
+import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Lifecycle}
+import galaxy_sim.model.MockOrbit.*
+import galaxy_sim.model.SimulationConfig.*
 import galaxy_sim.utils.EntityReferenceDetector.*
 import galaxy_sim.utils.EntityReferenceDetectors.given
-import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.utils.SimulationGivens.given
 import physics.collisions.Collider.*
 import physics.collisions.CollisionDetection.CollisionBoxes.CircleCollisionBox
 import physics.collisions.CollisionDetection.CollisionCheckers.CircleToCircleChecker
-import galaxy_sim.utils.SimulationGivens.given
-import galaxy_sim.model.Lifecycle
-import galaxy_sim.model.MockOrbit.*
+import physics.dynamics.GravitationLaws.*
 
 object CelestialBodyActor:
   sealed trait CelestialBodyActorCommand

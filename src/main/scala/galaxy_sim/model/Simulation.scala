@@ -1,7 +1,7 @@
 package galaxy_sim.model
 
+import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.SimulationAliases.Time
-import CelestialBodyType.*
 
 object SimulationAliases:
   type Time = Double

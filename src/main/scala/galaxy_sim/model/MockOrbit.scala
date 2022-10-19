@@ -1,7 +1,8 @@
 package galaxy_sim.model
 
 import physics.Pair
-import math.BigDecimal.double2bigDecimal
+
+import scala.math.BigDecimal.double2bigDecimal
 
 object MockOrbit:
 
