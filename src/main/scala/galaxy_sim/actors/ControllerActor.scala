@@ -9,20 +9,58 @@ import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
 import galaxy_sim.model.{CelestialBody, Simulation}
-
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
 
+/** In this object is defined the behaviour of controller actor.
+ *
+ * The controller actor accepts messages from ViewActor and SimulationManagerActor and converts the commands for the other.
+ */
 object ControllerActor:
+  /** Time between two requests of the simulation state. */
   val frameRate = 33
 
+  /** Defines the messages that can be sent to ControllerActor. */
   sealed trait ControllerActorCommand
+
+  /** Starts the simulation.
+   *
+   * This message should be sent from ViewActor.
+   */
   case object Start extends ControllerActorCommand
+
+  /** Stops the simulation.
+   *
+   * This message should be sent from ViewActor.
+   */
   case object Stop extends ControllerActorCommand
+
+  /** Sets ViewActor to communicate with. 
+   * 
+   *  @param viewActor the ViewActor reference
+  */
   case class SetView(viewActor: ActorRef[ViewActorCommand]) extends ControllerActorCommand
+
+  /** This is an adapter to be called when using Ask pattern with SimulationManagerActor
+   * to get the simulation state.
+   *
+   * This message should only be sent from ControllerActor to itself.
+   * 
+   *  @param simulation The current state of the simulation
+   */
   case class SimulationStateAdaptedResponse(simulation: Option[Simulation]) extends ControllerActorCommand
+
+  /** Used from an inside timer to request the simulation state every frameRate seconds.
+   *
+   * This message should only be sent from ControllerActor's timer.
+   */
   case object Tick extends ControllerActorCommand
 
+  /** Creates a ControllerActor.
+   *
+   *  @param viewActor the View actor reference.
+   *  @param simulationManagerActor the simulation manager actor reference.
+   */
   def apply(
     viewActor: Option[ActorRef[ViewActorCommand]],
     simulationManagerActor: ActorRef[SimulationManagerActorCommand]): Behavior[ControllerActorCommand] =
