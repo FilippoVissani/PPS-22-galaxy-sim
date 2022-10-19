@@ -52,7 +52,7 @@ object ControllerActor:
             case SimulationStateAdaptedResponse(simulation: Option[Simulation]) => {
               ctx.log.debug("Received SimulationStateAdaptedResponse")
               if viewActor.isDefined && simulation.isDefined then
-                viewActor.get ! Display(simulation.get)
+                viewActor.foreach(x => simulation.foreach(y => x ! Display(y)))
               Behaviors.same
             }
             case Tick => {

@@ -29,12 +29,12 @@ object SimulationManagerActor:
 
   sealed trait IterationState
   case object Start extends IterationState
-  case object StateAsked extends IterationState
+  case object TypeUpdated extends IterationState
   case object PositionsUpdated extends IterationState
 
   def apply(celestialBodyActors: Set[ActorRef[CelestialBodyActorCommand]],
             actualSimulation: Simulation,
-            iterationState: Seq[IterationState] = Seq(Start, StateAsked, PositionsUpdated),
+            iterationState: Seq[IterationState] = Seq(Start, TypeUpdated, PositionsUpdated),
             tmpCelestialBodies: Map[CelestialBodyType, Set[CelestialBody]] = emptyGalaxy): Behavior[SimulationManagerActorCommand] =
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
         Behaviors.receiveMessage[SimulationManagerActorCommand](msg => msg match
@@ -50,10 +50,17 @@ object SimulationManagerActor:
           case IterationStep => {
             ctx.log.debug(s"Iteration step ${iterationState.head}")
             iterationState.head match
-              case Start => celestialBodyActors.foreach(x => x ! GetCelestialBodyState(ctx.self))
-              case StateAsked => celestialBodyActors.foreach(x => x ! MoveToNextPosition(tmpCelestialBodies, ctx.self))
-              case PositionsUpdated => celestialBodyActors.foreach(x => x ! CheckCollisions(tmpCelestialBodies, ctx.self))
-            SimulationManagerActor(celestialBodyActors, actualSimulation.copy(galaxy = tmpCelestialBodies), iterationState.tail :+ iterationState.head)
+              case Start => celestialBodyActors.foreach(x => x ! UpdateCelestialBodyType(ctx.self))
+              case TypeUpdated => celestialBodyActors.foreach(x => x ! MoveToNextPosition(tmpCelestialBodies, ctx.self))
+              case PositionsUpdated => celestialBodyActors.foreach(x => x ! SolveCollisions(tmpCelestialBodies, ctx.self))
+            val newVirtualTime = iterationState.head match
+              case Start => actualSimulation.virtualTime + actualSimulation.deltaTime
+              case _ => actualSimulation.virtualTime
+            SimulationManagerActor(
+              celestialBodyActors,
+              actualSimulation.copy(galaxy = tmpCelestialBodies, virtualTime = newVirtualTime),
+              iterationState.tail :+ iterationState.head,
+              )
           }
           case CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) => {
             val newCelestialBodies = tmpCelestialBodies.map((k, v) => if k == celestialBodyType then (k, v + celestialBody) else (k, v))

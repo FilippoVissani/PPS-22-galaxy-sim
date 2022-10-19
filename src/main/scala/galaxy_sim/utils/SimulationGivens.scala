@@ -10,8 +10,8 @@ import physics.collisions.rigidbody.RigidBody.CircularEntity
 object SimulationGivens:
 
   /** Collision Checking */
-  given CircularEntityChecker : CollisionChecker[CircularEntity, CircularEntity] with
-    override def check(a: CircularEntity, b: CircularEntity): Boolean =
+  given CircularEntityChecker : CollisionChecker[CelestialBody, CelestialBody] with
+    override def check(a: CelestialBody, b: CelestialBody): Boolean =
       CircleToCircleChecker.check(a.collisionBox, b.collisionBox)
 
   /** Collision Solving */

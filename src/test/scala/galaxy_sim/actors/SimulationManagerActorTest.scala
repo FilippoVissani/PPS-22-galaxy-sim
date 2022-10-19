@@ -9,10 +9,9 @@ import galaxy_sim.model.Simulation
 import akka.actor.testkit.typed.CapturedLogEvent
 import org.slf4j.event.Level
 import org.scalatest.matchers.should.Matchers.shouldBe
-import galaxy_sim.model.test
 import galaxy_sim.actors.CelestialBodyActor.GetCelestialBodyState
 import galaxy_sim.actors.CelestialBodyActor.MoveToNextPosition
-import galaxy_sim.actors.CelestialBodyActor.CheckCollisions
+import galaxy_sim.actors.CelestialBodyActor.SolveCollisions
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.actors.CelestialBodyActor.Kill
 import akka.actor.typed.javadsl.Behaviors
