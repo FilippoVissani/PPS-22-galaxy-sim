@@ -19,9 +19,11 @@ object View:
 
   private class ViewImpl(viewActor: ActorRef[ViewActorCommand], windowWidth: Int, windowHeight: Int) extends View:
     val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight)
+    val statisticsFrame: StatisticsFrame = StatisticsFrame(this, 20, 50)
 
     override def display(simulation: Simulation): Unit =
       gui.display(simulation)
+      statisticsFrame.display(simulation)
 
     override def start(): Unit = viewActor ! StartPressed
 
