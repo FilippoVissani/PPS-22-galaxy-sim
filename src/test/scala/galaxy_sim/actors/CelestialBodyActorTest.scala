@@ -7,8 +7,10 @@ import akka.actor.typed.javadsl.Behaviors
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.SimulationConfig.*
+import galaxy_sim.model.emptyGalaxy
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.shouldBe
+import galaxy_sim.actors.CelestialBodyActor.MoveToNextPosition
 
 class CelestialBodyActorTest extends AnyFunSuite:
   test("GetCelestialBodyState"){
@@ -19,7 +21,10 @@ class CelestialBodyActorTest extends AnyFunSuite:
   }
 
   test("MoveToNextPosition"){
-    fail()
+    val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val inbox = TestInbox[SimulationManagerActorCommand]()
+    testKit.run(MoveToNextPosition(emptyGalaxy, inbox.ref))
+    inbox.expectMessage(CelestialBodyState(sun, MassiveStar))
   }
 
   test("CheckCollisions"){
