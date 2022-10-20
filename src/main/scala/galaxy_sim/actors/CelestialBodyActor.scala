@@ -75,11 +75,11 @@ object CelestialBodyActor:
           Behaviors.same
         }
         case UpdateCelestialBodyType(replyTo: ActorRef[SimulationManagerActorCommand]) => {
-/*           val result = Lifecycle.entityOneStep(celestialBody, celestialBodyType)
+          val result = Lifecycle.entityOneStep(celestialBody, celestialBodyType)
           replyTo ! CelestialBodyState(result._1, result._2)
-          CelestialBodyActor(result._1, result._2, bounds, deltaTime) */
-          replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
-          Behaviors.same
+          CelestialBodyActor(result._1, result._2, bounds, deltaTime)
+          /* replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
+          Behaviors.same */
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val reference = computeEntityReference(celestialBody, celestialBodies.values.flatten.toSet)
