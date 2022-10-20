@@ -3,8 +3,8 @@ package galaxy_sim.model
 import galaxy_sim.model.CelestialBodyAliases.{Radius, Temperature}
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.prolog.EntityIdentifierProlog
-import physics.collisions.rigidbody.RigidBody.CircularEntity
 import physics.*
+import physics.collisions.rigidbody.RigidBody.CircularEntity
 
 /** Defines type aliases used in CelestialBody. */
 object CelestialBodyAliases:

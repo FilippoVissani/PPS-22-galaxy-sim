@@ -1,14 +1,15 @@
 package galaxy_sim.actors
 
-import akka.actor.{Kill, PoisonPill}
-import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{ActorRef, Behavior}
+import akka.actor.{Kill, PoisonPill}
 import akka.pattern.StatusReply
 import akka.util.Timeout
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
 import galaxy_sim.model.{CelestialBody, Simulation}
+
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
 

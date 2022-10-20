@@ -3,7 +3,7 @@ package galaxy_sim.actors
 import akka.actor.testkit.typed.CapturedLogEvent
 import akka.actor.testkit.typed.scaladsl.{BehaviorTestKit, TestInbox}
 import akka.actor.typed.javadsl.Behaviors
-import galaxy_sim.actors.CelestialBodyActor.{GetCelestialBodyState, Kill, MoveToNextPosition, SolveCollisions}
+import galaxy_sim.actors.CelestialBodyActor.*
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.Simulation
@@ -11,7 +11,6 @@ import galaxy_sim.model.SimulationConfig.*
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.shouldBe
 import org.slf4j.event.Level
-import galaxy_sim.actors.CelestialBodyActor.UpdateCelestialBodyType
 
 class SimulationManagerActorTest extends AnyFunSuite:
   test("StartSimulation"){

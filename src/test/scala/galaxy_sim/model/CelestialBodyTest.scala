@@ -4,8 +4,8 @@ import galaxy_sim.model.CelestialBody.*
 import galaxy_sim.model.SimulationConfig.blackHole
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.*
-import physics.{GravityForceVector, Pair}
 import physics.dynamics.PhysicalEntity
+import physics.{GravityForceVector, Pair}
 
 class CelestialBodyTest extends AnyFunSuite:
 

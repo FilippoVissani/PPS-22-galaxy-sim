@@ -1,7 +1,7 @@
 package galaxy_sim.actors
 
-import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{ActorRef, Behavior}
 import galaxy_sim.actors.ControllerActor.*
 import galaxy_sim.model.{Boundary, CelestialBody, Simulation}
 import galaxy_sim.view.{SwingGUI, View}

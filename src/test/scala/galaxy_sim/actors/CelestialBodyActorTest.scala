@@ -4,13 +4,13 @@ import akka.actor.testkit.typed.Effect
 import akka.actor.testkit.typed.Effect.Stopped
 import akka.actor.testkit.typed.scaladsl.{BehaviorTestKit, TestInbox}
 import akka.actor.typed.javadsl.Behaviors
+import galaxy_sim.actors.CelestialBodyActor.MoveToNextPosition
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.SimulationConfig.*
 import galaxy_sim.model.emptyGalaxy
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.shouldBe
-import galaxy_sim.actors.CelestialBodyActor.MoveToNextPosition
 
 class CelestialBodyActorTest extends AnyFunSuite:
   test("GetCelestialBodyState"){

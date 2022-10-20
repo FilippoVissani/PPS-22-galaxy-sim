@@ -1,12 +1,11 @@
 package galaxy_sim.actors
 
-import akka.actor.typed.{ActorRef, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.{ActorRef, Behavior}
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
-import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Lifecycle}
-import galaxy_sim.model.MockOrbit.*
 import galaxy_sim.model.SimulationConfig.*
+import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Lifecycle}
 import galaxy_sim.utils.EntityReferenceDetector.*
 import galaxy_sim.utils.EntityReferenceDetectors.given
 import galaxy_sim.utils.SimulationGivens.given
