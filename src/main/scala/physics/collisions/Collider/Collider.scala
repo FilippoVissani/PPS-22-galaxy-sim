@@ -1,4 +1,7 @@
-package physics.ref
+package physics.collisions.Collider
+
+import physics.collisions.Collider
+import physics.collisions.Collision.Collision
 
 case class Collider[A](a: A):
   def impactWith[B](other: B)(using col: Collision[A, B]): Collider[A] =
@@ -7,15 +10,3 @@ case class Collider[A](a: A):
     f(a)
   def map[B](f: A => B): Collider[B] =
     Collider(f(a))
-
-
-object TryCollider extends App:
-  import Collisions.given
-
-  val a = 1
-  val b = 1
-  val col = Collider(a)
-  val res = for
-    y <- col.impactWith(b)
-  yield y
-  println(res)

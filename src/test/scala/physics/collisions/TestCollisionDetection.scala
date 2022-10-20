@@ -3,12 +3,12 @@ package physics.collisions
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import physics.Pair
-import physics.ref.CollisionBoxes.{CircleCollisionBox, CollisionBox}
+import physics.rigidbody.CollisionBoxes.{CircleCollisionBox, CollisionBox}
 
 
 class TestCollisionDetection extends AnyFlatSpec:
-  import physics.ref.Collisions.given
-  import physics.ref.Collision.*
+  import physics.collisions.instances.CollisionInstances.given
+  import physics.collisions.Collision.Collision.*
 
   "A CollisionDetector" should "detect collision between two circular entities" in {
     val c1 = CircleCollisionBox(Pair(0,0), 2)

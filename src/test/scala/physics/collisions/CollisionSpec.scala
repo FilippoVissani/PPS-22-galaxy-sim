@@ -3,11 +3,11 @@ package physics.collisions
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.{GivenWhenThen, stats}
 import physics.Pair
-import physics.ref.CollisionBoxes.CircleCollisionBox
-import physics.ref.Collisions.given
-import physics.collisions.CollisionMockups.{Nebula, Star, StarNebulaCollision}
+import physics.collisions.Collision.Collision
+import physics.rigidbody.CollisionBoxes.CircleCollisionBox
+import physics.collisions.instances.CollisionInstances.given
+import physics.collisions.CollisionMockups.{Nebula, Star}
 import physics.collisions.CollisionMockups.given
-import physics.ref.Collision
 
 class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
 
@@ -67,7 +67,7 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
     info("I want to establish a mapping between colliding entities and the result of the collision")
 
 
-    import physics.ref.CollisionSyntax.*
+    import physics.collisions.syntax.CollisionSyntax.*
     Scenario("Two entities are colliding") {
       Given("Two colliding entities")
       val star = Star(Pair(0, 0), 2, 100)

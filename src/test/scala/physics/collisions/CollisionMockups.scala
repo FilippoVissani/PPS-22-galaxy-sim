@@ -1,9 +1,10 @@
 package physics.collisions
 
+import physics.collisions.Collision.Collision
+import physics.collisions.instances.CollisionInstances
 import physics.{Pair, Position}
-import physics.ref.CollisionBoxes.*
-import physics.ref.{Collision, Collisions}
-import physics.ref.Collisions.given
+import physics.rigidbody.CollisionBoxes.*
+import physics.collisions.instances.CollisionInstances.given
 
 object CollisionMockups:
   trait SphericalEntity:
@@ -16,5 +17,5 @@ object CollisionMockups:
 
   given StarNebulaCollision: Collision[Star, Nebula] =
     Collision.from[Star, Nebula](
-      (s, n) => Collisions.CircleToCircleCollision.collisionFun(s.collisionBox, n.collisionBox)
+      (s, n) => CollisionInstances.CircleToCircleCollision.collisionFun(s.collisionBox, n.collisionBox)
     )((s, n) => s.copy(mass = s.mass + n.mass / 1.5))

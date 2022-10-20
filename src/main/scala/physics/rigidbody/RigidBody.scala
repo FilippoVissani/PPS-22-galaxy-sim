@@ -1,6 +1,6 @@
 package physics.rigidbody
 
-import physics.ref.CollisionBoxes.{CircleCollisionBox, CollisionBox}
+import CollisionBoxes.{CircleCollisionBox, CollisionBox}
 import physics.dynamics.PhysicalEntity
 
 object RigidBody:

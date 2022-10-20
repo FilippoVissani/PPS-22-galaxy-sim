@@ -4,8 +4,8 @@ import org.scalatest.flatspec.AnyFlatSpec
 import physics.{Pair, Position}
 import physics.collisions.CollisionMockups.*
 import physics.collisions.CollisionMockups.given
-import physics.collisions.Collider.*
-import physics.ref.CollisionSyntax.*
+import physics.collisions.Collider.Collider.*
+import physics.collisions.syntax.CollisionSyntax.*
 
 class TestCollisionSolving extends AnyFlatSpec:
   "A CollisionSolver" should "produce the result of a collision between entities" in {
