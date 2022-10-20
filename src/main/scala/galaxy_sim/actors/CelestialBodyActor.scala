@@ -10,8 +10,7 @@ import galaxy_sim.utils.EntityReferenceDetector.*
 import galaxy_sim.utils.EntityReferenceDetectors.given
 import galaxy_sim.utils.SimulationGivens.given
 import physics.collisions.Collider.*
-import physics.collisions.CollisionDetection.CollisionBoxes.CircleCollisionBox
-import physics.collisions.CollisionDetection.CollisionCheckers.CircleToCircleChecker
+import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 import physics.dynamics.GravitationLaws.*
 
 /** In this object is defined the behaviour of celestial body actor.
