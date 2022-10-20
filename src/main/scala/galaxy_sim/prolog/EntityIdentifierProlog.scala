@@ -33,7 +33,8 @@ object EntityIdentifierProlog:
       solveOneAndGetTerm(engine, goal, "E")
 
     override def minMassFor(celestialBodyType: CelestialBodyType): Mass =
-      val goal = s"minMass(E, $celestialBodyType)"
+      val prologCelestialBodyType = celestialBodyType.toString.substring(0, 1).toLowerCase() + celestialBodyType.toString.substring(1)
+      val goal = s"minMass(E, $prologCelestialBodyType)"
       val term = solveOneAndGetTerm(engine, goal, "E")
       val numbers = ("""\d+""".r findAllIn term.toString).toList
       if numbers.size == 1 then
