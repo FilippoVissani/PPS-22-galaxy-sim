@@ -33,6 +33,32 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       Then("I'm able to check that it is not in place")
       assert(collider == Collider.None())
     }
+
+    Scenario("Two entities that previously where colliding are distancing themselves") {
+      Given("Two colliding entities")
+      val star = Star(Pair(0,0), 2, 100)
+      val nebula = Nebula(Pair(1, 1), 0.5, 10)
+      val collision = Collider(star) % nebula
+      assert(collision != Collider.None())
+      When("They move out of collision scope")
+      val newNebula = nebula.copy(origin = Pair(3,3))
+      Then("The collision is no more detected")
+      val newCollision = Collider(star) % newNebula
+      assert(newCollision == Collider.None())
+    }
+
+    Scenario("Two entities that weren't colliding are coming close enough") {
+      Given("Two entities that aren't colliding")
+      val star = Star(Pair(0, 0), 2, 100)
+      val nebula = Nebula(Pair(3, 3), 0.5, 10)
+      val collision = Collider(star) % nebula
+      assert(collision == Collider.None())
+      When("They enter collision scope")
+      val newNebula = nebula.copy(origin = Pair(1,1))
+      Then("The collision is detected")
+      val newCollision = Collider(star) % newNebula
+      assert(newCollision != Collider.None())
+    }
   }
 
   Feature("The user can see the effect of a collision between entities") {
@@ -53,5 +79,16 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
         List(Planet(Pair(1.0, 1.0), 0.1, 10.0), Planet(Pair(0.5, 1.5), 0.01, 1.0))
       ))
       assert(result equals expectedResult)
+    }
+
+    Scenario("Two entities with real world data") {
+      Given("Two planet earths")
+      val e1 = Planet(Pair(0,0), 6_371, 10000)
+      val e2 = Planet(Pair(7_567, 8_898), 6_371, 10000)
+      When("They come close enough")
+      val col = Collider(e1) >< e2
+      Then("I can see they crashed into a bigger planet")
+      println(col)
+      assert(col == Some(Planet(Pair(0.0,0.0),7008.1,15000.0)))
     }
   }

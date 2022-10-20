@@ -12,14 +12,15 @@ object Collider extends App:
   export Collider.*
 
   extension [A](c: Collider[A])
-    def map[B](f: A => B): Collider[B] = c match
-      case Some(a) => Collider(f(a))
-      case None() => None()
     def flatMap[B](f: A => Collider[B]): Collider[B] = c match
       case Some(a) => f(a)
       case None() => None()
+    def map[B](f: A => B): Collider[B] =
+      c.flatMap(a => Collider(f(a)))
     def filter(f: A => Boolean): Collider[A] =
       c.flatMap(a => if f(a) then Collider(a) else None())
+    def foreach(f: A => Unit): Collider[A] =
+      c.map(a => { f(a) ; a })
 
   object Collider:
     def apply[A](a: A): Collider[A] = Collider.Some(a)
@@ -30,6 +31,9 @@ object Collider extends App:
       check(c, other)(f).map(a => g(a, other))
     def checkMany[A, B](c: Collider[A], others: B*)(using f: CollisionChecker[A, B]): Collider[A] =
       others.foldLeft(c)((acc, b) => check(acc, b)(f.check))
+    def get[A](c: Collider[A]): A = c match
+      case Some(a) => a
+      case None() => throw Exception()
 
     extension [A](c: Collider[A])
       @targetName("check")
@@ -38,3 +42,4 @@ object Collider extends App:
       @targetName("solve")
       def ><[B, C](other: B)(using col: CollisionChecker[A, B])(using sol: CollisionSolver[A, B, C]): Collider[C] =
         solve(c, other)(col.check)(sol.solve)
+      def subject(): A = get(c)

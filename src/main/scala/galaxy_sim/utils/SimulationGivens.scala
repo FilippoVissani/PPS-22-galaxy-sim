@@ -10,16 +10,16 @@ import physics.collisions.rigidbody.RigidBody.CircularEntity
 object SimulationGivens:
 
   /** Collision Checking */
-  given CircularEntityChecker : CollisionChecker[CircularEntity, CircularEntity] with
-    override def check(a: CircularEntity, b: CircularEntity): Boolean =
+  given CircularEntityChecker : CollisionChecker[CelestialBody, CelestialBody] with
+    override def check(a: CelestialBody, b: CelestialBody): Boolean =
       CircleToCircleChecker.check(a.collisionBox, b.collisionBox)
 
   /** Collision Solving */
   private def absorb(bigger: CelestialBody, smaller: CelestialBody): CelestialBody =
-    bigger.copy(mass = bigger.mass + smaller.mass / 2)
+    bigger.copy(mass = bigger.mass + smaller.mass / 2, temperature = bigger.temperature * 1.5)
 
   private def disintegrate(smaller: CelestialBody): CelestialBody =
-    smaller.copy(mass = smaller.mass / 2)
+    smaller.copy(mass = smaller.mass / 2, temperature = smaller.temperature * 0.8)
 
   given CelestialBodySolver: CollisionSolver[CelestialBody, CelestialBody, CelestialBody] with
     override def solve(a: CelestialBody, b: CelestialBody): CelestialBody =

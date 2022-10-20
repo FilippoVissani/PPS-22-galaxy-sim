@@ -9,26 +9,38 @@ class TestEntityReferenceDetection extends AnyFeatureSpec with GivenWhenThen:
   import EntityReferenceDetector.*
   import EntityReferenceDetectors.given
 
-  Feature("To calculate the new position of an entity, I have to calculate the force of it's entity reference on it"){
-    Scenario("I want to know which one is the entity reference of another") {
+  info("As a programmer")
+  info("Considering some entities in the space")
+  info("In order to do gravitational calculations")
+  info("I have to know which one is the entity reference of another one")
+
+  Feature("Understand which one is the entity reference of another one"){
+
+    Scenario("Two or more smaller entities") {
       Given("A set of entities")
       val entities = Set(sun, earth, moon, blackHole)
 
       When("I want to know which one is the entity reference of another")
-
       val earthRef = getReference(earth, entities)
       val sunRef = getReference(sun, entities)
       val moonRef = getReference(moon, entities)
-      val blackHoleRef = getReference(blackHole, entities)
 
-      println(s"EarthRef is ${earthRef.name}")
-      println(s"sunRef is ${sunRef.name}")
-      println(s"moonRef is ${moonRef.name}")
-      println(s"blackHoleRef is ${blackHoleRef.name}")
-      Then("")
+      Then("I get the correct entity reference")
       assert(earthRef.name == sun.name)
       assert(sunRef.name == blackHole.name)
       assert(moonRef.name == earth.name)
     }
+
+    Scenario("The biggest entity"){
+      Given("The same set of entities")
+      val entities = Set(sun, earth, moon, blackHole)
+
+      When("I have to get the reference of the biggest one")
+      val blackHoleRef = getReference(blackHole, entities)
+
+      Then("The entity is his reference")
+      assert(blackHoleRef.name == blackHole.name)
+    }
+
   }
 

@@ -1,25 +1,18 @@
 package galaxy_sim.actors
 
-import org.scalatest.funsuite.AnyFunSuite
-import akka.actor.testkit.typed.scaladsl.BehaviorTestKit
-import galaxy_sim.model.SimulationConfig.*
-import galaxy_sim.model.Simulation
-import galaxy_sim.actors.ControllerActor.Start
-import galaxy_sim.actors.SimulationManagerActor.StartSimulation
-import galaxy_sim.actors.ControllerActor.SimulationStateAdaptedResponse
-import galaxy_sim.actors.ViewActor.ViewActorCommand
-import akka.actor.testkit.typed.scaladsl.TestInbox
-import galaxy_sim.actors.ControllerActor.SetView
-import galaxy_sim.actors.ViewActor.Display
-import galaxy_sim.actors.ControllerActor.Tick
-import galaxy_sim.actors.SimulationManagerActor.AskSimulationState
-import akka.util.Timeout
-import concurrent.duration.DurationInt
-import galaxy_sim.model.CelestialBodyType.*
-import galaxy_sim.actors.SimulationManagerActor.StopSimulation
-import galaxy_sim.actors.ControllerActor.Stop
+import akka.actor.testkit.typed.scaladsl.{BehaviorTestKit, TestInbox}
 import akka.actor.typed.javadsl.Behaviors
+import akka.util.Timeout
+import galaxy_sim.actors.ControllerActor.*
+import galaxy_sim.actors.SimulationManagerActor.{AskSimulationState, StartSimulation, StopSimulation}
+import galaxy_sim.actors.ViewActor.{Display, ViewActorCommand}
+import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.model.Simulation
+import galaxy_sim.model.SimulationConfig.*
+import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.shouldBe
+
+import scala.concurrent.duration.DurationInt
 
 class ControllerActorTest extends AnyFunSuite:
   test("Start"){

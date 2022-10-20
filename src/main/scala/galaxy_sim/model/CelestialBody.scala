@@ -1,15 +1,28 @@
 package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBodyAliases.{Radius, Temperature}
+import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.prolog.EntityIdentifierProlog
+import physics.*
 import physics.collisions.rigidbody.RigidBody.CircularEntity
-import physics.{GravityForceVector, Mass, Position, Speed, SpeedVector}
-import CelestialBodyType.*
 
+/** Defines type aliases used in CelestialBody. */
 object CelestialBodyAliases:
   type Temperature = Double
   type Radius = Double
 
+/** Definition of celestial body.
+ *  
+ *  @param mass
+ *  @param aphelionSpeed
+ *  @param gForceVector
+ *  @param speedVector
+ *  @param position
+ *  @param name
+ *  @param birthTime
+ *  @param radius
+ *  @param temperature
+ */
 case class CelestialBody(override val mass: Mass,
                          override val aphelionSpeed: Speed,
                          override val gForceVector: GravityForceVector,
@@ -18,9 +31,11 @@ case class CelestialBody(override val mass: Mass,
                          name: String,
                          birthTime: Double = 0,
                          radius: Radius,
-                         temperature: Temperature) extends CircularEntity:
+                         temperature: Temperature,
+                         ) extends CircularEntity:
   def typeOf: CelestialBodyType = EntityIdentifierProlog().checkEntityType(mass, temperature)
 
+/** Defines possible types for a celestial body. */
 enum CelestialBodyType:
   case MassiveStar
   case RedSuperGiant
