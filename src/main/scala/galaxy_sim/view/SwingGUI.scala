@@ -3,10 +3,11 @@ package galaxy_sim.view
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import physics.dynamics.GravitationLaws.astronomicUnit
-
 import java.awt.*
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
+import galaxy_sim.model.CelestialBodyType
+import galaxy_sim.model.CelestialBodyType.*
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
@@ -19,7 +20,10 @@ object SwingGUI:
     view: View,
     windowWidth: Int,
     windowHeight: Int) extends SwingGUI:
-    val frameSize: Dimension = Dimension(windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100, windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100)
+    val frameSize: Dimension = Dimension(
+      windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
+      windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100
+      )
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
     val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
@@ -60,7 +64,7 @@ object SwingGUI:
       repaint()
 
     override def paint(g: Graphics): Unit =
-      if simulation.isDefined then
+      simulation.foreach(x =>{
         val g2: Graphics2D = g.asInstanceOf[Graphics2D]
         g2.setRenderingHint(
           RenderingHints.KEY_ANTIALIASING,
@@ -70,35 +74,12 @@ object SwingGUI:
           RenderingHints.KEY_RENDERING,
           RenderingHints.VALUE_RENDER_QUALITY
         )
-        g2.setColor(java.awt.Color.BLACK)
-        g2.fillRect(0, 0, this.getWidth, this.getHeight)
-        g2.setColor(java.awt.Color.WHITE)
-        g2.drawString("Virtual Time: " + simulation.get.virtualTime.toString, 10, 10)
-        simulation.get.galaxy.foreach((k, v) =>
-          v.foreach(e =>
-            g2.fillOval(
-            scaleXPosition(e.position.x),
-            scaleYPosition(e.position.y),
-            scaleXSize(e.radius),
-            scaleYSize(e.radius)
-          ))
-        )
-        simulation.get.galaxy.values.foreach(v =>
-          v.foreach(e => 
-            g2.drawString(e.name, scaleXPosition(e.position.x), scaleYPosition(e.position.y))
-          )
-        )
-        g2.setColor(java.awt.Color.BLACK)
-        simulation.get.galaxy.values.foreach(v =>
-          v.foreach(e =>
-            g2.drawOval(
-            scaleXPosition(e.position.x),
-            scaleYPosition(e.position.y),
-            scaleXSize(e.radius),
-            scaleYSize(e.radius)
-            )
-          )
-        )
+        cleanGraphics2D(g2)
+        drawVirtualTime(g2, x.virtualTime.toString)
+        x.galaxy.foreach((k, v) => {
+          v.foreach(y => drawCelestialBody(g2, y, k))
+        })
+      })
 
     override def getPreferredSize: Dimension =
       val d: Dimension = this.getParent.getSize()
@@ -123,4 +104,41 @@ object SwingGUI:
       val percent = value * 100 / simulation.get.bounds.bottomBound
       val sizeOnDisplay = percent * this.getHeight / 100
       Math.round(sizeOnDisplay + this.getHeight / 2).toInt
+
+    private def cleanGraphics2D(g: Graphics2D): Unit = 
+      g.setColor(java.awt.Color.BLACK)
+      g.fillRect(0, 0, this.getWidth, this.getHeight)
+
+    private def drawVirtualTime(g: Graphics2D, virtualTime: String): Unit = 
+      g.setColor(java.awt.Color.WHITE)
+      g.drawString("Virtual Time: " + virtualTime, 10, 10)
+
+    private def drawCelestialBody(g: Graphics2D, celestialBody: CelestialBody, celestialBodyType: CelestialBodyType): Unit =
+      g.setColor(java.awt.Color.WHITE)
+      g.drawString(celestialBody.name, scaleXPosition(celestialBody.position.x), scaleYPosition(celestialBody.position.y))
+      selectCelestialBodyColor(g, celestialBodyType)
+      g.fillOval(
+        scaleXPosition(celestialBody.position.x),
+        scaleYPosition(celestialBody.position.y),
+        scaleXSize(celestialBody.radius),
+        scaleYSize(celestialBody.radius)
+        )
+      g.setColor(java.awt.Color.BLACK)
+      g.drawOval(
+        scaleXPosition(celestialBody.position.x),
+        scaleYPosition(celestialBody.position.y),
+        scaleXSize(celestialBody.radius),
+        scaleYSize(celestialBody.radius)
+        )
+      
+    private def selectCelestialBodyColor(g: Graphics2D, celestialBodyType: CelestialBodyType): Unit =
+      celestialBodyType match
+        case MassiveStar => g.setColor(java.awt.Color.YELLOW)
+        case RedSuperGiant => g.setColor(java.awt.Color.RED)
+        case Supernova => g.setColor(java.awt.Color.BLUE)
+        case BlackHole => g.setColor(java.awt.Color.BLACK)
+        case Planet => g.setColor(java.awt.Color.DARK_GRAY)
+        case Asteroid => g.setColor(java.awt.Color.WHITE)
+        case InterstellarCloud => g.setColor(java.awt.Color.CYAN)
+    
   end SimulationPanel
