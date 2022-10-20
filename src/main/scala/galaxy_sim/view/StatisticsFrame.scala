@@ -14,13 +14,14 @@ trait StatisticsFrame:
   def display(simulation: Simulation): Unit
 
 object StatisticsFrame:
-  def apply(view: View, windowPercentualWidth: Int, windowPercentualHeight: Int): StatisticsFrame =
-    StatisticsFrameImpl(view: View, windowPercentualWidth: Int, windowPercentualHeight: Int)
 
-  private class StatisticsFrameImpl(
-                              view: View,
-                              windowPercentualWidth: Int,
-                              windowPercentualHeight: Int) extends StatisticsFrame :
+  def apply(windowPercentualWidth: Int, windowPercentualHeight: Int): StatisticsFrame =
+    StatisticsFrameImpl(windowPercentualWidth: Int, windowPercentualHeight: Int)
+
+  val pieChart: PieChart = PieChart("Celestial body types")
+
+  private class StatisticsFrameImpl(windowPercentualWidth: Int,
+                                    windowPercentualHeight: Int) extends StatisticsFrame :
     val frameSize: Dimension = Dimension(windowPercentualWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100, windowPercentualHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100)
     val mainFrame: MainFrame = MainFrame()
     val statisticsPanel: StatisticsPanel = StatisticsPanel()
@@ -38,27 +39,15 @@ object StatisticsFrame:
       })
   end StatisticsFrameImpl
 
-  val dataset: DefaultPieDataset[String] = DefaultPieDataset[String]()
-
   private class MainFrame extends JFrame :
-
-    def createPieChartPanel(): ChartPanel =
-      val chart = ChartFactory.createPieChart(
-        "Celestial bodies types",
-        dataset,
-        true,
-        true,
-        false);
-      ChartPanel(chart)
-
-    val mainPanel: ChartPanel = createPieChartPanel()
+    val mainPanel: ChartPanel = pieChart.wrapToPanel
     this.getContentPane.add(mainPanel)
 
   private class StatisticsPanel extends JPanel :
 
     def display(simulation: Simulation): Unit =
-      dataset.clear()
-      Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => dataset.setValue(element._1.toString, element._2))
+      pieChart.clearAllValues()
+      Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.addValue(element._1.toString, element._2))
 
     override def paint(g: Graphics): Unit = ()
 
