@@ -8,7 +8,6 @@ import akka.util.Timeout
 import galaxy_sim.actors.CelestialBodyActor.*
 import galaxy_sim.actors.ControllerActor.ControllerActorCommand
 import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation, emptyGalaxy}
-
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
 
@@ -80,7 +79,6 @@ object SimulationManagerActor:
             Behaviors.stopped
           }
           case IterationStep => {
-            ctx.log.debug(s"Iteration step ${iterationState.head}")
             iterationState.head match
               case Start => celestialBodyActors.foreach(x => x ! UpdateCelestialBodyType(ctx.self))
               case TypeUpdated => celestialBodyActors.foreach(x => x ! MoveToNextPosition(tmpCelestialBodies, ctx.self))

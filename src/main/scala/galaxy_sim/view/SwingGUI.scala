@@ -74,7 +74,7 @@ object SwingGUI:
           RenderingHints.KEY_RENDERING,
           RenderingHints.VALUE_RENDER_QUALITY
         )
-        cleanGraphics2D(g2)
+        cleanPanel(g2)
         drawVirtualTime(g2, x.virtualTime.toString)
         x.galaxy.foreach((k, v) => {
           v.foreach(y => drawCelestialBody(g2, y, k))
@@ -105,7 +105,7 @@ object SwingGUI:
       val sizeOnDisplay = percent * this.getHeight / 100
       Math.round(sizeOnDisplay + this.getHeight / 2).toInt
 
-    private def cleanGraphics2D(g: Graphics2D): Unit = 
+    private def cleanPanel(g: Graphics2D): Unit = 
       g.setColor(java.awt.Color.BLACK)
       g.fillRect(0, 0, this.getWidth, this.getHeight)
 
@@ -123,7 +123,7 @@ object SwingGUI:
         scaleXSize(celestialBody.radius),
         scaleYSize(celestialBody.radius)
         )
-      g.setColor(java.awt.Color.BLACK)
+      g.setColor(java.awt.Color.WHITE)
       g.drawOval(
         scaleXPosition(celestialBody.position.x),
         scaleYPosition(celestialBody.position.y),
