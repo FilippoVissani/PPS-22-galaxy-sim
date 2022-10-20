@@ -11,6 +11,7 @@ import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.Statistics
 import galaxy_sim.view.StatisticsFrame.pieChart
+import org.jfree.chart.ChartPanel
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
@@ -19,12 +20,11 @@ object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
     SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int)
 
-  val pieChart: PieChart = PieChart("Celestial body types")
 
   private class SwingGUIImpl(
-    view: View,
-    windowWidth: Int,
-    windowHeight: Int) extends SwingGUI:
+                              view: View,
+                              windowWidth: Int,
+                              windowHeight: Int) extends SwingGUI:
     val frameSize: Dimension = Dimension(
       windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100
@@ -36,11 +36,18 @@ object SwingGUI:
     val startButton: JButton = JButton("Start Simulation")
     val stopButton: JButton = JButton("Stop Simulation")
 
+    val pieChart: PieChart = PieChart("Celestial body types")
+
+    val pieChartPanel: ChartPanel = pieChart.wrapToPanel
+    pieChartPanel.setPreferredSize(Dimension(
+      25 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
+      50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
+
     startButton.addActionListener((_: ActionEvent) => view.start())
     stopButton.addActionListener((_: ActionEvent) => view.stop())
     controlPanel.add(startButton)
     controlPanel.add(stopButton)
-    controlPanel.add(pieChart.wrapToPanel)
+    controlPanel.add(pieChartPanel)
     mainFrame.addWindowListener(new WindowAdapter {
       override def windowClosing(windowEvent: WindowEvent): Unit =
         System.exit(0)
@@ -55,6 +62,9 @@ object SwingGUI:
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
+        //Update the pie chart
+        pieChart.clearAllValues()
+        Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.addValue(element._1.toString, element._2))
       })
   end SwingGUIImpl
 
@@ -67,10 +77,7 @@ object SwingGUI:
 
     def display(simulation: Simulation): Unit =
       this.simulation = Option(simulation)
-      pieChart.clearAllValues()
-      Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.addValue(element._1.toString, element._2))
       repaint()
-
 
     override def paint(g: Graphics): Unit =
       simulation.foreach(x =>{
@@ -102,7 +109,7 @@ object SwingGUI:
 
     private def scaleYSize(value: Double): Int =
       val percent = value * 100 / simulation.get.bounds.bottomBound
-      Math.round(percent * this.getHeight() / 100).toInt
+      Math.round(percent * this.getHeight / 100).toInt
 
     private def scaleXPosition(value: Double): Int =
       val percent = value * 100 / simulation.get.bounds.rightBound
