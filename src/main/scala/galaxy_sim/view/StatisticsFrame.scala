@@ -4,7 +4,6 @@ import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.StatisticsFrame.StatisticsPanel
 import galaxy_sim.view.View
 import galaxy_sim.utils.Statistics
-
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import java.awt.*
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
@@ -39,7 +38,7 @@ object StatisticsFrame:
       })
   end StatisticsFrameImpl
 
-  val dataset = DefaultPieDataset[String]()
+  val dataset: DefaultPieDataset[String] = DefaultPieDataset[String]()
 
   private class MainFrame extends JFrame :
 
@@ -56,21 +55,12 @@ object StatisticsFrame:
     this.getContentPane.add(mainPanel)
 
   private class StatisticsPanel extends JPanel :
-    //var simulation: Option[Simulation] = Option.empty
 
     def display(simulation: Simulation): Unit =
-      /*this.simulation = Option(simulation)
-      repaint()*/
       dataset.clear()
       Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => dataset.setValue(element._1.toString, element._2))
 
-
-    override def paint(g: Graphics): Unit =
-      ()
-      /*
-      if simulation.isDefined then
-        Statistics.numberOfCelestialBodiesForEachType(simulation.get.galaxy).filter(element => element._2 != 0).foreach(element => dataset.setValue(element._1.toString, element._2))
-      */
+    override def paint(g: Graphics): Unit = ()
 
     override def getPreferredSize: Dimension =
       val d: Dimension = this.getParent.getSize()
