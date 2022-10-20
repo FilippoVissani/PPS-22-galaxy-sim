@@ -70,7 +70,6 @@ object CelestialBodyActor:
     Behaviors.setup[CelestialBodyActorCommand](ctx =>
       Behaviors.receiveMessage[CelestialBodyActorCommand](msg => msg match
         case GetCelestialBodyState(replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          //ctx.log.debug("Received GetCelestialBodyState")
           replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
           Behaviors.same
         }
@@ -82,14 +81,15 @@ object CelestialBodyActor:
           Behaviors.same */
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          val ref = getReference(celestialBody, celestialBodies.values.flatten.toSet)
-          var newCelestialBody = celestialBody.copy()
-          if ref.name != celestialBody.name then
-            newCelestialBody = newCelestialBody.copy(gForceVector = gravitationalForceOnEntity(newCelestialBody, ref))
-            newCelestialBody = newCelestialBody.copy(speedVector = speedVectorAfterTime(newCelestialBody, deltaTime))
-            newCelestialBody = newCelestialBody.copy(position = vectorChangeOfDisplacement(newCelestialBody, deltaTime))
-          replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
-          CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
+          val reference = getReference(celestialBody, celestialBodies.values.flatten.toSet)
+          val newCelestialBody = if celestialBody == reference then celestialBody else Seq(celestialBody)
+            .filter(x => x != reference)
+            .map(x => x.copy(gForceVector = gravitationalForceOnEntity(x, reference)))
+            .map(x => x.copy(speedVector = speedVectorAfterTime(x, deltaTime)))
+            .map(x => x.copy(position = vectorChangeOfDisplacement(x, deltaTime)))
+            .head
+            replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
+            CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
 /*           val reference = computeEntityReference(celestialBody, celestialBodies.values.flatten.toSet)
           val newCelestialBody = if reference.isEmpty then celestialBody else computeNextPosition(celestialBody, reference.get, deltaTime)
           replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
