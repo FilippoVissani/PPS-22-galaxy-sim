@@ -34,7 +34,6 @@ object RootActor:
           Behaviors.stopped
         }
       ).receiveSignal { case (ctx, Terminated(_)) =>
-        ctx.log.debug("Stopping actor system")
         Behaviors.stopped
       }
     )

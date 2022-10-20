@@ -9,17 +9,15 @@ import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
 import galaxy_sim.model.{CelestialBody, Simulation}
-
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
+import galaxy_sim.model.SimulationConfig.frameRate
 
 /** In this object is defined the behaviour of controller actor.
  *
  * The controller actor accepts messages from ViewActor and SimulationManagerActor and converts the commands for the other.
  */
 object ControllerActor:
-  /** Time between two requests of the simulation state. */
-  val frameRate = 33
 
   /** Defines the messages that can be sent to ControllerActor. */
   sealed trait ControllerActorCommand
@@ -70,28 +68,22 @@ object ControllerActor:
           implicit val timeout: Timeout = 1.seconds
           Behaviors.receiveMessage[ControllerActorCommand](msg => msg match
             case Start => {
-              ctx.log.debug("Received Start")
               simulationManagerActor ! StartSimulation
-              timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               Behaviors.same
             }
             case Stop => {
-              ctx.log.debug("Received Stop")
               simulationManagerActor ! StopSimulation
               Behaviors.stopped
             }
             case SetView(viewActor: ActorRef[ViewActorCommand]) => {
-              ctx.log.debug("Received SetView")
+              timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               ControllerActor(Option(viewActor), simulationManagerActor)
             }
             case SimulationStateAdaptedResponse(simulation: Option[Simulation]) => {
-              ctx.log.debug("Received SimulationStateAdaptedResponse")
-              if viewActor.isDefined && simulation.isDefined then
-                viewActor.foreach(x => simulation.foreach(y => x ! Display(y)))
+              viewActor.foreach(x => simulation.foreach(y => x ! Display(y)))
               Behaviors.same
             }
             case Tick => {
-              ctx.log.debug("Received Tick")
               ctx.ask(simulationManagerActor, AskSimulationState.apply){
                 case Success(SimulationStateResponse(simulation)) => SimulationStateAdaptedResponse(Option(simulation))
                 case Failure(_) => SimulationStateAdaptedResponse(Option.empty)

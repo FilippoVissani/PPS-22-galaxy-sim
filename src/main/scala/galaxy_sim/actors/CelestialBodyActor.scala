@@ -111,7 +111,6 @@ object CelestialBodyActor:
           CelestialBodyActor(celestialBody, celestialBodyType, bounds, deltaTime)
         }
         case Kill => {
-          ctx.log.debug("Kill")
           Behaviors.stopped
         }
       )

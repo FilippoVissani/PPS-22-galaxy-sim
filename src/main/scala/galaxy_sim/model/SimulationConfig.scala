@@ -5,11 +5,13 @@ import physics.dynamics.PhysicalEntity
 import physics.{Pair, SpeedVector}
 
 object SimulationConfig:
+  /** Time between two requests of the simulation state. */
+  val frameRate = 33
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
 //  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
   val blackHoleDistance = astronomicUnit * 5
   val deltaTime = daySec
-  val radiusScale = 10e3
+  val radiusScale = 1e4
 
   val moon: CelestialBody =
     CelestialBody(mass = earthMass * 0.0123,
