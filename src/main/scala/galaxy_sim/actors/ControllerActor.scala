@@ -70,28 +70,22 @@ object ControllerActor:
           implicit val timeout: Timeout = 1.seconds
           Behaviors.receiveMessage[ControllerActorCommand](msg => msg match
             case Start => {
-              ctx.log.debug("Received Start")
               simulationManagerActor ! StartSimulation
-              timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               Behaviors.same
             }
             case Stop => {
-              ctx.log.debug("Received Stop")
               simulationManagerActor ! StopSimulation
               Behaviors.stopped
             }
             case SetView(viewActor: ActorRef[ViewActorCommand]) => {
-              ctx.log.debug("Received SetView")
+              timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               ControllerActor(Option(viewActor), simulationManagerActor)
             }
             case SimulationStateAdaptedResponse(simulation: Option[Simulation]) => {
-              ctx.log.debug("Received SimulationStateAdaptedResponse")
-              if viewActor.isDefined && simulation.isDefined then
-                viewActor.foreach(x => simulation.foreach(y => x ! Display(y)))
+              viewActor.foreach(x => simulation.foreach(y => x ! Display(y)))
               Behaviors.same
             }
             case Tick => {
-              ctx.log.debug("Received Tick")
               ctx.ask(simulationManagerActor, AskSimulationState.apply){
                 case Success(SimulationStateResponse(simulation)) => SimulationStateAdaptedResponse(Option(simulation))
                 case Failure(_) => SimulationStateAdaptedResponse(Option.empty)

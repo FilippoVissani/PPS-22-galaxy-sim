@@ -72,7 +72,6 @@ object SimulationManagerActor:
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
         Behaviors.receiveMessage[SimulationManagerActorCommand](msg => msg match
           case StartSimulation => {
-            ctx.log.debug("Start simulation")
             ctx.self ! IterationStep
             Behaviors.same
           }
@@ -96,12 +95,11 @@ object SimulationManagerActor:
               )
           }
           case CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) => {
-            val newCelestialBodies = tmpCelestialBodies.map((k, v) => if k == celestialBodyType then (k, v + celestialBody) else (k, v))
+            val newCelestialBodies = for (k, v) <- tmpCelestialBodies yield(if k == celestialBodyType then (k, v + celestialBody) else (k, v))
             if newCelestialBodies.values.map(x => x.size).sum == celestialBodyActors.size then ctx.self ! IterationStep
             SimulationManagerActor(celestialBodyActors, actualSimulation, iterationState, newCelestialBodies)
           }
           case AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) => {
-            ctx.log.debug("Received AskSimulationState")
             replyTo ! SimulationStateResponse(actualSimulation)
             Behaviors.same
           }
