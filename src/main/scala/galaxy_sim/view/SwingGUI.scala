@@ -32,22 +32,50 @@ object SwingGUI:
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
     val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
-    val controlPanel: JPanel = JPanel()
+    val controlPanel: JPanel = JPanel(GridBagLayout())
     val startButton: JButton = JButton("Start Simulation")
     val stopButton: JButton = JButton("Stop Simulation")
+    startButton.addActionListener((_: ActionEvent) => view.start())
+    stopButton.addActionListener((_: ActionEvent) => view.stop())
 
     val pieChart: PieChart = PieChart("Celestial body types")
-
     val pieChartPanel: ChartPanel = pieChart.wrapToPanel
     pieChartPanel.setPreferredSize(Dimension(
       25 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
 
-    startButton.addActionListener((_: ActionEvent) => view.start())
-    stopButton.addActionListener((_: ActionEvent) => view.stop())
-    controlPanel.add(startButton)
-    controlPanel.add(stopButton)
-    controlPanel.add(pieChartPanel)
+    val gbc: GridBagConstraints = GridBagConstraints()
+
+    // Row 0 - Buttons
+    // Col 0
+    gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    //gbc.insets = new Insets(5, 0, 0, 10);
+    //gbc.anchor = GridBagConstraints.CENTER;
+    controlPanel.add(startButton, gbc);
+
+    // Col 1
+    gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    //gbc.anchor = GridBagConstraints.CENTER;
+    controlPanel.add(stopButton, gbc);
+
+    // Row 1 - Chart
+    // Col 0
+    gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridx = 1;
+    gbc.gridy = 1;
+    //gbc.insets = new Insets(5, 0, 0, 10);
+    //gbc.anchor = GridBagConstraints.CENTER;
+    controlPanel.add(pieChartPanel, gbc);
+
+
+
+    //controlPanel.add(startButton)
+    //controlPanel.add(stopButton)
+    //controlPanel.add(pieChartPanel)
     mainFrame.addWindowListener(new WindowAdapter {
       override def windowClosing(windowEvent: WindowEvent): Unit =
         System.exit(0)
