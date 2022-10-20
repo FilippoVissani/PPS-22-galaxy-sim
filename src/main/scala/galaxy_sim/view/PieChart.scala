@@ -18,10 +18,8 @@ object PieChart:
     new PieChartImpl(title)
 
   private class PieChartImpl(override val title: String) extends PieChart:
-    private val chart = createChart
     private val dataset: DefaultPieDataset[String] = DefaultPieDataset[String]()
-
-    private def createChart: JFreeChart =
+    private val chart: JFreeChart =
       ChartFactory.createPieChart(
         title,
         dataset,
