@@ -3,6 +3,7 @@ package galaxy_sim.view
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.StatisticsFrame.StatisticsPanel
 import galaxy_sim.view.View
+import galaxy_sim.utils.Statistics
 
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import java.awt.*
@@ -38,47 +39,42 @@ object StatisticsFrame:
       })
   end StatisticsFrameImpl
 
-  private class MainFrame extends JFrame :
-    def createPieChartPanel(): ChartPanel =
-      val dataset = DefaultPieDataset[String]()
-      dataset.setValue("IPhone 5s", 5.0)
-      dataset.setValue("SamSung Grand", 20.0)
+  val dataset = DefaultPieDataset[String]()
 
+  private class MainFrame extends JFrame :
+
+    def createPieChartPanel(): ChartPanel =
       val chart = ChartFactory.createPieChart(
-        "Mobile Sales", // chart title
-        dataset, // data
-        true, // include legend
+        "Celestial bodies types",
+        dataset,
+        true,
         true,
         false);
-
-      chart.setBackgroundPaint(new GradientPaint(new Point(0, 0),
-        new Color(20, 20, 20), new Point(400, 200), Color.DARK_GRAY));
-
       ChartPanel(chart)
 
-    val mainPanel = createPieChartPanel()
-
+    val mainPanel: ChartPanel = createPieChartPanel()
     this.getContentPane.add(mainPanel)
 
   private class StatisticsPanel extends JPanel :
-    var simulation: Option[Simulation] = Option.empty
+    //var simulation: Option[Simulation] = Option.empty
 
     def display(simulation: Simulation): Unit =
-      this.simulation = Option(simulation)
-      //repaint()
+      /*this.simulation = Option(simulation)
+      repaint()*/
+      Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => dataset.setValue(element._1.toString, element._2))
+
 
     override def paint(g: Graphics): Unit =
-      if simulation.isDefined then ???
-
+      ()
+      /*
+      if simulation.isDefined then
+        Statistics.numberOfCelestialBodiesForEachType(simulation.get.galaxy).filter(element => element._2 != 0).foreach(element => dataset.setValue(element._1.toString, element._2))
+      */
 
     override def getPreferredSize: Dimension =
       val d: Dimension = this.getParent.getSize()
       var newSize: Int = if d.width > d.height then d.height else d.width
       newSize = if newSize == 0 then 100 else newSize
       Dimension(newSize, newSize)
-
-
-
-
 
   end StatisticsPanel
