@@ -8,7 +8,7 @@ object SimulationConfig:
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
 //  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
   val blackHoleDistance = astronomicUnit * 5
-  val deltaTime = 10e-9
+  val deltaTime = daySec
   val radiusScale = 10e3
 
   val moon: CelestialBody =
