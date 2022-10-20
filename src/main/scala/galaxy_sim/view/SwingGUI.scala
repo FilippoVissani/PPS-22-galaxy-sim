@@ -3,11 +3,14 @@ package galaxy_sim.view
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import physics.dynamics.GravitationLaws.astronomicUnit
+
 import java.awt.*
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.utils.Statistics
+import galaxy_sim.view.StatisticsFrame.pieChart
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
@@ -15,6 +18,8 @@ trait SwingGUI:
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
     SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int)
+
+  val pieChart: PieChart = PieChart("Celestial body types")
 
   private class SwingGUIImpl(
     view: View,
@@ -35,6 +40,7 @@ object SwingGUI:
     stopButton.addActionListener((_: ActionEvent) => view.stop())
     controlPanel.add(startButton)
     controlPanel.add(stopButton)
+    controlPanel.add(pieChart.wrapToPanel)
     mainFrame.addWindowListener(new WindowAdapter {
       override def windowClosing(windowEvent: WindowEvent): Unit =
         System.exit(0)
@@ -61,7 +67,10 @@ object SwingGUI:
 
     def display(simulation: Simulation): Unit =
       this.simulation = Option(simulation)
+      pieChart.clearAllValues()
+      Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.addValue(element._1.toString, element._2))
       repaint()
+
 
     override def paint(g: Graphics): Unit =
       simulation.foreach(x =>{
