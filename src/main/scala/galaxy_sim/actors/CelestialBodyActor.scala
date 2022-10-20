@@ -76,8 +76,6 @@ object CelestialBodyActor:
           val result = Lifecycle.entityOneStep(celestialBody, celestialBodyType)
           replyTo ! CelestialBodyState(result._1, result._2)
           CelestialBodyActor(result._1, result._2, bounds, deltaTime)
-          /* replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
-          Behaviors.same */
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val reference = getReference(celestialBody, celestialBodies.values.flatten.toSet)
@@ -86,6 +84,7 @@ object CelestialBodyActor:
             .map(x => x.copy(gForceVector = gravitationalForceOnEntity(x, reference)))
             .map(x => x.copy(speedVector = speedVectorAfterTime(x, deltaTime)))
             .map(x => x.copy(position = vectorChangeOfDisplacement(x, deltaTime)))
+            .map(x => x.copy(position = bounds.toToroidal(x.position)))
             .head
             replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
             CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)

@@ -5,7 +5,7 @@ import galaxy_sim.model.CelestialBodyType.{BlackHole, InterstellarCloud, Massive
 import physics.collisions.CollisionDetection.CollisionChecker
 import physics.collisions.CollisionDetection.CollisionCheckers.given
 import physics.collisions.CollisionSolving.CollisionSolver
-import physics.collisions.rigidbody.RigidBody.CircularEntity
+import physics.rigidbody.RigidBody.CircularEntity
 
 object SimulationGivens:
 
