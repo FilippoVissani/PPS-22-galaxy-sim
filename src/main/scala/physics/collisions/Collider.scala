@@ -19,8 +19,8 @@ object Collider extends App:
       c.flatMap(a => Collider(f(a)))
     def filter(f: A => Boolean): Collider[A] =
       c.flatMap(a => if f(a) then Collider(a) else None())
-    def foreach(f: A => Unit): Collider[A] =
-      c.map(a => { f(a) ; a })
+    def foreach[U](f: A => U): Unit =
+      c.map(a => { f(a) ; a } )
 
   object Collider:
     def apply[A](a: A): Collider[A] = Collider.Some(a)
@@ -29,8 +29,15 @@ object Collider extends App:
       c.filter(a => f(a, other))
     def solve[A, B, C](c: Collider[A], other: B)(f: (A, B) => Boolean)(g: (A, B) => C): Collider[C] =
       check(c, other)(f).map(a => g(a, other))
+
+    /** Checks the collision against every element */
     def checkMany[A, B](c: Collider[A], others: B*)(using f: CollisionChecker[A, B]): Collider[A] =
       others.foldLeft(c)((acc, b) => check(acc, b)(f.check))
+
+    //creare una funzione che applica in cascata n collisioni: risultato o collider nuovo o se stesso
+
+    def isEmpty[A](c: Collider[A]): Boolean = c equals None()
+
     def get[A](c: Collider[A]): A = c match
       case Some(a) => a
       case None() => throw Exception()
@@ -42,4 +49,4 @@ object Collider extends App:
       @targetName("solve")
       def ><[B, C](other: B)(using col: CollisionChecker[A, B])(using sol: CollisionSolver[A, B, C]): Collider[C] =
         solve(c, other)(col.check)(sol.solve)
-      def subject(): A = get(c)
+      def subject: A = get(c)
