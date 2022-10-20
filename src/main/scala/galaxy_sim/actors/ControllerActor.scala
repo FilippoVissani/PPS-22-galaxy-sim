@@ -9,17 +9,15 @@ import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
 import galaxy_sim.model.{CelestialBody, Simulation}
-
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
+import galaxy_sim.model.SimulationConfig.frameRate
 
 /** In this object is defined the behaviour of controller actor.
  *
  * The controller actor accepts messages from ViewActor and SimulationManagerActor and converts the commands for the other.
  */
 object ControllerActor:
-  /** Time between two requests of the simulation state. */
-  val frameRate = 33
 
   /** Defines the messages that can be sent to ControllerActor. */
   sealed trait ControllerActorCommand

@@ -10,6 +10,7 @@ import galaxy_sim.actors.ControllerActor.ControllerActorCommand
 import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation, emptyGalaxy}
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
+import galaxy_sim.model.SimulationConfig.frameRate
 
 /** In this object is defined the behaviour of simulation manager actor.
  *
@@ -52,6 +53,8 @@ object SimulationManagerActor:
   sealed trait IterationState
   /** Start a new iteration. */
   case object Start extends IterationState
+  /** Timer is ticked. */
+  case object TimerTicked extends IterationState
   /** Celestial body stats are updated. */
   case object TypeUpdated extends IterationState
   /** The position of the celestial bodies is updated. */
@@ -66,40 +69,44 @@ object SimulationManagerActor:
    */
   def apply(celestialBodyActors: Set[ActorRef[CelestialBodyActorCommand]],
             actualSimulation: Simulation,
-            iterationState: Seq[IterationState] = Seq(Start, TypeUpdated, PositionsUpdated),
-            tmpCelestialBodies: Map[CelestialBodyType, Set[CelestialBody]] = emptyGalaxy): Behavior[SimulationManagerActorCommand] =
+            iterationState: Seq[IterationState] = Seq(Start, TimerTicked, TypeUpdated, PositionsUpdated),
+            tmpGalaxy: Map[CelestialBodyType, Set[CelestialBody]] = emptyGalaxy): Behavior[SimulationManagerActorCommand] =
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
-        Behaviors.receiveMessage[SimulationManagerActorCommand](msg => msg match
-          case StartSimulation => {
-            ctx.self ! IterationStep
-            Behaviors.same
-          }
-          case StopSimulation => {
-            celestialBodyActors.foreach(x => x ! Kill)
-            Behaviors.stopped
-          }
-          case IterationStep => {
-            iterationState.head match
-              case Start => celestialBodyActors.foreach(x => x ! UpdateCelestialBodyType(ctx.self))
-              case TypeUpdated => celestialBodyActors.foreach(x => x ! MoveToNextPosition(tmpCelestialBodies, ctx.self))
-              case PositionsUpdated => celestialBodyActors.foreach(x => x ! SolveCollisions(tmpCelestialBodies, ctx.self))
-            val newVirtualTime = iterationState.head match
-              case Start => actualSimulation.virtualTime + actualSimulation.deltaTime
-              case _ => actualSimulation.virtualTime
-            SimulationManagerActor(
-              celestialBodyActors,
-              actualSimulation.copy(galaxy = tmpCelestialBodies, virtualTime = newVirtualTime),
-              iterationState.tail :+ iterationState.head,
-              )
-          }
-          case CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) => {
-            val newCelestialBodies = for (k, v) <- tmpCelestialBodies yield(if k == celestialBodyType then (k, v + celestialBody) else (k, v))
-            if newCelestialBodies.values.map(x => x.size).sum == celestialBodyActors.size then ctx.self ! IterationStep
-            SimulationManagerActor(celestialBodyActors, actualSimulation, iterationState, newCelestialBodies)
-          }
-          case AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) => {
-            replyTo ! SimulationStateResponse(actualSimulation)
-            Behaviors.same
-          }
+        Behaviors.withTimers(timer => 
+          Behaviors.receiveMessage[SimulationManagerActorCommand](msg => msg match
+            case StartSimulation => {
+              ctx.self ! IterationStep
+              Behaviors.same
+            }
+            case StopSimulation => {
+              celestialBodyActors.foreach(x => x ! Kill)
+              Behaviors.stopped
+            }
+            case IterationStep => {
+              iterationState.head match
+                case Start => timer.startSingleTimer(IterationStep, frameRate.milliseconds)
+                case TimerTicked => celestialBodyActors.foreach(x => x ! UpdateCelestialBodyType(ctx.self))
+                case TypeUpdated => celestialBodyActors.foreach(x => x ! MoveToNextPosition(tmpGalaxy, ctx.self))
+                case PositionsUpdated => celestialBodyActors.foreach(x => x ! SolveCollisions(tmpGalaxy, ctx.self))
+              val newVirtualTime = iterationState.head match
+                case Start => actualSimulation.virtualTime + actualSimulation.deltaTime
+                case _ => actualSimulation.virtualTime
+              val newGalaxy = if tmpGalaxy.values.flatten.isEmpty then actualSimulation.galaxy else tmpGalaxy
+              SimulationManagerActor(
+                celestialBodyActors,
+                actualSimulation.copy(galaxy = newGalaxy, virtualTime = newVirtualTime),
+                iterationState.tail :+ iterationState.head,
+                )
+            }
+            case CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) => {
+              val newCelestialBodies = for (k, v) <- tmpGalaxy yield(if k == celestialBodyType then (k, v + celestialBody) else (k, v))
+              if newCelestialBodies.values.map(x => x.size).sum == celestialBodyActors.size then ctx.self ! IterationStep
+              SimulationManagerActor(celestialBodyActors, actualSimulation, iterationState, newCelestialBodies)
+            }
+            case AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) => {
+              replyTo ! SimulationStateResponse(actualSimulation)
+              Behaviors.same
+            }
+          )
         )
       )
