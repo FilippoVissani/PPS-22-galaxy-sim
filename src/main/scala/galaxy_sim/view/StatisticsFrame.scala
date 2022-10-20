@@ -61,6 +61,7 @@ object StatisticsFrame:
     def display(simulation: Simulation): Unit =
       /*this.simulation = Option(simulation)
       repaint()*/
+      dataset.clear()
       Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => dataset.setValue(element._1.toString, element._2))
 
 
