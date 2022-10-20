@@ -48,24 +48,25 @@ object SwingGUI:
 
     // Row 0 - Buttons
     // Col 0
-    gbc.fill = GridBagConstraints.HORIZONTAL
+    //gbc.fill = GridBagConstraints.HORIZONTAL
     gbc.gridx = 0;
     gbc.gridy = 0;
     //gbc.insets = new Insets(5, 0, 0, 10);
-    //gbc.anchor = GridBagConstraints.CENTER;
+    gbc.anchor = GridBagConstraints.LINE_END
     controlPanel.add(startButton, gbc);
 
     // Col 1
-    gbc.fill = GridBagConstraints.HORIZONTAL
-    gbc.gridx = 2;
+    //gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridx = 1;
     gbc.gridy = 0;
-    //gbc.anchor = GridBagConstraints.CENTER;
+    gbc.anchor = GridBagConstraints.LINE_START;
     controlPanel.add(stopButton, gbc);
 
     // Row 1 - Chart
     // Col 0
     gbc.fill = GridBagConstraints.HORIZONTAL
-    gbc.gridx = 1;
+    gbc.gridwidth = 2;
+    gbc.gridx = 0;
     gbc.gridy = 1;
     //gbc.insets = new Insets(5, 0, 0, 10);
     //gbc.anchor = GridBagConstraints.CENTER;
