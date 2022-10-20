@@ -8,9 +8,28 @@ import org.jfree.data.general.DefaultPieDataset
  * Scala facade for the JFreeChart Pie Chart
  */
 trait PieChart:
+  /**
+   * Wrap the chart to a Panel
+   * @return the panel
+   */
   def wrapToPanel: ChartPanel
+
+  /**
+   * The title of the chart
+   * @return the title
+   */
   def title: String
+
+  /**
+   * Add a value to the dataset
+   * @param key key parameter
+   * @param value value parameter
+   */
   def addValue(key: String, value: Double): Unit
+
+  /**
+   * Delete all values from the dataset
+   */
   def clearAllValues(): Unit
 
 object PieChart:
