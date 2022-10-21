@@ -29,7 +29,7 @@ object SimulationConfig:
       aphelionSpeed = 0,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 50000),
-      position = Pair(0, 0),
+      position = Pair(astronomicUnit * 3 / 2, astronomicUnit * 3 / 2),
       name = "Sun",
       radius = 695_508 * radiusScale,
       temperature = 1100)
@@ -40,7 +40,7 @@ object SimulationConfig:
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(1, 29290),
-      position = Pair(astronomicUnit * 1.0167, 0),
+      position = Pair(sun.position.x + astronomicUnit * 1.0167, sun.position.y + 0),
       name = "Earth",
       radius = 695_508 * radiusScale,
       temperature = 150)
@@ -50,7 +50,7 @@ object SimulationConfig:
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(-1, 29290),
-      position = Pair(-astronomicUnit * 1.0167, 0),
+      position = Pair(sun.position.x - astronomicUnit * 1.0167, sun.position.y + 0),
       name = "Earth",
       radius = 695_508 * radiusScale,
       temperature = 150)

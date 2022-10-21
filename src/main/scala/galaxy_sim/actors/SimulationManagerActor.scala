@@ -11,6 +11,7 @@ import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation, emptyGala
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
 import galaxy_sim.model.SimulationConfig.frameRate
+import galaxy_sim.actors.SimulationManagerActor.IterationState.*
 
 /** In this object is defined the behaviour of simulation manager actor.
  *
@@ -50,15 +51,15 @@ object SimulationManagerActor:
   case class SimulationStateResponse(simulation: Simulation)
 
   /** Defines the steps in an iteration. */
-  sealed trait IterationState
-  /** Start a new iteration. */
-  case object Start extends IterationState
-  /** Timer is ticked. */
-  case object TimerTicked extends IterationState
-  /** Celestial body stats are updated. */
-  case object TypeUpdated extends IterationState
-  /** The position of the celestial bodies is updated. */
-  case object PositionsUpdated extends IterationState
+  enum IterationState:
+    /** Start a new iteration. */
+    case Start
+    /** Timer is ticked. */
+    case TimerTicked
+    /** Celestial body stats are updated. */
+    case TypeUpdated
+    /** The position of the celestial bodies is updated. */
+    case PositionsUpdated
 
   /** Creates a SimulationManagerActor.
    *
@@ -69,7 +70,7 @@ object SimulationManagerActor:
    */
   def apply(celestialBodyActors: Set[ActorRef[CelestialBodyActorCommand]],
             actualSimulation: Simulation,
-            iterationState: Seq[IterationState] = Seq(Start, TimerTicked, TypeUpdated, PositionsUpdated),
+            iterationState: Seq[IterationState] = IterationState.values.toSeq,
             tmpGalaxy: Map[CelestialBodyType, Set[CelestialBody]] = emptyGalaxy): Behavior[SimulationManagerActorCommand] =
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
         Behaviors.withTimers(timer => 
