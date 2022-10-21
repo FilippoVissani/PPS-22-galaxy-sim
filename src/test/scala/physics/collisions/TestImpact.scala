@@ -4,7 +4,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 import physics.{Pair, Position}
 import physics.collisions.CollisionMockups.*
 import physics.collisions.CollisionMockups.given
-import physics.collisions.Collider.Collider.*
 import physics.collisions.syntax.CollisionSyntax.*
 
 class TestImpact extends AnyFlatSpec:
