@@ -1,21 +1,26 @@
 package physics.collisions
 
-import physics.collisions.Collision.Collision
-import physics.collisions.instances.CollisionInstances
+import physics.collisions.Impact.Impact
+import physics.collisions.Intersection.Intersection
+import physics.collisions.instances.IntersectionInstances
 import physics.{Pair, Position}
 import physics.rigidbody.CollisionBoxes.*
-import physics.collisions.instances.CollisionInstances.given
+import physics.collisions.instances.IntersectionInstances.given
 
 object CollisionMockups:
   trait SphericalEntity:
     val origin: Position
     val radius: Double
     def collisionBox: CircleCollisionBox = CircleCollisionBox(origin, radius)
-    
-  case class Nebula(origin: Position, radius: Double, mass: Double) extends SphericalEntity
+
   case class Star(origin: Position, radius: Double, mass: Double) extends SphericalEntity
 
-  given StarCollision: Collision[Star] =
-    Collision.from[Star](
-      (s, n) => CollisionInstances.CircleToCircleCollision.collisionFun(s.collisionBox, n.collisionBox)
-    )((s, n) => s.copy(mass = s.mass + n.mass / 1.5))
+  given StarCollision: Intersection[Star] =
+    Intersection.from(
+      (s, n) => IntersectionInstances.CircleToCircleCollision.collides(s.collisionBox, n.collisionBox)
+    )
+
+  given StarImpact: Impact[Star] =
+    Impact.from(
+      (s1, s2) => s1.copy(mass = s1.mass + s2.mass / 1.5)
+    )

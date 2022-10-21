@@ -3,11 +3,12 @@ package physics.collisions
 import org.scalatest.featurespec.AnyFeatureSpec
 import org.scalatest.{GivenWhenThen, stats}
 import physics.Pair
-import physics.collisions.Collision.Collision
 import physics.rigidbody.CollisionBoxes.CircleCollisionBox
-import physics.collisions.instances.CollisionInstances.given
-import physics.collisions.CollisionMockups.{Nebula, Star}
+import physics.collisions.instances.IntersectionInstances.given
+import physics.collisions.CollisionMockups.Star
 import physics.collisions.CollisionMockups.given
+import physics.collisions.Collision.CollisionEngine.*
+import physics.collisions.Intersection.Intersection
 
 class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
 
@@ -20,7 +21,7 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       val c1 = CircleCollisionBox(Pair(0,0), 2)
       val c2 = CircleCollisionBox(Pair(1,1), 0.5)
       When("I try to detect a collision between them")
-      val collision = Collision.collides(c1, c2)
+      val collision = computeCollision(c1, c2)
       Then("I'm able to check that it is in place")
       assert(collision)
     }
@@ -30,7 +31,7 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       val c1 = CircleCollisionBox(Pair(0,0), 0.1)
       val c2 = CircleCollisionBox(Pair(1,1), 0.5)
       When("I try to detect a collision between them")
-      val collision = Collision.collides(c1, c2)
+      val collision = computeCollision(c1, c2)
       Then("I'm able to check that it is not in place")
       assert(!collision)
     }
@@ -39,12 +40,12 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       Given("Two colliding entities")
       val star = Star(Pair(0,0), 2, 100)
       val star1 = Star(Pair(1, 1), 0.5, 10)
-      val collision = Collision.collides(star, star1)
+      val collision = computeCollision(star, star1)
       assert(collision)
       When("They move out of collision scope")
       val star2 = star1.copy(origin = Pair(3,3))
       Then("The collision is no more detected")
-      val newCollision = Collision.collides(star, star2)
+      val newCollision = computeCollision(star, star2)
       assert(! newCollision)
     }
 
@@ -52,12 +53,12 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       Given("Two entities that aren't colliding")
       val star = Star(Pair(0, 0), 2, 100)
       val star1 = Star(Pair(3, 3), 0.5, 10)
-      val collision = Collision.collides(star, star1)
+      val collision = computeCollision(star, star1)
       assert(!collision)
       When("They enter collision scope")
       val star2 = star1.copy(origin = Pair(1,1))
       Then("The collision is detected")
-      val newCollision = Collision.collides(star, star2)
+      val newCollision = computeCollision(star, star2)
       assert(newCollision)
     }
   }
@@ -73,7 +74,7 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       val star1 = Star(Pair(0, 0), 2, 100)
       val star2 = Star(Pair(1, 2), 10, 1)
       When("I solve the collision")
-      val res = star1 impactWith star2
+      val res = computeImpact(star1, star2)
       Then("I can see the result of the collision")
       assert(res == Star(Pair(0.0,0.0),2.0,100.66666666666667))
     }
