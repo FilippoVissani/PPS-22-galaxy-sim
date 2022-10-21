@@ -5,22 +5,22 @@ import physics.collisions.Collision
 
 import scala.annotation.targetName
 
-trait Collision[A, B]:
-  def collisionFun: (A, B) => Boolean
-  def impactFun: (A, B) => A
-  def impact(a: A, b: B): A  =
-    if collisionFun(a, b) then impactFun(a, b) else a
+trait Collision[A]:
+  def collisionFun: (A, A) => Boolean
+  def impactFun: (A, A) => A
+  def impact(a1: A, a2: A): A  =
+    if collisionFun(a1, a2) then impactFun(a1, a2) else a1
 
 object Collision:
-  def from[A, B](f: (A, B) => Boolean)(g: (A, B) => A): Collision[A, B] = new Collision[A, B]:
-    override def impactFun: (A, B) => A = g
-    override def collisionFun: (A, B) => Boolean = f
+  def from[A](f: (A, A) => Boolean)(g: (A, A) => A): Collision[A] = new Collision[A]:
+    override def impactFun: (A, A) => A = g
+    override def collisionFun: (A, A) => Boolean = f
 
-  def collides[A, B](a: A, b: B)(using col: Collision[A, B]): Boolean =
-    col.collisionFun(a, b)
+  def collides[A](a1: A, a2: A)(using col: Collision[A]): Boolean =
+    col.collisionFun(a1, a2)
 
-  def impact[A, B](a: A, b: B)(using col: Collision[A, B]): A =
-    col.impact(a, b)
+  def impact[A](a1: A, a2: A)(using col: Collision[A]): A =
+    col.impact(a1, a2)
 
-  def impactMany[A, B](a: A, others: Seq[B])(using col: Collision[A, B]): A =
-    others.foldLeft(a)((acc, b) => impact(acc, b))
+  def impactMany[A](a: A, others: Seq[A])(using col: Collision[A]): A =
+    others.foldLeft(a)((acc, a1) => impact(acc, a1))

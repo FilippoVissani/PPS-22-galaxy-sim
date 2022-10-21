@@ -7,8 +7,8 @@ object CollisionSyntax:
   import Collision.*
 
   extension [A](a: A)
-    def collidesWith[B](b: B)(using col: Collision[A, B]): Boolean =
+    def collidesWith(b: A)(using col: Collision[A]): Boolean =
       collides(a, b)
 
-    def impactWith[B](other: B)(using col: Collision[A, B]): A =
+    def impactWith(other: A)(using col: Collision[A]): A =
       impact(a, other)

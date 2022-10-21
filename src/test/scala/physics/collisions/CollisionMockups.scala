@@ -15,7 +15,7 @@ object CollisionMockups:
   case class Nebula(origin: Position, radius: Double, mass: Double) extends SphericalEntity
   case class Star(origin: Position, radius: Double, mass: Double) extends SphericalEntity
 
-  given StarNebulaCollision: Collision[Star, Nebula] =
-    Collision.from[Star, Nebula](
+  given StarCollision: Collision[Star] =
+    Collision.from[Star](
       (s, n) => CollisionInstances.CircleToCircleCollision.collisionFun(s.collisionBox, n.collisionBox)
     )((s, n) => s.copy(mass = s.mass + n.mass / 1.5))

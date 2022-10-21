@@ -38,26 +38,26 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
     Scenario("Two entities that previously where colliding are distancing themselves") {
       Given("Two colliding entities")
       val star = Star(Pair(0,0), 2, 100)
-      val nebula = Nebula(Pair(1, 1), 0.5, 10)
-      val collision = Collision.collides(star, nebula)
+      val star1 = Star(Pair(1, 1), 0.5, 10)
+      val collision = Collision.collides(star, star1)
       assert(collision)
       When("They move out of collision scope")
-      val newNebula = nebula.copy(origin = Pair(3,3))
+      val star2 = star1.copy(origin = Pair(3,3))
       Then("The collision is no more detected")
-      val newCollision = Collision.collides(star, newNebula)
+      val newCollision = Collision.collides(star, star2)
       assert(! newCollision)
     }
 
     Scenario("Two entities that weren't colliding are coming close enough") {
       Given("Two entities that aren't colliding")
       val star = Star(Pair(0, 0), 2, 100)
-      val nebula = Nebula(Pair(3, 3), 0.5, 10)
-      val collision = Collision.collides(star, nebula)
+      val star1 = Star(Pair(3, 3), 0.5, 10)
+      val collision = Collision.collides(star, star1)
       assert(!collision)
       When("They enter collision scope")
-      val newNebula = nebula.copy(origin = Pair(1,1))
+      val star2 = star1.copy(origin = Pair(1,1))
       Then("The collision is detected")
-      val newCollision = Collision.collides(star, newNebula)
+      val newCollision = Collision.collides(star, star2)
       assert(newCollision)
     }
   }
@@ -70,10 +70,10 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
     import physics.collisions.syntax.CollisionSyntax.*
     Scenario("Two entities are colliding") {
       Given("Two colliding entities")
-      val star = Star(Pair(0, 0), 2, 100)
-      val nebula = Nebula(Pair(1, 2), 10, 1)
+      val star1 = Star(Pair(0, 0), 2, 100)
+      val star2 = Star(Pair(1, 2), 10, 1)
       When("I solve the collision")
-      val res = star impactWith nebula
+      val res = star1 impactWith star2
       Then("I can see the result of the collision")
       assert(res == Star(Pair(0.0,0.0),2.0,100.66666666666667))
     }
