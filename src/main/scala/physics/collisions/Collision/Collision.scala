@@ -22,5 +22,5 @@ object Collision:
   def impact[A, B](a: A, b: B)(using col: Collision[A, B]): A =
     col.impact(a, b)
 
-  def impactMany[A, B](a: A, others: B*)(using col: Collision[A, B]): A =
+  def impactMany[A, B](a: A, others: Seq[B])(using col: Collision[A, B]): A =
     others.foldLeft(a)((acc, b) => impact(acc, b))
