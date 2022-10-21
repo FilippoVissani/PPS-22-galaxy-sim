@@ -26,11 +26,11 @@ trait Boundary:
   def toToroidal(position: Pair[Double, Double]): Pair[Double, Double] = 
     val x = position match
       case Pair(x, _) if x < leftBound => rightBound
-      case Pair(x, _) if x >= rightBound => leftBound
+      case Pair(x, _) if x > rightBound => leftBound
       case _ => position.x
     val y = position match
       case Pair(_, y) if y < topBound => bottomBound
-      case Pair(_, y) if y >= bottomBound => topBound
+      case Pair(_, y) if y > bottomBound => topBound
       case _ => position.y
     Pair(x, y)
 
@@ -47,7 +47,8 @@ object Boundary:
   def apply(leftBound: Bound, rightBound: Bound, topBound: Bound, bottomBound: Bound): Boundary =
     BoundaryImpl(leftBound, rightBound, topBound, bottomBound)
 
-  private case class BoundaryImpl(override val leftBound: Bound,
-                          override val rightBound: Bound,
-                          override val topBound: Bound,
-                          override val bottomBound: Bound) extends Boundary
+  private case class BoundaryImpl(
+    override val leftBound: Bound,
+    override val rightBound: Bound,
+    override val topBound: Bound,
+    override val bottomBound: Bound) extends Boundary
