@@ -28,6 +28,13 @@ class SimulationManagerActorTest extends AnyFunSuite:
     testKit.returnedBehavior shouldBe Behaviors.stopped
   }
 
+  test("IterationStep"){
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
+    testKit.run(IterationStep)
+    assert(testKit.returnedBehavior == testKit.currentBehavior)
+  }
+
   test("CelestialBodyState"){
     val celestialBody = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(sun)), bounds, 0, deltaTime)))
