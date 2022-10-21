@@ -5,6 +5,8 @@ import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.prolog.EntityIdentifierProlog
 import physics.*
 import physics.rigidbody.RigidBody.CircularEntity
+import galaxy_sim.model.SimulationConfig.*
+import physics.dynamics.GravitationLaws.astronomicUnit
 
 /** Defines type aliases used in CelestialBody. */
 object CelestialBodyAliases:
@@ -32,8 +34,7 @@ case class CelestialBody(override val mass: Mass,
                          birthTime: Double = 0,
                          radius: Radius,
                          temperature: Temperature,
-                         ) extends CircularEntity:
-  def typeOf: CelestialBodyType = EntityIdentifierProlog().checkEntityType(mass, temperature)
+                         ) extends CircularEntity
 
 /** Defines possible types for a celestial body. */
 enum CelestialBodyType:

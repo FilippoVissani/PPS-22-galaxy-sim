@@ -8,10 +8,11 @@ import galaxy_sim.model.SimulationConfig.*
 import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Lifecycle}
 import galaxy_sim.utils.EntityReferenceDetector.*
 import galaxy_sim.utils.EntityReferenceDetectors.given
-import galaxy_sim.utils.SimulationGivens.given
-import physics.collisions.Collider.*
 import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 import physics.dynamics.GravitationLaws.*
+import physics.collisions.Collision.Collision
+import galaxy_sim.utils.SimulationGivens.given
+import galaxy_sim.model.CelestialBodyType.*
 
 /** In this object is defined the behaviour of celestial body actor.
  *
@@ -87,26 +88,13 @@ object CelestialBodyActor:
             .head
             replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
             CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
-/*           val reference = computeEntityReference(celestialBody, celestialBodies.values.flatten.toSet)
-          val newCelestialBody = if reference.isEmpty then celestialBody else computeNextPosition(celestialBody, reference.get, deltaTime)
-          replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
-          CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime) */
         }
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-/*           ctx.log.debug(celestialBody.name + " " + celestialBodies
-          .values
-          .flatten
-          .filter(x => x != celestialBody)
-          .map(x => (x.radius + celestialBody.radius, x.position <-> celestialBody.position)).toString())
-          val newCelestialBody = celestialBodies
-          .values
-          .flatten
-          .filter(x => x != celestialBody)
-          .map(x => Collider(celestialBody) >< x)
-          .filter(x => x != Collider.None)
-          .count(x => x != Collider.None()) > 0 then celestialBody.copy(name = "Collided") else celestialBody */
-          replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
-          CelestialBodyActor(celestialBody, celestialBodyType, bounds, deltaTime)
+          val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
+          val newCelestialBody = Collision.impactMany(celestialBody, others.toSeq)
+          //val collisionResult = transform(celestialBodyType, Collision.impactMany(celestialBody, others.toSeq))
+          replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
+          CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
         }
         case Kill => {
           Behaviors.stopped
