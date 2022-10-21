@@ -5,7 +5,7 @@ import org.scalatest.matchers.should.Matchers
 import physics.Pair
 import physics.rigidbody.CollisionBoxes.{CircleCollisionBox, CollisionBox}
 import physics.collisions.instances.IntersectionInstances.given
-import physics.collisions.Collision.CollisionEngine.*
+import physics.collisions.collision.CollisionEngine.*
 import physics.collisions.syntax.CollisionSyntax.*
 
 class TestIntersection extends AnyFlatSpec:

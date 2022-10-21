@@ -1,6 +1,6 @@
 package physics.collisions.instances
 
-import physics.collisions.Impact.Impact
+import physics.collisions.impact.Impact
 
 /** Contains implementations of [[Impact]] for some basic types. */
 object ImpactInstances:

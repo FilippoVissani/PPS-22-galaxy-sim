@@ -1,7 +1,7 @@
 package physics.collisions.monads
 
-import physics.collisions.Impact.Impact
-import physics.collisions.Intersection.Intersection
+import physics.collisions.impact.Impact
+import physics.collisions.intersection.Intersection
 import physics.collisions.syntax.CollisionSyntax.*
 
 object ColliderMonad:

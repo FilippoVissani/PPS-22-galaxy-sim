@@ -1,7 +1,7 @@
-package physics.collisions.Collision
+package physics.collisions.collision
 
-import physics.collisions.Impact.Impact
-import physics.collisions.Intersection.Intersection
+import physics.collisions.impact.Impact
+import physics.collisions.intersection.Intersection
 
 /** Provides an access point for the Collision API, reuniting [[Intersection]] and [[Impact]] with a facade. */
 object CollisionEngine:

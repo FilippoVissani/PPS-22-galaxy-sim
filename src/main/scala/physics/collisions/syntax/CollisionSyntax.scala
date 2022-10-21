@@ -1,8 +1,8 @@
 package physics.collisions.syntax
 
-import physics.collisions.Collision.CollisionEngine.*
-import physics.collisions.Impact.Impact
-import physics.collisions.Intersection.Intersection
+import physics.collisions.collision.CollisionEngine.*
+import physics.collisions.impact.Impact
+import physics.collisions.intersection.Intersection
 
 import scala.annotation.targetName
 

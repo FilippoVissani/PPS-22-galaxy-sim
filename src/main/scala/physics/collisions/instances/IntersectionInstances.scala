@@ -1,6 +1,6 @@
 package physics.collisions.instances
 
-import physics.collisions.Intersection.Intersection
+import physics.collisions.intersection.Intersection
 import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 
 /** Contains implementations of [[Intersection]] for some base types. */

@@ -7,8 +7,8 @@ import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 import physics.collisions.instances.IntersectionInstances.given
 import physics.collisions.CollisionMockups.Star
 import physics.collisions.CollisionMockups.given
-import physics.collisions.Collision.CollisionEngine.*
-import physics.collisions.Intersection.Intersection
+import physics.collisions.collision.CollisionEngine.*
+import physics.collisions.intersection.Intersection
 
 class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
 

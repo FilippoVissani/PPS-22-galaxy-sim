@@ -1,4 +1,4 @@
-package physics.collisions.Impact
+package physics.collisions.impact
 
 /** This type class provides a mechanism to express the effect of an impact between two instances of a certain type. */
 trait Impact[A]:

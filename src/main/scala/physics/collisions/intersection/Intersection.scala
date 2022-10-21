@@ -1,4 +1,4 @@
-package physics.collisions.Intersection
+package physics.collisions.intersection
 
 /** This type class provides a mechanism to express the intersection between two elements of a same type. */
 trait Intersection[A]:
