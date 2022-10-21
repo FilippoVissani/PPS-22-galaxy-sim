@@ -11,8 +11,8 @@ class LifecycleTest extends AnyFlatSpec with should.Matchers:
   val entityIdentifierProlog: EntityIdentifierProlog = EntityIdentifierProlog()
 
   "entity with mass 10 and temperature 1010" should "be a 'Massive Star'" in {
-      entityIdentifierProlog.checkEntityType(10, 1010) shouldBe CelestialBodyType.MassiveStar
-    }
+    entityIdentifierProlog.checkEntityType(10, 1010) shouldBe CelestialBodyType.MassiveStar
+  }
 
   "entity with mass 1e11 and temperature 1010" should "be a 'redSuperGiant'" in {
     entityIdentifierProlog.checkEntityType(1e11, 1010) shouldBe CelestialBodyType.RedSuperGiant
@@ -41,17 +41,3 @@ class LifecycleTest extends AnyFlatSpec with should.Matchers:
   "minimum mass for BlackHole" should "be 1e40" in{
     entityIdentifierProlog.minMassFor(CelestialBodyType.BlackHole) shouldBe 1e40
   }
-
-  "'Red Supergiant'" should "become 'Supernova'"
-
-  "'Supernova'" should "become 'Black Hole'"
-
-  /*
-  "Mass" should "change" in {
-    var cb = (SimulationConfig.blackHole, CelestialBodyType.BlackHole)
-
-    for (_ <- 1 to 10e10.toInt)
-      cb = Lifecycle.entityOneStep(cb._1, cb._2)
-      println((cb._1.mass, cb._2))
-  }
-*/

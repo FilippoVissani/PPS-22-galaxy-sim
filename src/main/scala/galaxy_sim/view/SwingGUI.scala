@@ -87,23 +87,13 @@ object SwingGUI:
       newSize = if newSize == 0 then 100 else newSize
       Dimension(newSize, newSize)
 
-    private def scaleXSize(value: Double): Int =
+    private def scaleX(value: Double): Int =
       val percent = value * 100 / simulation.get.bounds.rightBound
       Math.round(percent * this.getWidth / 100).toInt
 
-    private def scaleYSize(value: Double): Int =
+    private def scaleY(value: Double): Int =
       val percent = value * 100 / simulation.get.bounds.bottomBound
       Math.round(percent * this.getHeight() / 100).toInt
-
-    private def scaleXPosition(value: Double): Int =
-      val percent = value * 100 / simulation.get.bounds.rightBound
-      val sizeOnDisplay = percent * this.getWidth / 100
-      Math.round(sizeOnDisplay + this.getWidth / 2).toInt
-
-    private def scaleYPosition(value: Double): Int =
-      val percent = value * 100 / simulation.get.bounds.bottomBound
-      val sizeOnDisplay = percent * this.getHeight / 100
-      Math.round(sizeOnDisplay + this.getHeight / 2).toInt
 
     private def cleanPanel(g: Graphics2D): Unit = 
       g.setColor(java.awt.Color.BLACK)
@@ -115,20 +105,20 @@ object SwingGUI:
 
     private def drawCelestialBody(g: Graphics2D, celestialBody: CelestialBody, celestialBodyType: CelestialBodyType): Unit =
       g.setColor(java.awt.Color.WHITE)
-      g.drawString(celestialBody.name, scaleXPosition(celestialBody.position.x), scaleYPosition(celestialBody.position.y))
+      g.drawString(celestialBody.name, scaleX(celestialBody.position.x), scaleY(celestialBody.position.y))
       selectCelestialBodyColor(g, celestialBodyType)
       g.fillOval(
-        scaleXPosition(celestialBody.position.x),
-        scaleYPosition(celestialBody.position.y),
-        scaleXSize(celestialBody.radius),
-        scaleYSize(celestialBody.radius)
+        scaleX(celestialBody.position.x),
+        scaleY(celestialBody.position.y),
+        scaleX(celestialBody.radius),
+        scaleY(celestialBody.radius)
         )
       g.setColor(java.awt.Color.WHITE)
       g.drawOval(
-        scaleXPosition(celestialBody.position.x),
-        scaleYPosition(celestialBody.position.y),
-        scaleXSize(celestialBody.radius),
-        scaleYSize(celestialBody.radius)
+        scaleX(celestialBody.position.x),
+        scaleY(celestialBody.position.y),
+        scaleX(celestialBody.radius),
+        scaleY(celestialBody.radius)
         )
       
     private def selectCelestialBodyColor(g: Graphics2D, celestialBodyType: CelestialBodyType): Unit =

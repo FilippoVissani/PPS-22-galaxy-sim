@@ -15,6 +15,7 @@ trait Pair[A, B]:
 
 object Pair:
   def apply[A, B](x: A, y: B): Pair[A, B] = PairImpl[A, B](x, y)
+  def unapply[A, B](p: Pair[A, B]): Option[(A, B)] = Some(p.x, p.y)
   extension[A, B] (p: Pair[A,B])
     def +(other: Pair[A, B])(using op: PairOperations[A,B]) = op.sum(p, other)
     def <->(other: Pair[A, B])(using op: PairOperations[A,B]) = op.distance(p, other)

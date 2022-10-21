@@ -1,6 +1,7 @@
 package galaxy_sim.model
 
 import galaxy_sim.model.BoundaryAliases.Bound
+import physics.Pair
 
 /** Defines type aliases used in Boundary. */
 object BoundaryAliases:
@@ -20,6 +21,18 @@ trait Boundary:
 
   /** Bottom bound. */
   def bottomBound: Bound
+
+  /** makes bounds toroidal */
+  def toToroidal(position: Pair[Double, Double]): Pair[Double, Double] = 
+    val x = position match
+      case Pair(x, _) if x < leftBound => rightBound
+      case Pair(x, _) if x >= rightBound => leftBound
+      case _ => position.x
+    val y = position match
+      case Pair(_, y) if y < topBound => bottomBound
+      case Pair(_, y) if y >= bottomBound => topBound
+      case _ => position.y
+    Pair(x, y)
 
 /** Factory for Boundary. */
 object Boundary:
