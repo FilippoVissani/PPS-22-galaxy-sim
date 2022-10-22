@@ -33,3 +33,22 @@ def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType =
     val goal = s"typeOfEntity($temperature, $mass, E)"
     solveOneAndGetTerm(engine, goal, "E") 
 ```
+
+## Sezioni personali
+### Barzi Eddie
+Inizialmente mi sono occupato di gestire il ciclo di vita delle entità, sfruttando Prolog per l'identificazione delle stesse. Le classi relative a questo lavoro sono le seguenti:
+- `Scala2P`
+- `EntityIdentifierProlog`
+- `Lifecycle`
+- `OperationsOnCelestialBody`
+
+Successivamente sono passato allo sviluppo delle classi per calcolare e visualizzare le statistiche della simulazione:
+- `Statistics`
+- `PieChart`
+
+Infine ho provveduto ad integrare le statistiche della simulazione nella schermata principale: 
+- `SimulationGUI`
+
+### Cortecchia Angela
+### Micelli Leonardo
+### Vissani FIlippo
