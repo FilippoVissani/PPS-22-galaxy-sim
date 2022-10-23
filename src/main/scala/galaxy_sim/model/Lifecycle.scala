@@ -62,7 +62,7 @@ object Lifecycle:
   def entityOneStep[A](entity: CelestialBody, bodyType: A)(using lifecycleRules: LifecycleRules[A]): (CelestialBody, A) =
     lifecycleRules.oneStep(entity, bodyType)
 
-  private def bodyType(celestialBody: CelestialBody): CelestialBodyType =
+  def bodyType(celestialBody: CelestialBody): CelestialBodyType =
     entityIdentifierProlog.checkEntityType(celestialBody.mass, celestialBody.temperature)
 
   /**

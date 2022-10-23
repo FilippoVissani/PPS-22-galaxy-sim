@@ -2,11 +2,14 @@ package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBodyAliases.{Radius, Temperature}
 import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.model.Lifecycle.bodyType
 import galaxy_sim.prolog.EntityIdentifierProlog
 import physics.*
 import physics.rigidbody.RigidBody.CircularEntity
 import galaxy_sim.model.SimulationConfig.*
 import physics.dynamics.GravitationLaws.astronomicUnit
+
+import scala.util.Random
 
 /** Defines type aliases used in CelestialBody. */
 object CelestialBodyAliases:
@@ -35,6 +38,23 @@ case class CelestialBody(override val mass: Mass,
                          radius: Radius,
                          temperature: Temperature,
                          ) extends CircularEntity
+
+object CelestialBody:
+  def generateSystem(b: CelestialBody, maxRand: Int = 10): List[CelestialBody] =
+    def randomNum: Int = Random.between(0, maxRand)
+    def fun(b: CelestialBody): List[CelestialBody] =
+      val toDivide = randomNum
+      (0 to toDivide).map(_ =>
+        b.copy(
+          mass = b.mass / toDivide,
+          position = b.position + Pair(randomNum, randomNum)
+        )
+      ).toList :+ b
+
+    bodyType(b) match
+      case Supernova => fun(b)
+      case MassiveStar => fun(b)
+      case _ => List(b)
 
 /** Defines possible types for a celestial body. */
 enum CelestialBodyType:
