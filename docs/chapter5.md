@@ -3,6 +3,14 @@
 ## Programmazione funzionale
 ### For comprehension
 ### Higher-order functions
+ Una High order function è una funzione che prende in input funzioni come parametri e/o restituisce funzioni come risultato. L'utilizzo di questo meccanismo nella programmazione funzionale permette di applicare in maniera semplice il _pattern Strategy_, oltre a rendere il codice rendere il codice riusabile.
+
+ Sono state utilizzate in diverse parti del progetto, un esempio di high order function è il seguente:
+ ```scala
+def updateTemperature(f: Temperature => Temperature): CelestialBody = 
+    celestialBody.copy(temperature = f(celestialBody.temperature))
+ ```
+ In questa funzione viene applicata alla temperatura del celestial body la funzione _f_ presa come parametro in input.
 ### Pattern matching
 ### Option
 ### Type members
