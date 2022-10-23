@@ -1,14 +1,19 @@
 package physics.collisions.syntax
 
-import physics.collisions.Collision.Collision
-import physics.collisions.Collision.Collision.{collides, impact}
+import physics.collisions.collision.CollisionEngine.*
+import physics.collisions.impact.Impact
+import physics.collisions.intersection.Intersection
 
+import scala.annotation.targetName
+
+/** Provides an extension empowering some type with access to the collision API through binary operators,
+ * in a sort of DSL fashion. */
 object CollisionSyntax:
-  import Collision.*
-
   extension [A](a: A)
-    def collidesWith[B](b: B)(using col: Collision[A, B]): Boolean =
-      collides(a, b)
+    @targetName("collidesWith")
+    def |#|(other: A)(using Intersection[A]): Boolean =
+      computeCollision(a, other)
 
-    def impactWith[B](other: B)(using col: Collision[A, B]): A =
-      impact(a, other)
+    @targetName("impactWith")
+    def |*|(other: A)(using Intersection[A])(using Impact[A]): A =
+      computeImpact(a, other)
