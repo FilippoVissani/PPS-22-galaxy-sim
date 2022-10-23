@@ -2,9 +2,9 @@ package galaxy_sim.utils
 
 import galaxy_sim.model.CelestialBody
 import galaxy_sim.model.CelestialBodyType.{BlackHole, InterstellarCloud, MassiveStar, Planet}
-import physics.collisions.Collision.Collision
-import physics.rigidbody.RigidBody.CircularEntity
-import physics.collisions.instances.CollisionInstances.given
+import physics.collisions.impact.Impact
+import physics.collisions.instances.IntersectionInstances.given
+import physics.collisions.intersection.Intersection
 
 object SimulationGivens:
   private def absorb(bigger: CelestialBody, smaller: CelestialBody): CelestialBody =
@@ -13,7 +13,8 @@ object SimulationGivens:
   private def disintegrate(smaller: CelestialBody): CelestialBody =
     smaller.copy(mass = smaller.mass / 2, temperature = smaller.temperature * 0.8)
 
-  given CelestialBodyCollision: Collision[CelestialBody, CelestialBody] =
-    Collision.from[CelestialBody, CelestialBody](
-      (a, b) => Collision.collides(a.collisionBox, b.collisionBox))(
-      (a, b) => if a.mass >= b.mass then absorb(a, b) else disintegrate(a))
+  given CelestialBodyIntersection: Intersection[CelestialBody] =
+    Intersection.from((a1, a2) => CircleToCircleCollision.collides(a1.collisionBox, a2.collisionBox))
+
+  given CelestialBodyImpact: Impact[CelestialBody] =
+    Impact.from((a1, a2) => if a1.mass >= a2.mass then absorb(a1, a2) else disintegrate(a1))

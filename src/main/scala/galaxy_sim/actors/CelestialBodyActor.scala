@@ -10,9 +10,9 @@ import galaxy_sim.utils.EntityReferenceDetector.*
 import galaxy_sim.utils.EntityReferenceDetectors.given
 import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 import physics.dynamics.GravitationLaws.*
-import physics.collisions.Collision.Collision
 import galaxy_sim.utils.SimulationGivens.given
 import galaxy_sim.model.CelestialBodyType.*
+import physics.collisions.collision.CollisionEngine
 
 /** In this object is defined the behaviour of celestial body actor.
  *
@@ -91,7 +91,7 @@ object CelestialBodyActor:
         }
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
-          val newCelestialBody = Collision.impactMany(celestialBody, others.toSeq)
+          val newCelestialBody = CollisionEngine.impactMany(celestialBody, others.toSeq)
           //val collisionResult = transform(celestialBodyType, Collision.impactMany(celestialBody, others.toSeq))
           replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
           CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
