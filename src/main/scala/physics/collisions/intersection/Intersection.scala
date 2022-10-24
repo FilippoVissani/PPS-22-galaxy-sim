@@ -8,7 +8,7 @@ trait Intersection[A]:
    * @param a2 The other element.
    * @return Whether the two elements are intersecting or not.
    */
-  def collides(a1: A, a2: A): Boolean
+  def intersects(a1: A, a2: A): Boolean
 
 object Intersection:
   /** Constructs an [[Intersection]] starting from a function of the type (A, A) => Boolean. */
@@ -21,5 +21,5 @@ object Intersection:
    * @tparam A The type of the two elements.
    * @return Whether the two elements are intersecting or not.
    */
-  def collides[A: Intersection](a1: A, a2: A): Boolean =
-    summon[Intersection[A]].collides(a1, a2)
+  def intersects[A: Intersection](a1: A, a2: A): Boolean =
+    summon[Intersection[A]].intersects(a1, a2)
