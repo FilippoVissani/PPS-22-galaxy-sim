@@ -59,4 +59,22 @@ Infine ho provveduto ad integrare le statistiche della simulazione nella scherma
 
 ### Cortecchia Angela
 ### Micelli Leonardo
+Il mio ruolo all'interno del team di sviluppo è consistito nello sviluppare, assieme a Cortecchia, una libreria per calcoli fisici da utilizzare all'interno della simulazione. In particolare, il mio compito è stato quello di modellare e sviluppare la logica riguardante la rilevazione di collisioni tra entità della simulazione e la risoluzione di eventuali impatti tra esse. I sorgenti riguardanti il mio lavoro si trovano dunque nel package `physics.collisions`.
+La struttura interna di tale package si ispira alla suddivisione in package della libreria scala `cats`: all'interno troviamo un package per ogni type class sviluppata, un package `instances` contenente le implementazioni di libreria per ogni type class, un package `syntax` contenente estensioni che possono arricchire l'uso delle type class presenti nella libreria, ed infine un package `monads` contenente le monadi sviluppate. Questa suddivisione permette ad un utente della libreria di utilizzare solamente i concetti e le funzionalità che gli sono strettamente necessarie, partendo quindi da un core molto semplice (quello della sola type class) e aggiungendo tramite importazione ulteriori funzionalità o sintassi ad hoc. All'interno del package collisions troviamo dunque:
+- Type classes:
+  - `Intersection`: Questa type class incapsula la logica di intersezione tra due elementi dello stesso tipo;
+  - `Impact`: agisce come una sorta di monoide (o combinatore), tuttavia in questa sede si è preferito distinguere i due concetti per attenersi meglio al dominio delle collisioni;
+
+- Instances:
+  - `IntersectionInstances`
+  - `ImpactInstances`
+
+- Librerie di utility implementate attraverso pattern Singleton:
+  - `CollisionEngine`: racchiude in un unica API le funzionalità legate ad intersezione ed impatto, facendo uso del pattern strategy;
+
+- Monads:
+  - `Collider`: permette di utilizzare le API di collisione all'interno di for-comprehension;
+
+- Syntax:
+  - `CollisionSyntax`: arricchisce un generico tipo con operatori che sfruttano le API di collisione; 
 ### Vissani FIlippo
