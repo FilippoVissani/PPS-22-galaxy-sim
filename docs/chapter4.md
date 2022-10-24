@@ -22,6 +22,17 @@ trait PieChart:
 ```
 
 ### Pimp my library
+Pimp my library è un pattern funzionale che soddisfa la necessità di aggiungere un metodo a una classe già esistente, senza modificarla. In Scala si può implementare utilizzando un _extension method_.
+```scala
+object OperationsOnCelestialBody:
+    extension (celestialBody: CelestialBody)
+        def updateMass(f: Mass => Mass): CelestialBody = 
+            celestialBody.copy(mass = f(celestialBody.mass))
+        def updateTemperature(f: Temperature => Temperature): CelestialBody = 
+            celestialBody.copy(temperature = f(celestialBody.temperature))
+```
+In questo caso è stato creato un oggetto `OperationsOnCelestialBody` il quale, se importato nella classe desiderata, permette di utilizzare i metodi `updateMass` e `updateTemperature` come se fossero dei metodi definiti nella classe `CelestialBody`.
+
 ### Adapter
 ### Type classes
 
