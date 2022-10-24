@@ -92,7 +92,6 @@ object CelestialBodyActor:
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
           val newCelestialBody = CollisionEngine.impactMany(celestialBody, others.toSeq)
-          //val collisionResult = transform(celestialBodyType, Collision.impactMany(celestialBody, others.toSeq))
           replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
           CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
         }
