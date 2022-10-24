@@ -20,6 +20,16 @@ Questa funzione di factory, per quanto semplice, permette di realizzare implemen
 più propria della object orientation.
 ### Singleton
 ### Facade
+Il Facade pattern consiste nel fornire un'interfaccia semplice per nascondere alcuni blocchi di codice più complessi.
+In questo progetto il pattern Facade è stato utilizzato per fornire la seguente interfaccia, la quale semplifica l'utilizzo del grafico a torta della libreria _JFreeChart_:
+```scala
+trait PieChart:
+  def wrapToPanel: ChartPanel
+  def title: String
+  def setValue(key: String, value: Double): Unit
+  def clearAllValues(): Unit
+```
+
 ### Pimp my library
 È un pattern di programmazione funzionale che si basa sul concetto di estensione delle funzionalità di un tipo di dato senza modificarlo. L'approccio tipico della FP è quello di definire
 i dati e le funzioni in sorgenti separati, ed eventualmente legarli insieme successivamente attraverso il pimping delle funzioni sui dati. In scala, il meccanismo `extension`
@@ -35,6 +45,17 @@ permette di effettuare il pimping di un tipo di dato senza modificarlo. Un esemp
       impact(a, other)
 ```
 Con l'uso del meccanismo delle estensioni, si aggiungono ad un tipo generico A dei metodi che sfruttano le API di collisione.
+Un altro esempio di uso del pattern è il seguente:
+```scala
+object OperationsOnCelestialBody:
+    extension (celestialBody: CelestialBody)
+        def updateMass(f: Mass => Mass): CelestialBody = 
+            celestialBody.copy(mass = f(celestialBody.mass))
+        def updateTemperature(f: Temperature => Temperature): CelestialBody = 
+            celestialBody.copy(temperature = f(celestialBody.temperature))
+```
+In questo caso è stato creato un oggetto `OperationsOnCelestialBody` il quale, se importato nella classe desiderata, permette di utilizzare i metodi `updateMass` e `updateTemperature` come se fossero dei metodi definiti nella classe `CelestialBody`.
+
 ### Adapter
 ### Type classes
 La Type Class è una tipologia di classe astratta e parametrizzata sul tipo, che permette di aggiungere un dato comportamento ad un qualunque tipo di dato senza utilizzare
