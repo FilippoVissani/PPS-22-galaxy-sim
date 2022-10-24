@@ -14,7 +14,7 @@ object SimulationGivens:
     smaller.copy(mass = smaller.mass / 2, temperature = smaller.temperature * 0.8)
 
   given CelestialBodyIntersection: Intersection[CelestialBody] =
-    Intersection.from((a1, a2) => CircleToCircleCollision.collides(a1.collisionBox, a2.collisionBox))
+    Intersection.from((a1, a2) => CircleToCircleCollision.intersects(a1.collisionBox, a2.collisionBox))
 
   given CelestialBodyImpact: Impact[CelestialBody] =
     Impact.from((a1, a2) => if a1.mass >= a2.mass then absorb(a1, a2) else disintegrate(a1))
