@@ -10,7 +10,6 @@ import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.Statistics
-import galaxy_sim.view.StatisticsFrame.pieChart
 import org.jfree.chart.ChartPanel
 
 trait SwingGUI:
@@ -93,7 +92,7 @@ object SwingGUI:
         simulationPanel.display(simulation)
         //Update the pie chart
         pieChart.clearAllValues()
-        Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.addValue(element._1.toString, element._2))
+        Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.setValue(element._1.toString, element._2))
       })
   end SwingGUIImpl
 

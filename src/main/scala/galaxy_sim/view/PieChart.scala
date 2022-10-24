@@ -21,11 +21,11 @@ trait PieChart:
   def title: String
 
   /**
-   * Add a value to the dataset
+   * Set a value to the dataset
    * @param key key parameter
    * @param value value parameter
    */
-  def addValue(key: String, value: Double): Unit
+  def setValue(key: String, value: Double): Unit
 
   /**
    * Delete all values from the dataset
@@ -50,7 +50,7 @@ object PieChart:
     override def wrapToPanel: ChartPanel =
       ChartPanel(chart)
 
-    override def addValue(key: String, value: Double): Unit =
+    override def setValue(key: String, value: Double): Unit =
       dataset.setValue(key, value)
 
     override def clearAllValues(): Unit =
