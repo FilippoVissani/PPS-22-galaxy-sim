@@ -3,11 +3,14 @@ package galaxy_sim.view
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
 import physics.dynamics.GravitationLaws.astronomicUnit
+
 import java.awt.*
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.utils.Statistics
+import org.jfree.chart.ChartPanel
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
@@ -16,10 +19,11 @@ object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
     SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int)
 
+
   private class SwingGUIImpl(
-    view: View,
-    windowWidth: Int,
-    windowHeight: Int) extends SwingGUI:
+                              view: View,
+                              windowWidth: Int,
+                              windowHeight: Int) extends SwingGUI:
     val frameSize: Dimension = Dimension(
       windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100
@@ -27,14 +31,51 @@ object SwingGUI:
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
     val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
-    val controlPanel: JPanel = JPanel()
+    val controlPanel: JPanel = JPanel(GridBagLayout())
     val startButton: JButton = JButton("Start Simulation")
     val stopButton: JButton = JButton("Stop Simulation")
-
     startButton.addActionListener((_: ActionEvent) => view.start())
     stopButton.addActionListener((_: ActionEvent) => view.stop())
-    controlPanel.add(startButton)
-    controlPanel.add(stopButton)
+
+    val pieChart: PieChart = PieChart("Celestial body types")
+    val pieChartPanel: ChartPanel = pieChart.wrapToPanel
+    pieChartPanel.setPreferredSize(Dimension(
+      25 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
+      50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
+
+    val gbc: GridBagConstraints = GridBagConstraints()
+
+    // Row 0 - Buttons
+    // Col 0
+    //gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridx = 0;
+    gbc.gridy = 0;
+    //gbc.insets = new Insets(5, 0, 0, 10);
+    gbc.anchor = GridBagConstraints.LINE_END
+    controlPanel.add(startButton, gbc);
+
+    // Col 1
+    //gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.anchor = GridBagConstraints.LINE_START;
+    controlPanel.add(stopButton, gbc);
+
+    // Row 1 - Chart
+    // Col 0
+    gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridwidth = 2;
+    gbc.gridx = 0;
+    gbc.gridy = 1;
+    //gbc.insets = new Insets(5, 0, 0, 10);
+    //gbc.anchor = GridBagConstraints.CENTER;
+    controlPanel.add(pieChartPanel, gbc);
+
+
+
+    //controlPanel.add(startButton)
+    //controlPanel.add(stopButton)
+    //controlPanel.add(pieChartPanel)
     mainFrame.addWindowListener(new WindowAdapter {
       override def windowClosing(windowEvent: WindowEvent): Unit =
         System.exit(0)
@@ -49,6 +90,9 @@ object SwingGUI:
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
+        //Update the pie chart
+        pieChart.clearAllValues()
+        Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.setValue(element._1.toString, element._2))
       })
   end SwingGUIImpl
 
@@ -93,7 +137,7 @@ object SwingGUI:
 
     private def scaleY(value: Double): Int =
       val percent = value * 100 / simulation.get.bounds.bottomBound
-      Math.round(percent * this.getHeight() / 100).toInt
+      Math.round(percent * this.getHeight / 100).toInt
 
     private def cleanPanel(g: Graphics2D): Unit = 
       g.setColor(java.awt.Color.BLACK)
