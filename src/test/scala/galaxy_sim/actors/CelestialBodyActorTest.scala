@@ -11,6 +11,7 @@ import galaxy_sim.model.SimulationConfig.*
 import galaxy_sim.model.emptyGalaxy
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers.shouldBe
+import galaxy_sim.actors.CelestialBodyActor.SolveCollisions
 
 class CelestialBodyActorTest extends AnyFunSuite:
   test("GetCelestialBodyState"){
@@ -27,8 +28,11 @@ class CelestialBodyActorTest extends AnyFunSuite:
     inbox.expectMessage(CelestialBodyState(sun, MassiveStar))
   }
 
-  test("CheckCollisions"){
-    fail()
+  test("SolveCollisions"){
+    val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val inbox = TestInbox[SimulationManagerActorCommand]()
+    testKit.run(SolveCollisions(emptyGalaxy, inbox.ref))
+    inbox.expectMessage(CelestialBodyState(sun, MassiveStar))
   }
 
   test("Kill"){
