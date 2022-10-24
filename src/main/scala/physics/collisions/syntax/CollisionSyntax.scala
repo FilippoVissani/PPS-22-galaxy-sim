@@ -12,8 +12,8 @@ object CollisionSyntax:
   extension [A](a: A)
     @targetName("collidesWith")
     def |#|(other: A)(using Intersection[A]): Boolean =
-      computeCollision(a, other)
+      collides(a, other)
 
     @targetName("impactWith")
     def |*|(other: A)(using Intersection[A])(using Impact[A]): A =
-      computeImpact(a, other)
+      impact(a, other)

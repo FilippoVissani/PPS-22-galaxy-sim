@@ -17,7 +17,7 @@ object CollisionMockups:
 
   given StarCollision: Intersection[Star] =
     Intersection.from(
-      (s, n) => IntersectionInstances.CircleToCircleCollision.collides(s.collisionBox, n.collisionBox)
+      (s, n) => IntersectionInstances.CircleToCircleCollision.intersects(s.collisionBox, n.collisionBox)
     )
 
   given StarImpact: Impact[Star] =
