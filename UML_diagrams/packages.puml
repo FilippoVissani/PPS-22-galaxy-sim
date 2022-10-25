@@ -1,0 +1,39 @@
+@startuml
+left to right direction
+
+package galaxy_sim{}
+package actors {}
+package model {}
+package prolog {}
+package utils {}
+package view {}
+
+galaxy_sim +-- actors
+galaxy_sim +-- model
+galaxy_sim +-- prolog
+galaxy_sim +-- utils
+galaxy_sim +-- view
+
+package physics {}
+package collisions {}
+package dynamics {}
+package rigidbody {}
+
+physics +-- collisions
+physics +-- dynamics
+physics +-- rigidbody
+
+package collision {}
+package impact {}
+package instances {}
+package intersection {}
+package monads {}
+package syntax {}
+
+collisions +-- impact
+collisions +-- collision
+collisions +-- instances
+collisions +-- intersection
+collisions +-- monads
+collisions +-- syntax
+@enduml
