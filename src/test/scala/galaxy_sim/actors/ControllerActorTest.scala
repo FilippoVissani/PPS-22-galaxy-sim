@@ -38,7 +38,7 @@ class ControllerActorTest extends AnyFunSuite:
     val simulationManager = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), simulation))
     val testKit = BehaviorTestKit(ControllerActor(Option.empty, simulationManager.ref))
     val inbox = TestInbox[ViewActorCommand]()
-    testKit.run(SetView(inbox.ref))
+    testKit.run(SetView(inbox.ref, simulation.galaxy))
     testKit.run(SimulationStateAdaptedResponse(Option(simulation)))
     inbox.expectMessage(Display(simulation))
   }
