@@ -18,7 +18,7 @@ object Collision:
   def collisionResult[A](a1: A, a2: A)(using Intersection[A])(using Impact[A]): Collision[A] =
     for
       col <- collides(a1, a2)
-      res <- if col then unit((a1 impact a2, a2 impact a1)) else empty
+      res <- if col equals empty then unit((a1 impact a2, a2 impact a1)) else empty
     yield res
 
   def collideMany[A](a: A, others: Seq[A])(using Intersection[A])(using Impact[A]): Seq[Collision[A]] =
