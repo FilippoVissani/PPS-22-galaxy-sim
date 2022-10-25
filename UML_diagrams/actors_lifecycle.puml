@@ -1,0 +1,35 @@
+@startuml
+autonumber
+
+control ":RootActor" as root
+control ":ViewActor" as view
+control ":ControllerActor" as controller
+control ":SimulationManagerActor" as simulationManager
+control ":CelestialBodyActor" as celestialBody
+
+activate root
+
+== Actors spawn ==
+root --> celestialBody: Spawn()
+activate celestialBody
+root --> simulationManager: Spawn(celestialBodyActorRef)
+activate simulationManager
+root --> controller: Spawn(simulationManagerActorRef)
+activate controller
+root --> view: Spawn(controllerActorRef)
+activate view
+root --> controller: SetView(viewActorRef)
+
+== Simulation starts ==
+view --> controller: Start()
+controller --> simulationManager: StartSimulation()
+
+== Simulation ends ==
+view --> controller: Stop()
+controller --> simulationManager: StopSimulation()
+destroy controller
+simulationManager --> celestialBody: Kill()
+destroy simulationManager
+destroy celestialBody
+
+@enduml
