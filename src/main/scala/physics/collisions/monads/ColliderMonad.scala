@@ -22,7 +22,7 @@ object ColliderMonad:
    * @tparam A The type of the elements.
    * @return A [[Collider]] wrapping the check result.
    */
-  def checkCollision[A](a1: A, a2: A)(using Intersection[A]): Collider[Boolean] =
+  def collides[A](a1: A, a2: A)(using Intersection[A]): Collider[Boolean] =
     unit(a1 |#| a2)
 
   /**
@@ -34,9 +34,9 @@ object ColliderMonad:
    * @tparam A The type of the elements.
    * @return A [[Collider]] wrapping the result of the impact if the elements are intersecting, the unit of the operation if not.
    */
-  def collide[A](a1: A, a2: A)(using Intersection[A])(using Impact[A]): Collider[A] =
+  def impact[A](a1: A, a2: A)(using Intersection[A])(using Impact[A]): Collider[A] =
     unit(a1 |*| a2)
 
   /** Computes the impact between an element of [[A]] and a sequence of other elements of [[A]] */
-  def collideMany[A](a1: A, others: Seq[A])(using Intersection[A])(using Impact[A]): Collider[A] =
+  def impactMany[A](a1: A, others: Seq[A])(using Intersection[A])(using Impact[A]): Collider[A] =
     unit(CollisionEngine.impactMany(a1, others))
