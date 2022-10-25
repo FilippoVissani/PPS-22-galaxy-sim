@@ -28,7 +28,7 @@ object RootActor:
       val simulationManagerActor = ctx.spawn(SimulationManagerActor(celestialBodyActors, Simulation(galaxy = galaxy, bounds, 0, deltaTime)), "simulationManager")
       val controllerActor = ctx.spawn(ControllerActor(Option.empty, simulationManagerActor), "controller")
       val viewActor = ctx.spawn(ViewActor(controllerActor), "view")
-      controllerActor ! SetView(viewActor)
+      controllerActor ! SetView(viewActor, galaxy)
       Behaviors.receive[RootActorCommand]((ctx, msg) => msg match
         case _ => {
           Behaviors.stopped
