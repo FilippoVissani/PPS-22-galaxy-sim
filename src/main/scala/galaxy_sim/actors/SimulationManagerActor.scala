@@ -46,7 +46,11 @@ object SimulationManagerActor:
    */
   case class AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) extends SimulationManagerActorCommand
 
-  //todo
+  /**
+   * Message to pass the reference to viewActor to the celestial body actor
+   *
+   * @param viewActor reference of the ViewActor
+   */
   case class GreetCelestialBody(viewActor: ActorRef[ViewActorCommand]) extends SimulationManagerActorCommand
   /** Response of the ask pattern
    *  
