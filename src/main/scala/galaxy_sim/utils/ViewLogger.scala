@@ -17,10 +17,9 @@ enum LoggerActions:
 trait ViewLogger:
   def simulationGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]): Unit
   def newBody(celestialBody: CelestialBody): Unit
-  def bodiesCollided(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): String
+  def bodiesLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): String
   def bodyUpdated(celestialBody: CelestialBody): Unit
   def bodyDied(celestialBody: CelestialBody): Unit
-  def showBodies: List[CelestialBody]
   def getBodiesNames: List[String]
   def bodyInfos(bodyName: String): Option[CelestialBody]
 
@@ -30,25 +29,20 @@ object ViewLogger:
 
   private class ViewLoggerImpl() extends ViewLogger:
     var galaxyList: List[CelestialBody] = List.empty
-    override def simulationGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]): Unit =
-      galaxyList = galaxy.values.filter(x => x.nonEmpty).flatten.toList
 
-    override def bodiesCollided(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): String = description match
-      case Collided => s"${bodiesInvolved._1.name} ${Collided.toString.toUpperCase} with ${bodiesInvolved._2.get.name}\n"
-      case Spawn => s"${bodiesInvolved._1.name.toUpperCase} just ${Spawn.toString.toUpperCase}\n"
-      case Died => s"${bodiesInvolved._1.name.toUpperCase} just ${Died.toString.toUpperCase}\n"
+    override def simulationGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]): Unit = galaxyList = galaxy.values.filter(x => x.nonEmpty).flatten.toList //todo synchronized ?
 
-    override def bodyDied(celestialBody: CelestialBody): Unit =
-      galaxyList = galaxyList.filterNot(b => b.name == celestialBody.name)
+    override def bodyDied(celestialBody: CelestialBody): Unit = galaxyList = galaxyList.filterNot(b => b.name == celestialBody.name) //todo synchronized ?
 
-    override def bodyUpdated(celestialBody: CelestialBody): Unit =
-      galaxyList = galaxyList.filterNot(b => b.name == celestialBody.name).::(celestialBody)
+    override def bodyUpdated(celestialBody: CelestialBody): Unit = galaxyList = galaxyList.filterNot(b => b.name == celestialBody.name).::(celestialBody) //todo synchronized ?
 
-    override def newBody(celestialBody: CelestialBody): Unit = ??? //todo
-
-    override def showBodies: List[CelestialBody] = galaxyList
+    override def newBody(celestialBody: CelestialBody): Unit = galaxyList = galaxyList.::(celestialBody) //todo synchronized ?
 
     override def getBodiesNames: List[String] = galaxyList.map(b => b.name)
 
     override def bodyInfos(bodyName: String): Option[CelestialBody] = galaxyList.find(b => b.name == bodyName)
 
+    override def bodiesLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): String = description match
+      case Collided => s"${bodiesInvolved._1.name} ${Collided.toString.toUpperCase} with ${bodiesInvolved._2.get.name}\n"
+      case Spawn => s"${bodiesInvolved._1.name.toUpperCase} just ${Spawn.toString.toUpperCase}\n"
+      case Died => s"${bodiesInvolved._1.name.toUpperCase} just ${Died.toString.toUpperCase}\n"
