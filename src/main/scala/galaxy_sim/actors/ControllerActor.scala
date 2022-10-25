@@ -50,7 +50,7 @@ object ControllerActor:
    */
   case class SimulationStateAdaptedResponse(simulation: Option[Simulation]) extends ControllerActorCommand
 
-  /** Used from an inside timer to request the simulation state every frameRate seconds.
+    /** Used from an inside timer to request the simulation state every frameRate seconds.
    *
    * This message should only be sent from ControllerActor's timer.
    */
@@ -78,6 +78,7 @@ object ControllerActor:
             }
             case SetView(viewActor: ActorRef[ViewActorCommand], galaxy: Map[CelestialBodyType, Set[CelestialBody]]) => {
               viewActor ! SetGalaxy(galaxy)
+              simulationManagerActor ! GreetCelestialBody(viewActor)
               timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               ControllerActor(Option(viewActor), simulationManagerActor)
             }
