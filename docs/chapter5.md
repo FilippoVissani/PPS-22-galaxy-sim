@@ -14,6 +14,23 @@ def updateTemperature(f: Temperature => Temperature): CelestialBody =
 ### Pattern matching
 ### Option
 ### Type members
+### Contextual programming
+Il concetto di `contesto` di una funzione si riferisce a quegli argomenti che vengono usati per influenzare il modo in cui la funzione produce il suo output a partire dagli input. Questa tipologia di modellazione delle funzioni è facilmente implementabile in Scala attraverso il meccanismo delle Given instance: si possono definire dei parametri di contesto di una funzione con la keyword `using`. Quando la funzione verrà invocata, il compilatore si occuperà di cercare nello scope corrente dei parametri di contesto appropriati definiti con la keyword `given`. Se la ricerca ha successo, la funzione utilizzerà tali parametri senza bisogno che vengano specificati come input dall'utente.
+Un esempio di funzione che fa uso di given instances è la seguente:
+```scala
+def collides[A](a1: A, a2: A)(using Intersection[A]): Boolean =
+    a1 intersects a2
+```
+Di seguito un esempio di definizione di parametro di contesto attraverso given instance:
+```scala
+given CircleToCircleIntersection: Intersection[CircleCollisionBox] =
+    Intersection.from((c1, c2) => {
+      val dx = c1.origin.x - c2.origin.x
+      val dy = c1.origin.y - c2.origin.y
+      val dist = Math.sqrt(dx * dx + dy * dy)
+      dist < c1.radius + c2.radius
+    })
+```
 
 ## Programmazione logica
 Il paradigma di programmazione logico è stato utilizzato in questo progetto per identificare i diversi tipi di entità, in base alla massa e alla temperatura.
