@@ -3,7 +3,7 @@ package galaxy_sim.model
 import galaxy_sim.model.CelestialBodyAliases.{Radius, Temperature}
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.Lifecycle.bodyType
-import galaxy_sim.prolog.EntityIdentifierProlog
+import galaxy_sim.prolog.EntityIdentifier
 import physics.*
 import physics.rigidbody.RigidBody.CircularEntity
 import galaxy_sim.model.SimulationConfig.*
@@ -51,7 +51,7 @@ object CelestialBody:
         )
       ).toList :+ b
 
-    bodyType(b) match
+    EntityIdentifier.checkEntityType(b.mass, b.temperature) match
       case Supernova => fun(b)
       case MassiveStar => fun(b)
       case _ => List(b)
