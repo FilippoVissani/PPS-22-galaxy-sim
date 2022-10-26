@@ -1,0 +1,28 @@
+@startuml
+
+package ViewActor <<Frame>> {
+  class ViewActor << object >>
+  interface ViewActorCommand << trait >>
+}
+
+package ControllerActor <<Frame>> {
+  class ControllerActor << object >>
+  interface ControllerActorCommand << trait >>
+}
+
+package SimulationManagerActor <<Frame>> {
+  class SimulationManagerActor << object >>
+  interface SimulationManagerActorCommand << trait >>
+}
+
+package CelestialBodyActor <<Frame>> {
+  class CelestialBodyActor << object >>
+  interface CelestialBodyActorCommand << trait >>
+}
+
+ViewActor ..> ControllerActorCommand
+ControllerActor ..> ViewActorCommand
+ControllerActor ..> SimulationManagerActorCommand
+SimulationManagerActor ..> CelestialBodyActorCommand
+
+@enduml
