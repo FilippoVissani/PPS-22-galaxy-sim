@@ -26,7 +26,7 @@ trait View:
    * @param bodiesInvolved
    * @param description
    */
-  def sendLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
+  def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
 
   /** Called when start button is pressed.
    *
@@ -67,7 +67,7 @@ object View:
 
     override def updateInfos(): Unit = gui.updateInfos()
 
-    override def sendLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
+    override def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
       gui.updateLogger(bodiesInvolved, description)
     //      viewLogger.bodiesCollided(bodiesInvolved, description)
 

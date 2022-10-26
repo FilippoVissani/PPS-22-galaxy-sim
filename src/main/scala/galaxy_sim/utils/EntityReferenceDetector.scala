@@ -24,17 +24,17 @@ object EntityReferenceDetector:
 object EntityReferenceDetectors:
   given SphereOfInfluenceDetector: EntityReferenceDetector with
     override def getReference(entity: CelestialBody, entities: Set[CelestialBody]): CelestialBody =
-      var refSOI: Option[Double] = Option.empty
-      var refDistance: Option[Double] = Option.empty
+      var refSOI = 0.0
+      var refDistance = 0.0
       var reference = entity.copy()
       entities.filter(e => e.mass > entity.mass).foreach(e =>
         val distance = calculateMagnitude(distanceBetweenTwoEntities(entity, e))
         val rSOI = calculateSphereOfInfluence(entity, e)
         if distance <= rSOI &&
-          (refDistance.isEmpty || distance < refDistance.get) &&
-          (refSOI.isEmpty || refSOI.get > rSOI) then
-            refSOI = Option(rSOI)
-            refDistance = Option(distance)
+          (distance < refDistance || refDistance == 0) &&
+          (refSOI > rSOI || refSOI == 0) then
+            refSOI = rSOI
+            refDistance = distance
             reference = e.copy()
       )
       reference

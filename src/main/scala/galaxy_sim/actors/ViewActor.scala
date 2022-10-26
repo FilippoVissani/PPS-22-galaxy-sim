@@ -3,7 +3,6 @@ package galaxy_sim.actors
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 import galaxy_sim.actors.ControllerActor.*
-import galaxy_sim.actors.SimulationManagerActor.GreetCelestialBody
 import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Simulation}
 import galaxy_sim.utils.LoggerActions
 import galaxy_sim.view.{SwingGUI, View}
@@ -70,7 +69,7 @@ object ViewActor:
           Behaviors.same
         }
         case LoggerMessage(bodiesInvolved, description) => {
-          view.sendLogger(bodiesInvolved, description)
+          view.updateLogger(bodiesInvolved, description)
           Behaviors.same
         }
         case SetGalaxy(galaxy) => {
