@@ -15,25 +15,8 @@ enum LoggerActions:
   case Died
 
 trait ViewLogger:
-  /**
-   * Set the list of Bodies inside the galaxy
-   * @param galaxy a map containing the CelestialBodyType and a set of CelestialBody
-   */
   def simulationGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]): Unit
-
-  /**
-   * Add a new CelestialBody to the actual galaxy
-   * @param celestialBody the new body for the simulation
-   */
   def newBody(celestialBody: CelestialBody): Unit
-
-  //todo add rest of doc
-  /**
-   *
-   * @param bodiesInvolved
-   * @param description
-   * @return
-   */
   def bodiesLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): String
   def bodyUpdated(celestialBody: CelestialBody): Unit
   def bodyDied(celestialBody: CelestialBody): Unit
