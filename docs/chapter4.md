@@ -1,4 +1,19 @@
 # Design di dettaglio
+
+## Paradigma basato su scambio di messaggi
+
+// TODO aggiungere diagramma delle classi degli attori
+
+## Model
+
+// TODO aggiungere diagramma delle classi del model
+
+## View
+
+## Controller
+
+## Physics
+
 ## Pattern utilizzati
 ### Strategy
 Il pattern Strategy consiste nell'isolare un algoritmo o una strategia al di fuori di una classe, per fare in modo che quest'ultima possa variare dinamicamente il suo comportamento. In Scala è applicato in maniera semplice ed efficace con l'uso delle high order functions, un esempio è il seguente: 
