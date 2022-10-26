@@ -6,7 +6,7 @@ import galaxy_sim.prolog.Scala2P.{*, given}
 import physics.Mass
 import galaxy_sim.model.CelestialBodyAliases.Temperature
 
-object EntityIdentifierProlog:
+object EntityIdentifier:
   
   private val engine = mkPrologEngine(Theory.parseLazilyWithStandardOperators(getClass.getResourceAsStream("/prolog/EntityIdentifier.pl")))
 

@@ -2,7 +2,7 @@ package galaxy_sim.model
 
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.CelestialBodyType
-import galaxy_sim.prolog.EntityIdentifierProlog
+import galaxy_sim.prolog.EntityIdentifier
 import physics.Mass
 import physics.dynamics.GravitationLaws.solarMass
 import galaxy_sim.model.CelestialBodyAliases.Temperature
@@ -40,7 +40,7 @@ object Lifecycle:
       }
       case BlackHole => {
         val newCelestialBody = celestialBody.updateMass(mass => mass +- deltaMass)
-        if newCelestialBody.mass > EntityIdentifierProlog.minMassFor(BlackHole) then
+        if newCelestialBody.mass > EntityIdentifier.minMassFor(BlackHole) then
           (newCelestialBody, BlackHole)
         else
           (newCelestialBody, bodyType(newCelestialBody))
@@ -62,7 +62,7 @@ object Lifecycle:
     lifecycleRules.oneStep(entity, bodyType)
 
   private def bodyType(celestialBody: CelestialBody): CelestialBodyType =
-    EntityIdentifierProlog.checkEntityType(celestialBody.mass, celestialBody.temperature)
+    EntityIdentifier.checkEntityType(celestialBody.mass, celestialBody.temperature)
 
   /**
    * Extension method for Mass
