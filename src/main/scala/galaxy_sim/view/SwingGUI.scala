@@ -16,7 +16,7 @@ import galaxy_sim.utils.LoggerActions
 trait SwingGUI:
   def display(simulation: Simulation): Unit
   def updateInfos(): Unit
-  def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
+  def updateLogger(body: CelestialBody, description: LoggerActions): Unit
 
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int, viewLogger: ViewLogger): SwingGUI =
@@ -83,8 +83,8 @@ object SwingGUI:
     override def updateInfos(): Unit =
       SwingUtilities.invokeLater(() => informationPanel.display())
 
-    override def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
-      SwingUtilities.invokeLater(() => loggerPanel.display(bodiesInvolved, description))
+    override def updateLogger(body: CelestialBody, description: LoggerActions): Unit =
+      SwingUtilities.invokeLater(() => loggerPanel.display(body, description))
 
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
@@ -105,6 +105,7 @@ object SwingGUI:
       textArea.setPreferredSize(Dimension(
         40 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
         40 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
+      textArea.setLineWrap(true)
       this.add(dropdown, BorderLayout.NORTH)
       this.add(textArea, BorderLayout.CENTER)
 
@@ -129,13 +130,13 @@ object SwingGUI:
   private class LoggerPanel(viewLogger: ViewLogger) extends JPanel:
       val textArea: JTextArea = JTextArea()
       textArea.setEditable(false)
-      val scrollPane: JScrollPane = JScrollPane(textArea)
       textArea.setPreferredSize(Dimension(
         40 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
         40 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
+      val scrollPane: JScrollPane = JScrollPane(textArea)
       this.add(scrollPane)
 
-      def display(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit = textArea.append(viewLogger.bodiesLogger(bodiesInvolved, description))
+      def display(body: CelestialBody, description: LoggerActions): Unit = textArea.append(viewLogger.bodiesLogger(body, description))
 
   private class GridBagConstraintsBuilder:
     val pie: GridBagConstraints = GridBagConstraints()

@@ -26,7 +26,7 @@ trait View:
    * @param bodiesInvolved
    * @param description
    */
-  def sendLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
+  def sendLogger(body: CelestialBody, description: LoggerActions): Unit
 
   /** Called when start button is pressed.
    *
@@ -45,6 +45,12 @@ trait View:
    * @param galaxy
    */
   def setGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]): Unit
+
+  /**
+   *
+   * @param celestialBody
+   */ //todo
+  def updateBody(celestialBody: CelestialBody): Unit
 /** Factory for View. */
 object View:
 
@@ -67,8 +73,10 @@ object View:
 
     override def updateInfos(): Unit = gui.updateInfos()
 
-    override def sendLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
-      gui.updateLogger(bodiesInvolved, description)
+    override def updateBody(celestialBody: CelestialBody): Unit = viewLogger.bodyUpdated(celestialBody)
+
+    override def sendLogger(body: CelestialBody, description: LoggerActions): Unit =
+      gui.updateLogger(body, description)
     //      viewLogger.bodiesCollided(bodiesInvolved, description)
 
     override def start(): Unit = viewActor ! StartPressed

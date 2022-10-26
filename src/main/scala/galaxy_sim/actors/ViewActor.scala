@@ -36,12 +36,13 @@ object ViewActor:
   /**
    * Call to send the logger a new event
    *
-   * @param bodiesInvolved pair of Celestial Bodies involved, the second one is Option
+   * @param body pair of Celestial Bodies involved, the second one is Option
    * @param description    enum to describe what happened
    */
-  case class LoggerMessage(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions) extends ViewActorCommand
+  case class LoggerMessage(body: CelestialBody, description: LoggerActions) extends ViewActorCommand
 
-
+  //todo
+  case class UpdateBody(celestialBody: CelestialBody) extends ViewActorCommand
   /** Sent from the view when start button is pressed.
     *
     * This message should be sent from the view.
@@ -53,8 +54,6 @@ object ViewActor:
     * This message should be sent from the view.
     */
   case object StopPressed extends ViewActorCommand
-
-
 
   /** Creates a ViewActor.
    *
@@ -69,12 +68,16 @@ object ViewActor:
           view.display(simulation)
           Behaviors.same
         }
-        case LoggerMessage(bodiesInvolved, description) => {
-          view.sendLogger(bodiesInvolved, description)
+        case LoggerMessage(body, description) => {
+          view.sendLogger(body, description)
           Behaviors.same
         }
         case SetGalaxy(galaxy) => {
           view.setGalaxy(galaxy)
+          Behaviors.same
+        }
+        case UpdateBody(celestialBody) => {
+          view.updateBody(celestialBody)
           Behaviors.same
         }
         case StartPressed => {
