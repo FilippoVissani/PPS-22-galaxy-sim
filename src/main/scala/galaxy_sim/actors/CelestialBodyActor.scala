@@ -52,10 +52,7 @@ object CelestialBodyActor:
   */
   case class SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
 
-  /**
-   * Message to pass the reference to viewActor to the celestial body actor
-   * @param viewActor reference of the ViewActor
-   */
+  //todo
   case class GreetFromView(viewActor: ActorRef[ViewActorCommand]) extends CelestialBodyActorCommand
   /** Kills this actor. */
   case object Kill extends CelestialBodyActorCommand
@@ -87,9 +84,9 @@ object CelestialBodyActor:
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val reference = getReference(celestialBody, celestialBodies.values.flatten.toSet)
-          val newCelestialBody = if reference.isEmpty then celestialBody else Seq(celestialBody)
-            .filter(x => x != reference.get)
-            .map(x => x.copy(gForceVector = gravitationalForceOnEntity(x, reference.get)))
+          val newCelestialBody = if celestialBody == reference then celestialBody else Seq(celestialBody)
+            .filter(x => x != reference)
+            .map(x => x.copy(gForceVector = gravitationalForceOnEntity(x, reference)))
             .map(x => x.copy(speedVector = speedVectorAfterTime(x, deltaTime)))
             .map(x => x.copy(position = vectorChangeOfDisplacement(x, deltaTime)))
             .map(x => x.copy(position = bounds.toToroidal(x.position)))

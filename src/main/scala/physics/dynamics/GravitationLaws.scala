@@ -71,6 +71,7 @@ object GravitationLaws extends Constants:
    */
   def moduleOfDistance(pos: Position): Double =
     pow(pow(pos.x, 2) + pow(pos.y, 2), moduleConstant)
+//    sqrt(pow(pos.x, 2) + pow(pos.y, 2))
 
   /**
    * Calculate the gravity force put on entity subject direction
@@ -159,7 +160,8 @@ object GravitationLaws extends Constants:
    * @return Double, the radius of the sphere of influence
    */
   def calculateSphereOfInfluence(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Double =
-    euclideanDistance(smallerEntity.position, biggerEntity.position) * pow(smallerEntity.mass, 0.4)
+    val distance = distanceBetweenTwoEntities(smallerEntity, biggerEntity)
+    calculateMagnitude(distance) * pow(smallerEntity.mass, 0.4)
 
   /**
    * Calculate the radius of the sphere of influence with eccentricity of the orbit
