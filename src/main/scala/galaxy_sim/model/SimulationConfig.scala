@@ -5,6 +5,7 @@ import physics.dynamics.PhysicalEntity
 import physics.{Pair, SpeedVector}
 
 object SimulationConfig:
+  val windowSize = 90
   /** Time between two requests of the simulation state. */
   val frameRate = 33
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)

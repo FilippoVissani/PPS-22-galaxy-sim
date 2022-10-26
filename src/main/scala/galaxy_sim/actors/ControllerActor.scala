@@ -80,7 +80,10 @@ object ControllerActor:
               ControllerActor(Option(viewActor), simulationManagerActor)
             }
             case SimulationStateAdaptedResponse(simulation: Option[Simulation]) => {
-              viewActor.foreach(x => simulation.foreach(y => x ! Display(y)))
+              for
+                x <- viewActor
+                y <- simulation
+              yield(x ! Display(y))
               Behaviors.same
             }
             case Tick => {
