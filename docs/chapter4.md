@@ -13,6 +13,13 @@
 ## Controller
 
 ## Physics
+Il componente `physics` del sistema si occupa di definire i concetti riguardanti l'universo fisico ed i calcoli annessi. Nello specifico, si possono suddividere le responsabilità del modulo `physics` in due macro aspetti:
+- Gestione delle collisioni: implementata nel package `physics.collisions`.
+- Gestione della dinamica: implementata nel package `physics.dynamics`
+
+### Collisions
+L'obiettivo di questo modulo è fornire una API per definire come rilevare collisioni tra due oggetti, implementata nel package `collisions.intersection` e specificare la reazione all'impatto avvenuto, realizzata nel package `collisions.impact`.
+
 
 ## Pattern utilizzati
 ### Strategy
