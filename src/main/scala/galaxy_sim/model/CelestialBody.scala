@@ -51,7 +51,7 @@ object CelestialBody:
         )
       ).toList :+ b
 
-    bodyType(b) match
+    EntityIdentifierProlog.checkEntityType(b.mass, b.temperature) match
       case Supernova => fun(b)
       case MassiveStar => fun(b)
       case _ => List(b)
