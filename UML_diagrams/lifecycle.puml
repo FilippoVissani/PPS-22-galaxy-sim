@@ -1,0 +1,15 @@
+@startuml
+
+class Lifecycle << object >> {
++entityOneStep(entity: CelestialBody, bodyType: A): (CelestialBody, A)
+}
+class EntityIdentifier << object >>
+class Scala2P << object >>
+package EntityIdentifier.pl <<File>> {
+}
+
+EntityIdentifier --> Scala2P : use
+Lifecycle --> EntityIdentifier : use
+Scala2P --> EntityIdentifier.pl : query
+
+@enduml

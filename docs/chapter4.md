@@ -14,6 +14,8 @@ La classe `Lifecycle` fornisce il metodo `entityOneStep`, il quale si occupa di 
 Il tipo di CelestialBody è dato dalla sua _massa_ e dalla sua _temperatura_. Le regole per classificare il CelestialBody in _massive star, red super giant, supernova, black hole, planet, asteroid_ o _interstellar cloud_ sono contenute nel file prolog.
 
 La classe `EntityIdentifier` permette di interfacciarsi con prolog e controllare quindi il tipo di CelestialBody.
+![Lifecycle](./images/lifecycle.svg)
+
 
 ## View
 
