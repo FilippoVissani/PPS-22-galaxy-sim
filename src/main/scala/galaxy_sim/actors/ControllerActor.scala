@@ -8,11 +8,10 @@ import akka.util.Timeout
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.actors.ViewActor.*
-import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation}
-
+import galaxy_sim.model.{CelestialBody, Simulation}
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
-import galaxy_sim.model.SimulationConfig.{frameRate, groupOFInterstellarClouds}
+import galaxy_sim.model.SimulationConfig.frameRate
 
 /** In this object is defined the behaviour of controller actor.
  *
@@ -39,7 +38,7 @@ object ControllerActor:
    * 
    *  @param viewActor the ViewActor reference
   */
-  case class SetView(viewActor: ActorRef[ViewActorCommand], galaxy: Map[CelestialBodyType, Set[CelestialBody]]) extends ControllerActorCommand
+  case class SetView(viewActor: ActorRef[ViewActorCommand]) extends ControllerActorCommand
 
   /** This is an adapter to be called when using Ask pattern with SimulationManagerActor
    * to get the simulation state.
@@ -50,7 +49,7 @@ object ControllerActor:
    */
   case class SimulationStateAdaptedResponse(simulation: Option[Simulation]) extends ControllerActorCommand
 
-    /** Used from an inside timer to request the simulation state every frameRate seconds.
+  /** Used from an inside timer to request the simulation state every frameRate seconds.
    *
    * This message should only be sent from ControllerActor's timer.
    */
@@ -76,9 +75,7 @@ object ControllerActor:
               simulationManagerActor ! StopSimulation
               Behaviors.stopped
             }
-            case SetView(viewActor: ActorRef[ViewActorCommand], galaxy: Map[CelestialBodyType, Set[CelestialBody]]) => {
-              viewActor ! SetGalaxy(galaxy)
-              simulationManagerActor ! GreetCelestialBody(viewActor)
+            case SetView(viewActor: ActorRef[ViewActorCommand]) => {
               timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               ControllerActor(Option(viewActor), simulationManagerActor)
             }
