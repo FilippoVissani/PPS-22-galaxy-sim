@@ -21,9 +21,15 @@ class TestEntityReferenceDetection extends AnyFeatureSpec with GivenWhenThen:
       val entities = Set(sun, earth, moon, blackHole)
 
       When("I want to know which one is the entity reference of another")
-      val earthRef = getReference(earth, entities)
-      val sunRef = getReference(sun, entities)
-      val moonRef = getReference(moon, entities)
+      println("ONE")
+      val earthRef = getReference(earth, entities).get
+      println(s"earth got ${earthRef.name}")
+      println("TWO")
+      val sunRef = getReference(sun, entities).get
+      println(s"sun got ${sunRef.name}")
+      println("THREE")
+      val moonRef = getReference(moon, entities).get
+      println(s"moon got ${moonRef.name}")
 
       Then("I get the correct entity reference")
       assert(earthRef.name == sun.name)
@@ -38,8 +44,8 @@ class TestEntityReferenceDetection extends AnyFeatureSpec with GivenWhenThen:
       When("I have to get the reference of the biggest one")
       val blackHoleRef = getReference(blackHole, entities)
 
-      Then("The entity is his reference")
-      assert(blackHoleRef.name == blackHole.name)
+      Then("The entity reference is empty because it has no reference")
+      assert(blackHoleRef.isEmpty)
     }
 
   }
