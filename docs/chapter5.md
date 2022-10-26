@@ -1,22 +1,19 @@
 # Implementazione
+### Barzi Eddie
+Inizialmente mi sono occupato di gestire il ciclo di vita delle entità, sfruttando Prolog per l'identificazione delle stesse. Le classi relative a questo lavoro sono le seguenti:
+- `Scala2P`
+- `EntityIdentifierProlog`
+- `Lifecycle`
+- `OperationsOnCelestialBody`
 
-## Programmazione funzionale
-### For comprehension
-### Higher-order functions
- Una High order function è una funzione che prende in input funzioni come parametri e/o restituisce funzioni come risultato. L'utilizzo di questo meccanismo nella programmazione funzionale permette di applicare in maniera semplice il _pattern Strategy_, oltre a rendere il codice riusabile.
+Successivamente sono passato allo sviluppo delle classi per calcolare e visualizzare le statistiche della simulazione:
+- `Statistics`
+- `PieChart`
 
- Sono state utilizzate in diverse parti del progetto, un esempio di high order function è il seguente:
- ```scala
-def updateTemperature(f: Temperature => Temperature): CelestialBody = 
-    celestialBody.copy(temperature = f(celestialBody.temperature))
- ```
- In questa funzione viene applicata alla temperatura del celestial body la funzione _f_ presa come parametro in input.
-### Pattern matching
-### Option
-### Type members
+Infine ho provveduto ad integrare le statistiche della simulazione nella schermata principale: 
+- `SimulationGUI`
 
-## Programmazione logica
-Il paradigma di programmazione logico è stato utilizzato in questo progetto per identificare i diversi tipi di entità, in base alla massa e alla temperatura.
+Ho utilizzato il paradigma di programmazione logico per identificare i diversi tipi di entità, in base alla massa e alla temperatura.
 
 I termini prolog utilizzati per identificare le entità sono contenuti nel file `EntityIdentifier.pl`. Secondo la logica riportata di seguito le entità vengono classificate in _Interstellar Cloud, Asteroid, Planet_ e _Star_.
 ```prolog
@@ -41,21 +38,6 @@ def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType =
     val goal = s"typeOfEntity($temperature, $mass, E)"
     solveOneAndGetTerm(engine, goal, "E") 
 ```
-
-## Sezioni personali
-### Barzi Eddie
-Inizialmente mi sono occupato di gestire il ciclo di vita delle entità, sfruttando Prolog per l'identificazione delle stesse. Le classi relative a questo lavoro sono le seguenti:
-- `Scala2P`
-- `EntityIdentifierProlog`
-- `Lifecycle`
-- `OperationsOnCelestialBody`
-
-Successivamente sono passato allo sviluppo delle classi per calcolare e visualizzare le statistiche della simulazione:
-- `Statistics`
-- `PieChart`
-
-Infine ho provveduto ad integrare le statistiche della simulazione nella schermata principale: 
-- `SimulationGUI`
 
 ### Cortecchia Angela
 ### Micelli Leonardo

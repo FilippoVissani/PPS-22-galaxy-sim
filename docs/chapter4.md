@@ -85,11 +85,16 @@ given Conversion[Term, CelestialBodyType] = _.toString match
   case "asteroid" => Asteroid
   case "interstellarCloud" => InterstellarCloud
 ```
-
 ### Type classes
 La Type Class è una tipologia di classe astratta e parametrizzata sul tipo, che permette di aggiungere un dato comportamento ad un qualunque tipo di dato senza utilizzare
 ereditarietà. In scala, si definiscono type classes in questo modo: Combiner[A], dove il tipo A racchiuso tra quadre rappresenta un qualunque tipo chiuso. All'interno del progetto, possiamo trovare
 esempi di type class nel package `physics.collisions`, in cui troviamo le type classes `Intersection`, `Impact` e `Collider`
+
+## Pattern di programmazione funzionale
+### For comprehension
+### Pattern matching
+### Option
+### Type members
 
 ## Struttura del codice
 Il codice è stato strutturato in package come descritto nel diagramma seguente:
