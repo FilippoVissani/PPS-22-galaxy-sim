@@ -8,12 +8,10 @@ import akka.util.Timeout
 import galaxy_sim.actors.CelestialBodyActor.*
 import galaxy_sim.actors.ControllerActor.ControllerActorCommand
 import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation, emptyGalaxy}
-
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
 import galaxy_sim.model.SimulationConfig.frameRate
 import galaxy_sim.actors.SimulationManagerActor.IterationState.*
-import galaxy_sim.actors.ViewActor.ViewActorCommand
 
 /** In this object is defined the behaviour of simulation manager actor.
  *
@@ -46,8 +44,6 @@ object SimulationManagerActor:
    */
   case class AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) extends SimulationManagerActorCommand
 
-  //todo
-  case class GreetCelestialBody(viewActor: ActorRef[ViewActorCommand]) extends SimulationManagerActorCommand
   /** Response of the ask pattern
    *  
    *  @param simulation current state of the simulation
@@ -86,10 +82,6 @@ object SimulationManagerActor:
             case StopSimulation => {
               celestialBodyActors.foreach(x => x ! Kill)
               Behaviors.stopped
-            }
-            case GreetCelestialBody(viewActor: ActorRef[ViewActorCommand]) => {
-              celestialBodyActors.foreach( x => x ! GreetFromView(viewActor))
-              Behaviors.same
             }
             case IterationStep => {
               iterationState.head match

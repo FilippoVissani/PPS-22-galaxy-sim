@@ -4,7 +4,6 @@ import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
 import galaxy_sim.actors.SimulationManagerActor.*
-import galaxy_sim.actors.ViewActor.{LoggerMessage, ViewActorCommand}
 import galaxy_sim.model.SimulationConfig.*
 import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Lifecycle}
 import galaxy_sim.utils.EntityReferenceDetector.*
@@ -13,7 +12,6 @@ import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 import physics.dynamics.GravitationLaws.*
 import galaxy_sim.utils.SimulationGivens.given
 import galaxy_sim.model.CelestialBodyType.*
-import galaxy_sim.utils.LoggerActions.*
 import physics.collisions.collision.CollisionEngine
 
 /** In this object is defined the behaviour of celestial body actor.
@@ -51,9 +49,7 @@ object CelestialBodyActor:
    *  @param replyTo the SimulationManagerActor reference to reply.
   */
   case class SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) extends CelestialBodyActorCommand
-
-  //todo
-  case class GreetFromView(viewActor: ActorRef[ViewActorCommand]) extends CelestialBodyActorCommand
+  
   /** Kills this actor. */
   case object Kill extends CelestialBodyActorCommand
 
@@ -71,7 +67,6 @@ object CelestialBodyActor:
     deltaTime: Double,
     ): Behavior[CelestialBodyActorCommand] =
     Behaviors.setup[CelestialBodyActorCommand](ctx =>
-      var viewActorRef: Option[ActorRef[ViewActorCommand]] = Option.empty
       Behaviors.receiveMessage[CelestialBodyActorCommand](msg => msg match
         case GetCelestialBodyState(replyTo: ActorRef[SimulationManagerActorCommand]) => {
           replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
@@ -94,23 +89,13 @@ object CelestialBodyActor:
             replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
             CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
         }
-        case GreetFromView(viewActor) => {
-          viewActorRef = Option(viewActor)
-          if viewActorRef.nonEmpty then
-            viewActorRef.get ! LoggerMessage((celestialBody, Option.empty), Spawn)
-          Behaviors.same
-        }
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
           val newCelestialBody = CollisionEngine.impactMany(celestialBody, others.toSeq)
-          if viewActorRef.nonEmpty then
-            viewActorRef.get ! LoggerMessage((celestialBody, Option.empty), Collided) //todo
           replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
           CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
         }
         case Kill => {
-          if viewActorRef.nonEmpty then
-            viewActorRef.get ! LoggerMessage((celestialBody, Option.empty), Died)
           Behaviors.stopped
         }
       )
