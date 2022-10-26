@@ -1,0 +1,22 @@
+@startuml
+
+package View{
+    rectangle ViewActor
+}
+
+package Controller{
+    rectangle ControllerActor
+}
+
+package Model{
+    rectangle SimulationManagerActor
+    rectangle CelestialBodyActor
+}
+
+ViewActor -right-> ControllerActor: Notify user input
+ControllerActor -left-> ViewActor: Update
+ControllerActor -right-> SimulationManagerActor: Request Simulation State
+SimulationManagerActor --> CelestialBodyActor: Update celestial body state
+CelestialBodyActor --> SimulationManagerActor: Send celestial body state
+
+@enduml

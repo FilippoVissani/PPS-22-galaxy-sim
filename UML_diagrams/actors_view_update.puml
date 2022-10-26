@@ -1,0 +1,37 @@
+@startuml
+autonumber
+
+control ":RootActor" as root
+control ":ViewActor" as view
+control ":ControllerActor" as controller
+control ":SimulationManagerActor" as simulationManager
+
+activate root
+activate controller
+activate view
+activate simulationManager
+
+root --> controller: SetView(viewActorRef)
+
+== Simulation starts ==
+view --> controller: Start()
+controller --> simulationManager: StartSimulation()
+
+group Every X milliseconds
+    controller --> controller: Tick()
+    controller --> simulationManager: AskSimulationState()
+    alt successful case
+        simulationManager --> controller: Success(SimulationStateResponse(simulation))
+        controller --> controller: SimulationStateAdaptedResponse(Option(simulation))
+        controller --> view: Display(simulation)
+    else failure case
+        simulationManager --> controller: Failure()
+        controller --> controller: SimulationStateAdaptedResponse(Option.empty)
+    end
+end
+
+== Simulation ends ==
+view --> controller: Stop()
+controller --> simulationManager: StopSimulation()
+
+@enduml

@@ -1,4 +1,19 @@
 # Design di dettaglio
+
+## Paradigma basato su scambio di messaggi
+
+// TODO aggiungere diagramma delle classi degli attori
+
+## Model
+
+// TODO aggiungere diagramma delle classi del model
+
+## View
+
+## Controller
+
+## Physics
+
 ## Pattern utilizzati
 ### Strategy
 Il pattern Strategy consiste nell'isolare un algoritmo o una strategia al di fuori di una classe, per fare in modo che quest'ultima possa variare dinamicamente il suo comportamento. In Scala è applicato in maniera semplice ed efficace con l'uso delle high order functions, un esempio è il seguente: 
@@ -75,3 +90,7 @@ given Conversion[Term, CelestialBodyType] = _.toString match
 La Type Class è una tipologia di classe astratta e parametrizzata sul tipo, che permette di aggiungere un dato comportamento ad un qualunque tipo di dato senza utilizzare
 ereditarietà. In scala, si definiscono type classes in questo modo: Combiner[A], dove il tipo A racchiuso tra quadre rappresenta un qualunque tipo chiuso. All'interno del progetto, possiamo trovare
 esempi di type class nel package `physics.collisions`, in cui troviamo le type classes `Intersection`, `Impact` e `Collider`
+
+## Struttura del codice
+Il codice è stato strutturato in package come descritto nel diagramma seguente:
+![Packages](./images/packages_diagram.svg)

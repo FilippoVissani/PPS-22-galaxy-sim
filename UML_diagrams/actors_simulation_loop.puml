@@ -1,0 +1,29 @@
+@startuml
+autonumber
+
+control ":ControllerActor" as controller
+control ":SimulationManagerActor" as simulationManager
+control ":CelestialBodyActor" as celestialBody
+
+activate controller
+activate simulationManager
+activate celestialBody
+
+controller --> simulationManager: StartSimulation()
+
+loop
+    simulationManager --> simulationManager: IterationStep()
+    simulationManager --> celestialBody: UpdateCelestialBodyType(self)
+    celestialBody --> simulationManager: CelestialBodyState(celestialBody, celestialBodyType)
+    simulationManager --> simulationManager: IterationStep()
+    simulationManager --> celestialBody: MoveToNextPosition(tmpState, self)
+    celestialBody --> simulationManager: CelestialBodyState(celestialBody, celestialBodyType)
+    simulationManager --> simulationManager: IterationStep()
+    simulationManager --> celestialBody: SolveCollisions(tmpState, self)
+    celestialBody --> simulationManager: CelestialBodyState(celestialBody, celestialBodyType)
+    simulationManager --> simulationManager: IterationStep()
+end
+
+controller --> simulationManager: StopSimulation()
+
+@enduml
