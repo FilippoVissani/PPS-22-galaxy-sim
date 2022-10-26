@@ -1,24 +1,52 @@
 @startuml
 
-package ViewActor <<Frame>> {
+left to right direction
+
+component ViewActor {
   class ViewActor << object >>
   interface ViewActorCommand << trait >>
+  class Display extends ViewActorCommand
+  class StartPressed << object >> extends ViewActorCommand
+  class StopPressed << object >> extends ViewActorCommand
 }
 
-package ControllerActor <<Frame>> {
+component ControllerActor{
   class ControllerActor << object >>
   interface ControllerActorCommand << trait >>
+  class Start << object >> extends ControllerActorCommand
+  class Stop << object >> extends ControllerActorCommand
+  class SetView extends ControllerActorCommand
+  class SimulationStateAdaptedResponse extends ControllerActorCommand
+  class Tick << object >> extends ControllerActorCommand
 }
 
-package SimulationManagerActor <<Frame>> {
+component SimulationManagerActor{
   class SimulationManagerActor << object >>
   interface SimulationManagerActorCommand << trait >>
+  class StartSimulation << object >> extends SimulationManagerActorCommand
+  class StopSimulation << object >> extends SimulationManagerActorCommand
+  class IterationStep << object >> extends SimulationManagerActorCommand
+  class CelestialBodyState extends SimulationManagerActorCommand
+  class AskSimulationState extends SimulationManagerActorCommand
+  class SimulationStateResponse
 }
+AskSimulationState ..> SimulationStateResponse
+ControllerActor ..> SimulationStateResponse
 
-package CelestialBodyActor <<Frame>> {
+component CelestialBodyActor {
   class CelestialBodyActor << object >>
   interface CelestialBodyActorCommand << trait >>
+  class GetCelestialBodyState extends CelestialBodyActorCommand
+  class UpdateCelestialBodyType extends CelestialBodyActorCommand
+  class MoveToNextPosition extends CelestialBodyActorCommand
+  class SolveCollisions extends CelestialBodyActorCommand
+  class Kill << object >> extends CelestialBodyActorCommand
 }
+
+ViewActor ..> ViewActorCommand
+ControllerActor ..> ControllerActorCommand
+SimulationManagerActor ..> SimulationManagerActorCommand
+CelestialBodyActor ..> CelestialBodyActorCommand
 
 ViewActor ..> ControllerActorCommand
 ControllerActor ..> ViewActorCommand
