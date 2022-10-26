@@ -33,7 +33,15 @@ def from[A](f: (A, A) => A): Impact[A] = (a1: A, a2: A) => f(a1, a2)
 ```
 Questa funzione di factory, per quanto semplice, permette di realizzare implementazioni della type class Impact in maniera più snella rispetto alla semplice implementazione per estensione,
 più propria della object orientation.
+
 ### Singleton
+Il pattern singleton consiste nel restringere l'istanziazione di una casse ad un solo elemento. Questo pattern si rivela particolarmente utile quando è necessario un solo oggetto a coordinare determinate operazioni all' interno del sistema e si vuole accedere staticamente ad esso, senza passaggio di riferimenti sparso lungo il codice. Scala permette allo sviluppatore di adottare questo pattern a livello di linguaggio con l'introduzione del costrutto `object`. All'interno del progetto possiamo trovare un esempio di Singleton pattern impiegato come libreria o contenitore di funzioni:
+```scala
+object CollisionEngine:
+  def collides[A](a1: A, a2: A)(using Intersection[A]): Boolean
+  ...
+```
+
 ### Facade
 Il Facade pattern consiste nel fornire un'interfaccia semplice per nascondere alcuni blocchi di codice più complessi.
 In questo progetto il pattern Facade è stato utilizzato per fornire la seguente interfaccia, la quale semplifica l'utilizzo del grafico a torta della libreria _JFreeChart_:
