@@ -23,7 +23,7 @@ Il componente `physics` del sistema si occupa di definire i concetti riguardanti
 - Gestione della dinamica: implementata nel package `physics.dynamics`
 
 ### Collisions
-L'obiettivo di questo modulo è fornire una API per definire come rilevare collisioni tra due oggetti, implementata nel package `collisions.intersection` e specificare la reazione all'impatto avvenuto, realizzata nel package `collisions.impact`.
+L'obiettivo di questo modulo è fornire una API per definire come rilevare collisioni tra due oggetti, implementata nel package `collisions.intersection` e specificare la reazione all'impatto avvenuto, realizzata nel package `collisions.impact`. Questi due concetti offrono una loro API indipendente compresa di moduli di funzioni utili, come `Intersection` e `Impact`, e sintassi ad-hoc. A questi sotto-moduli si unisce un modulo `CollisionEngine` che riunisce le due API per implementare le collisioni in maniera più sintetica.
 
 
 ## Pattern utilizzati
