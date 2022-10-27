@@ -2,7 +2,7 @@
 
 left to right direction
 
-component ViewActor {
+component ViewActorComponent {
   class ViewActor << object >>
   interface ViewActorCommand << trait >>
   class Display extends ViewActorCommand
@@ -10,7 +10,7 @@ component ViewActor {
   class StopPressed << object >> extends ViewActorCommand
 }
 
-component ControllerActor{
+component ControllerActorComponent {
   class ControllerActor << object >>
   interface ControllerActorCommand << trait >>
   class Start << object >> extends ControllerActorCommand
@@ -20,7 +20,7 @@ component ControllerActor{
   class Tick << object >> extends ControllerActorCommand
 }
 
-component SimulationManagerActor{
+component SimulationManagerActorComponent {
   class SimulationManagerActor << object >>
   interface SimulationManagerActorCommand << trait >>
   class StartSimulation << object >> extends SimulationManagerActorCommand
@@ -30,10 +30,10 @@ component SimulationManagerActor{
   class AskSimulationState extends SimulationManagerActorCommand
   class SimulationStateResponse
 }
-AskSimulationState ..> SimulationStateResponse
+AskSimulationState --> SimulationStateResponse : use
 ControllerActor ..> SimulationStateResponse
 
-component CelestialBodyActor {
+component CelestialBodyActorComponent {
   class CelestialBodyActor << object >>
   interface CelestialBodyActorCommand << trait >>
   class GetCelestialBodyState extends CelestialBodyActorCommand
@@ -44,13 +44,13 @@ component CelestialBodyActor {
 }
 
 ViewActor ..> ViewActorCommand
-ControllerActor ..> ControllerActorCommand
-SimulationManagerActor ..> SimulationManagerActorCommand
+ControllerActor --> ControllerActorCommand : use
+SimulationManagerActor --> SimulationManagerActorCommand : use
 CelestialBodyActor ..> CelestialBodyActorCommand
 
-ViewActor ..> ControllerActorCommand
-ControllerActor ..> ViewActorCommand
-ControllerActor ..> SimulationManagerActorCommand
-SimulationManagerActor ..> CelestialBodyActorCommand
+ViewActor --> ControllerActorCommand : use
+ControllerActor --> ViewActorCommand : use
+ControllerActor --> SimulationManagerActorCommand : use
+SimulationManagerActor --> CelestialBodyActorCommand : use
 
 @enduml
