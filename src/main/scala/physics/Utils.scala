@@ -1,28 +1,33 @@
 package physics
 import physics.Pair
 
-type Position = Pair[Double, Double]
+import scala.annotation.targetName
+
+type Position = Pair
 type Speed = Double
-type SpeedVector = Pair[Speed, Speed]
-type GravityForceVector = Pair[GForce, GForce]
+type SpeedVector = Pair
+type GravityForceVector = Pair
 type Mass = Double
 type GForce = Double
 
-trait Pair[A, B]:
-  def x: A
-  def y: B
+case class Pair(x: Double, y: Double)
 
 object Pair:
-  def apply[A, B](x: A, y: B): Pair[A, B] = PairImpl[A, B](x, y)
-  def map[A, B, C, D](p: Pair[A, B])(f: A => C)(g: B => D): Pair[C, D] = Pair(f(p.x), g(p.y))
-  extension[A,B] (p: Pair[A,B])
-    def +(other: Pair[A, B])(using op: PairOperations[A,B]) = op.sum(p, other)
+  def sum(p1: Pair, p2: Pair): Pair =
+    Pair(p1.x + p2.x, p1.y + p2.y)
 
-  private case class PairImpl[A, B](x: A, y: B) extends Pair[A, B]
+  def distance(p1: Pair, p2: Pair): Double =
+    Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
 
-  sealed trait PairOperations[A, B]:
-    def sum(p1: Pair[A, B], p2: Pair[A, B]): Pair[A, B]
+  def module(p: Pair): Double =
+    Math.sqrt(Math.pow(p.x, 2) + Math.pow(p.y, 2))
 
-  object PairOperations:
-    given SumPairOfDouble: PairOperations[Double, Double] with
-      override def sum(p1: Pair[Double, Double], p2: Pair[Double, Double]): Pair[Double, Double] = Pair(p1.x + p2.x, p1.y + p2.y)
+  extension (p: Pair)
+    @targetName("sumOperator")
+    def +(other: Pair) = sum(p, other)
+    @targetName("distanceOperator")
+    def <->(other: Pair) = distance(p, other)
+    @targetName("moduleOperator")
+    def || = module(p)
+    @targetName("unaryMinusOperator")
+    def unary_- = Pair(-p.x, -p.y)
