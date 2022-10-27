@@ -6,7 +6,7 @@ import physics.dynamics.GravitationLaws.astronomicUnit
 
 import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, GridBagConstraints, GridBagLayout, RenderingHints, Toolkit}
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
-import javax.swing.{JButton, JComboBox, JFrame, JPanel, JScrollPane, JTabbedPane, JTextArea, SwingUtilities}
+import javax.swing.{JButton, JComboBox, JFrame, JLabel, JPanel, JScrollPane, JTabbedPane, JTextArea, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.{Statistics, ViewLogger}
@@ -43,9 +43,7 @@ object SwingGUI:
     val loggerPanel: LoggerPanel = LoggerPanel(viewLogger)
     val loggerPanelContainer: JPanel = JPanel(GridBagLayout())
 
-    val pieChart: PieChart = PieChart("Celestial body types")
-
-    val statisticsPanel: StatisticsPanel = StatisticsPanel(pieChart, gbc.pie)
+    val statisticsPanel: StatisticsPanel = StatisticsPanel(gbc.pie)
     val statisticsPanelContainer: JPanel =JPanel(GridBagLayout())
 
     val controlPanel: JPanel = JPanel()
@@ -89,9 +87,8 @@ object SwingGUI:
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
-        //Update the pie chart
-        pieChart.clearAllValues()
-        Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.setValue(element._1.toString, element._2))
+        statisticsPanel.update(simulation)
+
       })
   end SwingGUIImpl
 
@@ -171,12 +168,26 @@ object SwingGUI:
     //gbc.insets = new Insets(5, 0, 0, 10);
     //gbc.anchor = GridBagConstraints.CENTER;
 
-  private class StatisticsPanel(pieChart: PieChart, gbc: GridBagConstraints) extends JPanel:
+  private class StatisticsPanel(gbc: GridBagConstraints) extends JPanel:
+    val pieChart: PieChart = PieChart("Celestial body types")
     val pieChartPanel: ChartPanel = pieChart.wrapToPanel
     pieChartPanel.setPreferredSize(Dimension(
       25 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
     this.add(pieChartPanel, gbc);
+
+    val totalBodiesLabel: JLabel = JLabel()
+    this.add(totalBodiesLabel)
+
+    def update(simulation: Simulation): Unit =
+      //update the pie chart
+      pieChart.clearAllValues()
+      Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.setValue(element._1.toString, element._2))
+
+      //update total bodies count
+      totalBodiesLabel.setText(s"Number of total bodies: ${Statistics.quantityOfTotalBodies(simulation.galaxy).toString}")
+
+      //update percentages count
 
   private class SimulationPanel extends JPanel:
     var simulation: Option[Simulation] = Option.empty
