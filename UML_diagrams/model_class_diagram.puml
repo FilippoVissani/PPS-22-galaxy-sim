@@ -1,0 +1,20 @@
+@startuml
+
+left to right direction
+
+package physics.rigidbody.RigidBody {
+  class CircularEntity << trait >>
+}
+
+package galaxy_sim.model {
+  class Simulation
+  class CelestialBody extends CircularEntity
+  class Boundary << trait >>
+  enum CelestialBodyType
+}
+
+Simulation "1"..>"*" CelestialBody
+Simulation "1"..>"*" CelestialBodyType
+Simulation ..> Boundary
+
+@enduml
