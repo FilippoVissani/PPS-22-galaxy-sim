@@ -85,6 +85,7 @@ Successivamente sono passato allo sviluppo delle classi per calcolare e visualiz
 - `PieChart`
 
 Infine ho provveduto ad integrare le statistiche della simulazione nella schermata principale: 
+- `StatisticsPanel`
 - `SimulationGUI`
 
 ### Cortecchia Angela
