@@ -94,7 +94,7 @@ La seguente tabella riporta i meccanismi avanzati e/o i pattern utilizzati nelle
 <tr><th>Classe</th><th>Meccanismi o pattern utilizzati</th></tr>
 <tr><td>Scala2P</td><td>- Implicit conversions</td></tr>
 <tr><td>EntityIdentifier</td><td>- Singleton</td></tr>
-<tr><td>Lifecycle</td><td>- Contextual programming </br>- Type classes </br>- Pattern matching </br>- Extension method</td></tr>
+<tr><td>Lifecycle</td><td>- Contextual programming </br>- Type classes </br>- Pattern matching </br>- Infix extension method</td></tr>
 <tr><td>OperationsOnCelestialBody</td><td>- Extension method </br>- Higher-order functions</td></tr>
 <tr><td>Statistics</td><td>- Type alias </br>- Higher-order functions</td></tr>
 <tr><td>PieChart</td><td>- Facade </br>- Factory</td></tr>
