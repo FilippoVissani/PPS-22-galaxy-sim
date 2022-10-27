@@ -34,7 +34,10 @@ La classe `Lifecycle` fornisce il metodo `entityOneStep`, il quale si occupa di 
 <tr><td>Supernova</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
 <tr><td>Black Hole</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
 </table>
-<!--![Lifecycle](./images/lifecycle.svg)-->
+
+Di seguito il diagramma delle classi coinvolte con il ciclo di vita:
+
+![Lifecycle](./images/lifecycle.svg)
 
 ## View
 
