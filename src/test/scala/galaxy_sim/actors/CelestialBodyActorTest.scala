@@ -21,6 +21,13 @@ class CelestialBodyActorTest extends AnyFunSuite:
     inbox.expectMessage(CelestialBodyState(sun, MassiveStar))
   }
 
+  test("UpdateCelestialBodyType") {
+    val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val inbox = TestInbox[SimulationManagerActorCommand]()
+    testKit.run(CelestialBodyActor.UpdateCelestialBodyType(inbox.ref))
+    testKit.returnedBehavior shouldBe testKit.currentBehavior
+  }
+
   test("MoveToNextPosition"){
     val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
     val inbox = TestInbox[SimulationManagerActorCommand]()
