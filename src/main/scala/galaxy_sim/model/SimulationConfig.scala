@@ -2,7 +2,8 @@ package galaxy_sim.model
 
 import physics.dynamics.GravitationLaws.*
 import physics.dynamics.PhysicalEntity
-import physics.{Pair, SpeedVector}
+import physics.dynamics.PhysicsFormulas.*
+import physics.*
 
 object SimulationConfig:
   val windowSize = 90

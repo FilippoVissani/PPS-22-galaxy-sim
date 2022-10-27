@@ -4,9 +4,10 @@ import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.prolog.EntityIdentifier
 import physics.Mass
-import physics.dynamics.GravitationLaws.solarMass
+import physics.dynamics.PhysicsFormulas.*
 import galaxy_sim.model.CelestialBodyAliases.Temperature
 import galaxy_sim.utils.OperationsOnCelestialBody.{updateMass, updateTemperature}
+import physics.dynamics.PhysicsFormulas.*
 
 import scala.annotation.targetName
 import scala.util.Random

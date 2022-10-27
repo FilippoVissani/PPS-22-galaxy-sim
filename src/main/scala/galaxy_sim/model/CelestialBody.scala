@@ -7,7 +7,8 @@ import galaxy_sim.prolog.EntityIdentifier
 import physics.*
 import physics.rigidbody.RigidBody.CircularEntity
 import galaxy_sim.model.SimulationConfig.*
-import physics.dynamics.GravitationLaws.astronomicUnit
+import physics.dynamics.GravitationLaws.*
+
 
 import scala.util.Random
 
