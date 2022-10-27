@@ -1,45 +1,13 @@
 package physics.dynamics
 
-import org.w3c.dom.EntityReference
 import physics.*
-import math.{pow, sqrt, cbrt}
+import physics.dynamics.PhysicsFormulas.*
+
+import math.{cbrt, pow, sqrt}
 
 /**
  * @author Angela Cortecchia
  */
-
-/**
- * Trait with different constants that can be useful
- */
-trait Constants:
-  val gravityConstant: Double = 6.6743e-11 //Nm^2/kg^2
-  val daySec: Double = 24.0 * 60 * 60 //seconds in a day
-  val deltaYear: Double = daySec * 365 //one year
-  val moduleConstant: Double = 1.5
-  val astronomicUnit: Double = 1.5e11 //meters, equals as earth-sun distance
-  val lightYear: Double = 9.461e12 //63241.1 * astronomicUnit
-  val solarMass: Double = 2.0e30 //unit reference for stars and black holes
-  val earthMass: Double = 5.9722e24 //unit reference for planets and little objects
-
-/**
- * Fields characteristics of an entity in order to calculate gravitation laws
- *
- * mass in kg
- *
- * position is a Pair(Double, Double)
- *
- * aphelionSpeed is in m/s
- *
- * speedVector is a Pair(0, aphelionSpeed)
- *
- * gForceVector is a Pair(Double, Double)
- */
-trait PhysicalEntity:
-  def mass: Mass
-  def position: Position
-  def aphelionSpeed: Speed
-  def speedVector: SpeedVector
-  def gForceVector: GravityForceVector
 
 /**
  * Functions to calculate the essential gravitation laws implied in basic object's movements in 2D space.
@@ -60,32 +28,6 @@ trait PhysicalEntity:
  * 5) update the entity reference's position by using vectorChangeOfDisplacement(biggerEntity, ...)
  */
 object GravitationLaws extends Constants:
-
-  /**
-   * Calculate the gravity constant between two entities
-   * @param smallerEntityMass Mass, of the entity that orbits around another one
-   * @param biggerEntityMass Mass, of the entity that has other entities that orbit around it
-   * @return Double, the gravity constant between two entities
-   */
-  def entitiesGravitationalConstant(smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
-    gravityConstant * smallerEntityMass * biggerEntityMass
-
-  /**
-   * Calculate the distance between two entities
-   * @param smallerEntity PhysicalEntity, is the entity that orbits around another one
-   * @param biggerEntity PhysicalEntity, is the entity that has other entities that orbit around it
-   * @return Position, the distance in a bi-dimensional space
-   */
-  def distanceBetweenTwoEntities(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Position =
-    Pair(smallerEntity.position.x - biggerEntity.position.x, smallerEntity.position.y - biggerEntity.position.y)
-
-  /**
-   * Calculate the module of a Position (type) that represent the distance between two entities
-   * @param pos Position
-   * @return Double
-   */
-  def moduleOfDistance(pos: Position): Double =
-    pow(pow(pos.x, 2) + pow(pos.y, 2), moduleConstant)
 
   /**
    * Calculate the gravity force put on entity subject direction
@@ -158,13 +100,6 @@ object GravitationLaws extends Constants:
   def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
     Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / biggerEntity.mass,
           - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / biggerEntity.mass)
-  /**
-   * Calculate the magnitude of a vector
-   * @param vector Pair[Double, Double]
-   * @return double
-   */
-  def calculateMagnitude(vector: Pair[Double, Double]): Double =
-    sqrt(pow(vector.x, 2) + pow(vector.y, 2))
 
   /**
    * Calculate the sphere of influence of an entity
@@ -196,11 +131,3 @@ object GravitationLaws extends Constants:
   def radiusSphereOfInfluence(semiMayorAxis: Double, smallerEntityMass: Mass, biggerEntityMass: Mass): Double =
     semiMayorAxis * cbrt(smallerEntityMass / (biggerEntityMass * 3))
 
-  /**
-   * Calculate the euclidean distance of two points (entities) in 2 dimension (x, y)
-   * @param pos1 Position of the entity 1
-   * @param pos2 Position of the entity 2
-   * @return the euclidean distance between the two positions
-   */
-  def euclideanDistance(pos1: Position, pos2: Position): Double =
-    sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2))
