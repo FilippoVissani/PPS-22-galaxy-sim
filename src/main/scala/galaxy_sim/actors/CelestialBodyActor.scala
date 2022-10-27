@@ -78,16 +78,18 @@ object CelestialBodyActor:
           CelestialBodyActor(result._1, result._2, bounds, deltaTime)
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
-          val reference = getReference(celestialBody, celestialBodies.values.flatten.toSet)
-          val newCelestialBody = if celestialBody == reference then celestialBody else Seq(celestialBody)
-            .filter(x => x != reference)
-            .map(x => x.copy(gForceVector = gravitationalForceOnEntity(x, reference)))
-            .map(x => x.copy(speedVector = speedVectorAfterTime(x, deltaTime)))
-            .map(x => x.copy(position = vectorChangeOfDisplacement(x, deltaTime)))
-            .map(x => x.copy(position = bounds.toToroidal(x.position)))
-            .head
-            replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
-            CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
+          val newCelestialBody = for
+            reference <- getReference(celestialBody, celestialBodies.values.flatten.toSet)
+            y <- Option(celestialBody.copy(gForceVector = gravitationalForceOnEntity(celestialBody, reference)))
+            z <- Option(y.copy(speedVector = speedVectorAfterTime(y, deltaTime)))
+            w <- Option(z.copy(position = vectorChangeOfDisplacement(z, deltaTime)))
+          yield w.copy(position = bounds.toToroidal(w.position))
+          if newCelestialBody.isDefined then
+            replyTo ! CelestialBodyState(newCelestialBody.get, celestialBodyType)
+            CelestialBodyActor(newCelestialBody.get, celestialBodyType, bounds, deltaTime)
+          else
+            replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
+            Behaviors.same
         }
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
