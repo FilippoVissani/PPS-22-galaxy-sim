@@ -69,5 +69,5 @@ object Lifecycle:
    */
   extension (n: Mass)
     @targetName("addOrSubtract")
-    def +-(otherN: Mass): Mass =
+    infix def +-(otherN: Mass): Mass =
       if Random.nextBoolean then n + otherN else n - otherN
