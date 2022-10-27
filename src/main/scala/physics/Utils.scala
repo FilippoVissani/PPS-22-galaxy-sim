@@ -10,6 +10,7 @@ type GravityForceVector = Pair
 type Mass = Double
 type GForce = Double
 
+
 case class Pair(x: Double, y: Double)
 
 object Pair:
