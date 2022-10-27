@@ -135,10 +135,10 @@ Introduzione degli attori (package `galaxy_sim.actors`) e definizione delle loro
 - `ViewActor`
 
 Introduzione dei seguenti componenti del _Model_, presenti nel package `galaxy_sim.model`:
-- `Boundary`
-- `CelestialBody`
-- `Simulation`
+- `Boundary`: Definisce i confini di una simulazione
+- `CelestialBody`: Rappresenta lo stato di un corpo celeste
+- `Simulation`: Rappresenta lo stato della simulazione
 
 Introduzione dei seguenti componenti della _View_, presenti nel package `galaxy_sim.view`:
-- `SwingGUI`
-- `View`
+- `SwingGUI`: interfaccia grafica scritta utilizzando la libreria Swing
+- `View`: gestisce l'interfaccia grafica
