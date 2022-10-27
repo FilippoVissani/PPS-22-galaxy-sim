@@ -5,6 +5,7 @@ import galaxy_sim.model.CelestialBody
 import physics.*
 import physics.dynamics.GravitationLaws.*
 import physics.dynamics.PhysicalEntity
+import physics.dynamics.PhysicsFormulas.*
 
 import scala.annotation.tailrec
 import scala.language.postfixOps
