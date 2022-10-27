@@ -35,14 +35,14 @@ given CircleToCircleIntersection: Intersection[CircleCollisionBox] =
 Anche la funzione `entityOneStep` della classe `Lifecycle` fa uso di given instances:
 ```scala
 def entityOneStep[A](entity: CelestialBody, bodyType: A)(using lifecycleRules: LifecycleRules[A]): (CelestialBody, A) =
-  lifecycleRules.oneStep(entity, bodyType)
+  lifecycleRules.updateMassAndTemperature(entity, bodyType)
 ```
 Come si può vedere dal codice viene infatti richiesto un parametro di contesto, oltre ai parametri di input _entity_ di tipo CelestialBody e _bodyType_ generico. In questo modo si possono definire i parametri di contesto per ogni _bodyType_ attraverso le given instances.
 
 Nel progetto è presente una sola given instance in quanto il _bodyType_ corrisponde all'enum `CelestialBodyType`. Avendo però prodotto questa implementazione è facile e immediato aggiungere delle given instances nel caso in cui si voglia estendere il sistema, inserendo ad esempio delle case class invece dell'enum per indicare i _bodyType_.
 ```scala
 given LifecycleRules[CelestialBodyType] with
-  override def oneStep(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = ...
+  override def updateMassAndTemperature(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = ...
 ```
 
 ## Programmazione logica
@@ -76,7 +76,7 @@ def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType =
 ### Barzi Eddie
 Inizialmente mi sono occupato di gestire il ciclo di vita delle entità, sfruttando Prolog per l'identificazione delle stesse. Le classi relative a questo lavoro sono le seguenti:
 - `Scala2P`
-- `EntityIdentifierProlog`
+- `EntityIdentifier`
 - `Lifecycle`
 - `OperationsOnCelestialBody`
 
