@@ -65,7 +65,7 @@ typeOfStar(Mass, Star) :- minMass(MinMass, Star), Mass > MinMass.
 ```
 
 La classe `Scala2P` si occupa di creare l'engine prolog e fornire una funzione per risolvere un goal.
-Per controllare il tipo di entità viene utilizzata la classe `EntityIdentifierProlog`.
+Per controllare il tipo di entità viene utilizzata la classe `EntityIdentifier`.
 ```scala
 def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType = 
     val goal = s"typeOfEntity($temperature, $mass, E)"
