@@ -24,7 +24,7 @@ Il Version Control System scelto per coordinare lo sviluppo in team è Git. Dunq
 - Il branch _develop_ contiene la versione del codice che poi andrà in produzione nel branch _main_. In questo branch vengono introdotte le nuove funzionalità che devono essere testate.
 - Per lo sviluppo di ogni funzionalità viene creato un branch apposito, che poi verrà unito al branch _develop_.
 
-// TODO AGGIUNGERE GRAFICO WORKFLOW
+![Git Flow](./images/git-flow.svg)
 
 ## Tool Utilizzati
 - Come build tool è stato utilizzato SBT.
