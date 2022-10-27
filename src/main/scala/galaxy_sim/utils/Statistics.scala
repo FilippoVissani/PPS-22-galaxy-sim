@@ -17,6 +17,14 @@ object Statistics:
     celestialBodies(celestialBodyType).size
 
   /**
+   * Count the total number of celestial bodies
+   * @param celestialBodies the map containig all the celestial bodies
+   * @return the number of celestial bodies
+   */
+  def quantityOfTotalBodies(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]]): Int =
+    celestialBodies.values.flatten.size
+
+  /**
    * Count the number of celestial bodies for each type
    * @param celestialBodies the map containing all the celestial bodies
    * @return a map containing the number of celestial bodies for each type
