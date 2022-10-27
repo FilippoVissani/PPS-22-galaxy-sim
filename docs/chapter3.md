@@ -3,7 +3,7 @@ Inizialmente si è deciso di utilizzare il pattern architetturale _Model View Co
 il quale successivamente è stato rivisto per l'introduzione del paradigma basato su scambio di messaggi,
 mantenendo comunque le dipendenze e le interazioni definite dal pattern architetturale originale.
 
-// TODO: aggiungere diagramma architettura
+![Architettura](./images/mvc_actor_architecture.svg)
 
 All'interno dell'architettura generale troviamo quattro tipi di attori:
 - `SimulationManagerActor` e `CelestialBodyActor` gestiscono interamente la parte di _Model_:

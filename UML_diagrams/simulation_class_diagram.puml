@@ -7,14 +7,18 @@ package physics.rigidbody.RigidBody {
 }
 
 package galaxy_sim.model {
-  class Simulation
+  class Simulation {
+    + deltaTime
+    + virtualTime
+  }
   class CelestialBody extends CircularEntity
   class Boundary << trait >>
   enum CelestialBodyType
 }
 
-Simulation "1"..>"*" CelestialBody
-Simulation "1"..>"*" CelestialBodyType
-Simulation ..> Boundary
+Simulation "1"*--"*" CelestialBody
+Simulation "1"*--"*" CelestialBodyType
+Simulation "1"*--"1" Boundary
+CelestialBody "*"--"1" CelestialBodyType
 
 @enduml

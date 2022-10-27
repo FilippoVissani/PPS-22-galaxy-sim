@@ -1,12 +1,22 @@
 # Design di dettaglio
 
-## Paradigma basato su scambio di messaggi
-
-// TODO aggiungere diagramma delle classi degli attori
-
 ## Model
 
-// TODO aggiungere diagramma delle classi del model
+### Simulazione
+
+La simulazione è definita nel seguente modo è una composizione di:
+- Un insieme di corpi celesti, distinti tra loro, dei quali viene definito il tipo.
+- Dei confini, i quali stabiliscono i confini dello spazio toroidale nel quale i corpi celesti si possono muovere.
+
+Inoltre la simulazione detiene il tempo virtuale e il suo delta, utilizzato per incrementarlo.
+Un corpo celeste, dal punto di vista geometrico, viene considerato come circolare,
+questo per fare in modo che le collisioni vengano rilevate correttamente.
+A ogni corpo celeste corrisponde uno e un solo tipo (es: pianeta) e allo stesso tempo più
+corpi celesti possono essere dello stesso tipo.
+
+Di seguito il diagramma delle classi che riguardano la simulazione:
+
+![Diagramma delle classi della simulazione](./images/simulation_class_diagram.svg)
 
 ### Lifecycle
 Il tipo di CelestialBody è dato dalla sua _massa_ e dalla sua _temperatura_. Le regole per classificare il CelestialBody in _massive star, red super giant, supernova, black hole, planet, asteroid_ o _interstellar cloud_ sono contenute nel file prolog.
@@ -26,10 +36,42 @@ La classe `Lifecycle` fornisce il metodo `entityOneStep`, il quale si occupa di 
 </table>
 <!--![Lifecycle](./images/lifecycle.svg)-->
 
-
 ## View
 
 ## Controller
+
+## Attori
+
+Sono presenti quattro tipi di attori, che comunicano tra loro tramite scambio di messaggi.
+Ogni attore ha uno scopo specifico e dispone di un set di comandi che gli possono essere impartiti.
+La tabella seguente contiene i comandi degli attori:
+
+<table>
+<tr><th>Attore</th><th>Comando</th><th>Descrizione</th></tr>
+<tr><td>ViewActor</td><td>Display</td><td>Aggiorna la View, viene inviato dal ControllerActor</td></tr>
+<tr><td>ViewActor</td><td>StartPressed</td><td>Viene inviato dalla View nel momento in cui il pulsante "Start" viene premuto</td></tr>
+<tr><td>ViewActor</td><td>StopPressed</td><td>Viene inviato dalla View nel momento in cui il pulsante "Stop" viene premuto</td></tr>
+<tr><td>ControllerActor</td><td>Start</td><td>Avvia la simulazione</td></tr>
+<tr><td>ControllerActor</td><td>Stop</td><td>Ferma la simulazione</td></tr>
+<tr><td>ControllerActor</td><td>SetView</td><td>Imposta il ViewActor che gestisce l'interfaccia grafica</td></tr>
+<tr><td>ControllerActor</td><td>SimulationStateAdaptedResponse</td><td>Utilizzato come Adapter per il pattern Ask</td></tr>
+<tr><td>ControllerActor</td><td>Tick</td><td>Inviato dal timer per richiedere lo stato della simulazione e aggiornare la View</td></tr>
+<tr><td>SimulationManagerActor</td><td>StartSimulation</td><td>Avvia la simulazione</td></tr>
+<tr><td>SimulationManagerActor</td><td>StopSimulation</td><td>Ferma la simulazione</td></tr>
+<tr><td>SimulationManagerActor</td><td>IterationStep</td><td>Esegue uno step all'interno dell'iterazioni corrente</td></tr>
+<tr><td>SimulationManagerActor</td><td>CelestialBodyState</td><td>Inviato da CelestialBodyActor per notificare lo stato di un corpo celeste</td></tr>
+<tr><td>SimulationManagerActor</td><td>AskSimulationState</td><td>Utilizzato dal ControllerActor per richiedere lo stato della simulazione, fa parte del pattern Ask</td></tr>
+<tr><td>SimulationManagerActor</td><td>SimulationStateResponse</td><td>Riposta dei AskSimulationState, non viene inviata a SimulationManagerActor</td></tr>
+<tr><td>CelestialBodyActor</td><td>GetCelestialBodyState</td><td>Richiede lo stato del corpo celeste</td></tr>
+<tr><td>CelestialBodyActor</td><td>UpdateCelestialBodyType</td><td>Aggiorna lo stato del corpo celeste</td></tr>
+<tr><td>CelestialBodyActor</td><td>MoveToNextPosition</td><td>Sposta il corpo celeste</td></tr>
+<tr><td>CelestialBodyActor</td><td>SolveCollisions</td><td>Risolve le collisioni con gli altri corpi celesti</td></tr>
+<tr><td>CelestialBodyActor</td><td>Kill</td><td>Termina l'attore</td></tr>
+</table>
+
+Di seguito il diagramma delle classi degli attori:
+
+![Diagramma delle classi degli attori](./images/actors_class_diagram.svg)
 
 ## Physics
 Il componente `physics` del sistema si occupa di definire i concetti riguardanti l'universo fisico ed i calcoli annessi. Nello specifico, si possono suddividere le responsabilità del modulo `physics` in due macro aspetti:
@@ -129,6 +171,6 @@ La Type Class è una tipologia di classe astratta e parametrizzata sul tipo, che
 ereditarietà. In scala, si definiscono type classes in questo modo: Combiner[A], dove il tipo A racchiuso tra quadre rappresenta un qualunque tipo chiuso. All'interno del progetto, possiamo trovare
 esempi di type class nel package `physics.collisions`, in cui troviamo le type classes `Intersection`, `Impact` e `Collider`
 
-## Struttura del codice
+## Struttura dei package
 Il codice è stato strutturato in package come descritto nel diagramma seguente:
 ![Packages](./images/packages_diagram.svg)
