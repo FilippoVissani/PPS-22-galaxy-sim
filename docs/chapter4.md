@@ -9,9 +9,23 @@
 // TODO aggiungere diagramma delle classi del model
 
 ### Lifecycle
-La classe `Lifecycle` ha il metodo `entityOneStep` che viene utilizzato per apportare delle modifiche a un dato CelestialBody.
-Utilizza la classe `EntityIdentifierProlog` per potersi interfacciare con prolog e controllare quindi il tipo di CelestialBody.
-Il tipo di CelestialBody è dato dalla sua _massa_ e dalla sua _temperatura_. Le regole per classificarlo sono contenute nel file prolog.
+Il tipo di CelestialBody è dato dalla sua _massa_ e dalla sua _temperatura_. Le regole per classificare il CelestialBody in _massive star, red super giant, supernova, black hole, planet, asteroid_ o _interstellar cloud_ sono contenute nel file prolog.
+
+La classe `EntityIdentifier` permette di interfacciarsi con prolog e controllare quindi il tipo di CelestialBody.
+
+La classe `Lifecycle` fornisce il metodo `entityOneStep`, il quale si occupa di apportare delle modifiche alle proprietà di un dato CelestialBody. Le modifiche variano in base al tipo di CelestialBody, come riportato nella seguente tabella:
+<table>
+<tr><th>Tipo</th><th>Modifica apportata</th></tr>
+<tr><td>Planet</td><td>Nessuna modifica</td></tr>
+<tr><td>Asteroid</td><td>Riduzione massa dell'1%</td></tr>
+<tr><td>Interstellar Cloud</td><td>Aumento massa e temperatura dell'1%</td></tr>
+<tr><td>Massive Star</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
+<tr><td>Red Super Giant</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
+<tr><td>Supernova</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
+<tr><td>Black Hole</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
+</table>
+<!--![Lifecycle](./images/lifecycle.svg)-->
+
 
 ## View
 
