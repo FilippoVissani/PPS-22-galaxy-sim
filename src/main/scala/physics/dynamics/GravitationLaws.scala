@@ -163,7 +163,7 @@ object GravitationLaws extends Constants:
    * @param vector Pair[Double, Double]
    * @return double
    */
-  def calculateMagnitude(vector: Pair[Double, Double]): Double =
+  def calculateMagnitude(vector: Pair): Double =
     sqrt(pow(vector.x, 2) + pow(vector.y, 2))
 
   /**
