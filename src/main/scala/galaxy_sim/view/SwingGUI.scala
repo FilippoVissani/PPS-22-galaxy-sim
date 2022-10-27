@@ -10,8 +10,11 @@ import javax.swing.{JButton, JComboBox, JFrame, JLabel, JPanel, JScrollPane, JTa
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.{Statistics, ViewLogger}
+import galaxy_sim.utils.Percentage
 import org.jfree.chart.ChartPanel
 import galaxy_sim.utils.LoggerActions
+
+import scala.annotation.tailrec
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
@@ -88,7 +91,6 @@ object SwingGUI:
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
         statisticsPanel.update(simulation)
-
       })
   end SwingGUIImpl
 
@@ -179,6 +181,10 @@ object SwingGUI:
     val totalBodiesLabel: JLabel = JLabel()
     this.add(totalBodiesLabel)
 
+    val bodiesPercentage: JTextArea = JTextArea()
+    bodiesPercentage.setEditable(false)
+    this.add(bodiesPercentage)
+
     def update(simulation: Simulation): Unit =
       //update the pie chart
       pieChart.clearAllValues()
@@ -188,6 +194,16 @@ object SwingGUI:
       totalBodiesLabel.setText(s"Number of total bodies: ${Statistics.quantityOfTotalBodies(simulation.galaxy).toString}")
 
       //update percentages count
+      bodiesPercentage.setText(createStringOfPercentages(Statistics.percentageOfCelestialBodiesForEachType(simulation.galaxy)))
+
+    @tailrec
+    private def createStringOfPercentages(galaxy: Map[CelestialBodyType, Percentage], percentagesAsText: String = ""): String = galaxy.size match
+      case 0 => percentagesAsText
+      case _ => {
+        val newPercentage = s"${galaxy.head._1.toString}: ${galaxy.head._2}%"
+        createStringOfPercentages(galaxy.tail, newPercentage + "\n" + percentagesAsText)
+      }
+
 
   private class SimulationPanel extends JPanel:
     var simulation: Option[Simulation] = Option.empty
