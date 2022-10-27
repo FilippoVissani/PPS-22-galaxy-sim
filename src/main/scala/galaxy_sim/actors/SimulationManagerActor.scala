@@ -12,6 +12,9 @@ import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
 import galaxy_sim.model.SimulationConfig.frameRate
 import galaxy_sim.actors.SimulationManagerActor.IterationState.*
+import galaxy_sim.model.SimulationConfig.*
+import akka.actor.Actor
+import akka.actor.ActorContext
 
 /** In this object is defined the behaviour of simulation manager actor.
  *
@@ -38,6 +41,12 @@ object SimulationManagerActor:
    */
   case class CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) extends SimulationManagerActorCommand
   
+  /** Spawns a new system
+   *  
+   *  @param system the state of the celestial bodies to be assigned to new actors
+   */
+  case class SpawnCelestialBodyActors(system: Map[CelestialBodyType, Set[CelestialBody]], origin: ActorRef[CelestialBodyActorCommand]) extends SimulationManagerActorCommand
+
   /** Ask pattern called from ControllerActor
    *  
    *  @param replyTo response of the Ask
@@ -71,7 +80,9 @@ object SimulationManagerActor:
   def apply(celestialBodyActors: Set[ActorRef[CelestialBodyActorCommand]],
             actualSimulation: Simulation,
             iterationState: Seq[IterationState] = IterationState.values.toSeq,
-            tmpGalaxy: Map[CelestialBodyType, Set[CelestialBody]] = emptyGalaxy): Behavior[SimulationManagerActorCommand] =
+            tmpGalaxy: Map[CelestialBodyType, Set[CelestialBody]] = emptyGalaxy,
+            remaningResponses: Int = 0,
+            ): Behavior[SimulationManagerActorCommand] =
       Behaviors.setup[SimulationManagerActorCommand](ctx =>
         Behaviors.withTimers(timer => 
           Behaviors.receiveMessage[SimulationManagerActorCommand](msg => msg match
@@ -97,6 +108,7 @@ object SimulationManagerActor:
                 celestialBodyActors,
                 actualSimulation.copy(galaxy = newGalaxy, virtualTime = newVirtualTime),
                 iterationState.tail :+ iterationState.head,
+                remaningResponses = celestialBodyActors.size,
                 )
             }
             case CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) => {
@@ -104,8 +116,30 @@ object SimulationManagerActor:
                 (k, v) <- tmpGalaxy
                 x = if k == celestialBodyType then (k, v + celestialBody) else (k, v)
               yield(x)
-              if newCelestialBodies.values.map(x => x.size).sum == celestialBodyActors.size then ctx.self ! IterationStep
-              SimulationManagerActor(celestialBodyActors, actualSimulation, iterationState, newCelestialBodies)
+              if remaningResponses - 1 == 0 then ctx.self ! IterationStep
+              SimulationManagerActor(
+                celestialBodyActors,
+                actualSimulation,
+                iterationState,
+                newCelestialBodies,
+                remaningResponses = remaningResponses - 1,
+                )
+            }
+            case SpawnCelestialBodyActors(system: Map[CelestialBodyType, Set[CelestialBody]], origin: ActorRef[CelestialBodyActorCommand]) => {
+              val newCelestialBodyActors = system
+              .map((k, v) => (k, v.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, k, bounds, deltaTime)))))
+              .values
+              .flatten
+              .toSet ++ celestialBodyActors.filter(x => x != origin)
+              val newCelestialBodies = tmpGalaxy ++ system
+              if remaningResponses - 1 == 0 then ctx.self ! IterationStep
+              SimulationManagerActor(
+                newCelestialBodyActors,
+                actualSimulation,
+                iterationState,
+                newCelestialBodies,
+                remaningResponses = remaningResponses - 1,
+                )
             }
             case AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) => {
               replyTo ! SimulationStateResponse(actualSimulation)

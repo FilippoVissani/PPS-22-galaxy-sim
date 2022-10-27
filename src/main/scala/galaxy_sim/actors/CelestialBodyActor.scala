@@ -12,7 +12,10 @@ import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 import physics.dynamics.GravitationLaws.*
 import galaxy_sim.utils.SimulationGivens.given
 import galaxy_sim.model.CelestialBodyType.*
+import galaxy_sim.model.CelestialBody.generateSystem
+import galaxy_sim.model.emptyGalaxy
 import physics.collisions.collision.CollisionEngine
+import galaxy_sim.prolog.EntityIdentifier
 
 /** In this object is defined the behaviour of celestial body actor.
  *
@@ -92,8 +95,14 @@ object CelestialBodyActor:
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
           val newCelestialBody = CollisionEngine.impactMany(celestialBody, others.toSeq)
-          replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
-          CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
+          val result = for
+            (k, v) <- emptyGalaxy
+            x <- generateSystem(newCelestialBody)
+            y = MassiveStar//EntityIdentifier.checkEntityType(x.mass, x.temperature)
+            (k2, v2) = (k, if k == y then v + x else v)
+          yield (k2, v2)
+          replyTo ! SpawnCelestialBodyActors(result, ctx.self)
+          Behaviors.stopped
         }
         case Kill => {
           Behaviors.stopped
