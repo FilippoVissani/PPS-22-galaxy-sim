@@ -32,6 +32,11 @@ given CircleToCircleIntersection: Intersection[CircleCollisionBox] =
     })
 ```
 
+### Lifecycle
+La classe Lifecycle fornisce il metodo entityOneStep, il quale, oltre ai parametri di input CelestialBody e un generico A, richiede un parametro di contesto. Il generico A corrisponde al "tipo" di CelestialBody e in questo modo si possono definire i parametri di contesto per ogni "tipo" di CelestialBody attraverso le given instances.
+
+Nel progetto è presente una sola given instance in quanto il "tipo" di CelestialBody è definito dal valore di una enum. Avendo però definito questo design è facile e immediato aggiungere delle given instances nel caso in cui si voglia estendere il sistema aggiungendo dei nuovi "tipi" di CelestialBody.
+
 ## Programmazione logica
 Il paradigma di programmazione logico è stato utilizzato in questo progetto per identificare i diversi tipi di entità, in base alla massa e alla temperatura.
 
