@@ -46,7 +46,7 @@ object SwingGUI:
     val loggerPanel: LoggerPanel = LoggerPanel(viewLogger)
     val loggerPanelContainer: JPanel = JPanel(GridBagLayout())
 
-    val statisticsPanel: StatisticsPanel = StatisticsPanel(gbc.pie)
+    val statisticsPanel: StatisticsPanel = StatisticsPanel()
     val statisticsPanelContainer: JPanel =JPanel(GridBagLayout())
 
     val controlPanel: JPanel = JPanel()
@@ -163,27 +163,35 @@ object SwingGUI:
 
     // Row 1 - Chart
     // Col 0
-    pie.fill = GridBagConstraints.HORIZONTAL
-    pie.gridwidth = 2;
-    pie.gridx = 0;
-    pie.gridy = 1;
+
     //gbc.insets = new Insets(5, 0, 0, 10);
     //gbc.anchor = GridBagConstraints.CENTER;
 
-  private class StatisticsPanel(gbc: GridBagConstraints) extends JPanel:
+  private class StatisticsPanel() extends JPanel(GridBagLayout()):
+    val gbc: GridBagConstraints = GridBagConstraints()
     val pieChart: PieChart = PieChart("Celestial body types")
     val pieChartPanel: ChartPanel = pieChart.wrapToPanel
     pieChartPanel.setPreferredSize(Dimension(
       25 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
+
+    gbc.fill = GridBagConstraints.HORIZONTAL
+    gbc.gridheight = 2;
+    gbc.gridx = 0;
+    gbc.gridy = 0;
     this.add(pieChartPanel, gbc);
 
     val totalBodiesLabel: JLabel = JLabel()
-    this.add(totalBodiesLabel)
+    gbc.gridheight = 1
+    gbc.gridx = 1
+    gbc.gridy = 0
+    this.add(totalBodiesLabel, gbc)
 
     val bodiesPercentage: JTextArea = JTextArea()
     bodiesPercentage.setEditable(false)
-    this.add(bodiesPercentage)
+    gbc.gridx = 1
+    gbc.gridy = 1
+    this.add(bodiesPercentage, gbc)
 
     def update(simulation: Simulation): Unit =
       //update the pie chart
@@ -191,10 +199,10 @@ object SwingGUI:
       Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.setValue(element._1.toString, element._2))
 
       //update total bodies count
-      totalBodiesLabel.setText(s"Number of total bodies: ${Statistics.quantityOfTotalBodies(simulation.galaxy).toString}")
+      totalBodiesLabel.setText(s"Total bodies: ${Statistics.quantityOfTotalBodies(simulation.galaxy).toString}")
 
       //update percentages count
-      bodiesPercentage.setText(createStringOfPercentages(Statistics.percentageOfCelestialBodiesForEachType(simulation.galaxy)))
+      bodiesPercentage.setText(s"Percentages: \n${createStringOfPercentages(Statistics.percentageOfCelestialBodiesForEachType(simulation.galaxy))}")
 
     @tailrec
     private def createStringOfPercentages(galaxy: Map[CelestialBodyType, Percentage], percentagesAsText: String = ""): String = galaxy.size match
