@@ -88,6 +88,20 @@ Infine ho provveduto ad integrare le statistiche della simulazione nella scherma
 - `StatisticsPanel`
 - `SimulationGUI`
 
+La seguente tabella riporta i meccanismi avanzati e/o i pattern utilizzati nelle classi indicate:
+
+<table>
+<tr><th>Classe</th><th>Meccanismi o pattern utilizzati</th></tr>
+<tr><td>Scala2P</td><td>- Implicit conversions</td></tr>
+<tr><td>EntityIdentifier</td><td>- Singleton</td></tr>
+<tr><td>Lifecycle</td><td>- Contextual programming </br>- Type classes </br>- Pattern matching </td></tr>
+<tr><td>OperationsOnCelestialBody</td><td>- Extension method </br>- Higher-order functions</td></tr>
+<tr><td>Statistics</td><td>- Type alias</td></tr>
+<tr><td>PieChart</td><td>- Facade </br>- Factory</td></tr>
+<tr><td>StatisticsPanel</td><td>- Tail recursive function</td></tr>
+<tr><td>SimulationGUI</td><td>/</td></tr>
+</table>
+
 ### Cortecchia Angela
 Il mio scopo principale è stato quello di creare una libreria di calcoli fisici, assieme a Micelli, in dettaglio mi sono occupata della comprensione dei calcoli e delle formule sulle leggi gravitazionali applicabili nello spazio, formulate da Isaac Newton.
 Dopo la comprensione di tali formule mi sono occupata della loro implementazione per poterle rendere utilizzabili in una simulazione bi-dimensionale.
