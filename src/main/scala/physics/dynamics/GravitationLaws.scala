@@ -1,13 +1,18 @@
 package physics.dynamics
 
+import org.w3c.dom.EntityReference
 import physics.*
-import math.{cbrt, pow, sqrt}
+import math.{pow, sqrt, cbrt}
+
+/**
+ * @author Angela Cortecchia
+ */
 
 /**
  * Trait with different constants that can be useful
  */
 trait Constants:
-  val gravityConstant: Double = 6.6743e-11
+  val gravityConstant: Double = 6.6743e-11 //Nm^2/kg^2
   val daySec: Double = 24.0 * 60 * 60 //seconds in a day
   val deltaYear: Double = daySec * 365 //one year
   val moduleConstant: Double = 1.5
@@ -18,6 +23,16 @@ trait Constants:
 
 /**
  * Fields characteristics of an entity in order to calculate gravitation laws
+ *
+ * mass in kg
+ *
+ * position is a Pair(Double, Double)
+ *
+ * aphelionSpeed is in m/s
+ *
+ * speedVector is a Pair(0, aphelionSpeed)
+ *
+ * gForceVector is a Pair(Double, Double)
  */
 trait PhysicalEntity:
   def mass: Mass
@@ -71,7 +86,6 @@ object GravitationLaws extends Constants:
    */
   def moduleOfDistance(pos: Position): Double =
     pow(pow(pos.x, 2) + pow(pos.y, 2), moduleConstant)
-//    sqrt(pow(pos.x, 2) + pow(pos.y, 2))
 
   /**
    * Calculate the gravity force put on entity subject direction
@@ -144,13 +158,12 @@ object GravitationLaws extends Constants:
   def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
     Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / biggerEntity.mass,
           - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / biggerEntity.mass)
-
   /**
    * Calculate the magnitude of a vector
    * @param vector Pair[Double, Double]
    * @return double
    */
-  def calculateMagnitude(vector: Pair[Double, Double]): Double =
+  def calculateMagnitude(vector: Pair): Double =
     sqrt(pow(vector.x, 2) + pow(vector.y, 2))
 
   /**
@@ -160,8 +173,7 @@ object GravitationLaws extends Constants:
    * @return Double, the radius of the sphere of influence
    */
   def calculateSphereOfInfluence(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Double =
-    val distance = distanceBetweenTwoEntities(smallerEntity, biggerEntity)
-    calculateMagnitude(distance) * pow(smallerEntity.mass, 0.4)
+    euclideanDistance(smallerEntity.position, biggerEntity.position) * pow(smallerEntity.mass, 0.4)
 
   /**
    * Calculate the radius of the sphere of influence with eccentricity of the orbit
