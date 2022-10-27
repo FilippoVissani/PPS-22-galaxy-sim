@@ -7,37 +7,8 @@ import physics.*
 import GravitationLaws.*
 
 import scala.math.{cbrt, pow, sqrt}
-
-case class PhysicalEntityImpl(override val mass: Mass = 1000,
-                              override val position: Position = Pair(0, 0),
-                              override val aphelionSpeed: Speed = 10000,
-                              override val speedVector: SpeedVector = Pair(0, 0),
-                              override val gForceVector: GravityForceVector = Pair(0, 0)) extends PhysicalEntity
-
-class TestGravitationLawsMath extends AnyFunSuite:
-  val earth = PhysicalEntityImpl(5.972e24, Pair(astronomicUnit * 10167, 0), 29290, Pair(0, 29290), Pair(0, 0))
-  val sun = PhysicalEntityImpl(2.0e30)
-  val semiMayorAxis = 149.60e6
-  val earthEccentricity = 0.0167
-
-  test("Euclidean distance between Earth and Sun") {
-    val euDist = euclideanDistance(earth.position, sun.position)
-    val shouldEuDist = sqrt(pow(earth.position.x - sun.position.x, 2) + pow(earth.position.y - sun.position.y, 2))
-    assert(euDist == shouldEuDist)
-  }
-
-  test("Radius of the sphere of influence without eccentricity"){
-    val rSOI = radiusSphereOfInfluence(semiMayorAxis , earth.mass, sun.mass)
-    val shouldSOI = semiMayorAxis * cbrt(earth.mass / (sun.mass * 3))
-    assert(rSOI == shouldSOI)
-  }
-
-  test("Radius of the sphere of influence with eccentricity"){
-    val rSOI = radiusSphereOfInfluenceWithEccentricity(semiMayorAxis,earthEccentricity, earth.mass, sun.mass)
-    val shouldSOI = semiMayorAxis * (1 - earthEccentricity) * cbrt(earth.mass / (sun.mass * 3))
-    assert(rSOI == shouldSOI)
-  }
-
+import Utils.*
+import physics.dynamics.PhysicsFormulas.*
 
 
 class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
@@ -46,33 +17,19 @@ class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
   info("I want to move entities around others")
 
   Feature("Gravitational law calculations"){
-    val earth = PhysicalEntityImpl(5.972e24, Pair(astronomicUnit * 10167, 0), 29290, Pair(0, 29290), Pair(0, 0))
-    val sun = PhysicalEntityImpl(2.0e30)
-    val deltaTime = daySec * 1 //one day
     var earthFinal = earth
 
     Scenario("The entity moves around a bigger one after some time"){
       Given("Two entities at their initial position - the Earth and the Sun")
-
-      When("Pass some time")
-
-      val shouldDistance = Pair(earth.position.x - sun.position.x, earth.position.y - sun.position.y)
-      val sunEarthDistance = distanceBetweenTwoEntities(earth, sun)
-      assert(sunEarthDistance == shouldDistance)
-
-      val shouldMod = pow(pow(sunEarthDistance.x, 2) + pow(sunEarthDistance.y, 2), moduleConstant)
-      val module = moduleOfDistance(sunEarthDistance)
-      assert(module == shouldMod)
-
-      val shouldGravConst = gravityConstant * earth.mass * sun.mass
       val earthGravConst = entitiesGravitationalConstant(earth.mass, sun.mass)
-      assert(earthGravConst == shouldGravConst)
-
-      val shouldGForce = Pair(- earthGravConst * sunEarthDistance.x / module, - earthGravConst * sunEarthDistance.y / module)
+      val sunEarthDistance = distanceBetweenTwoEntities(earth, sun)
+      val module = moduleOfDistance(sunEarthDistance)
+      val shouldGForce = Pair(-earthGravConst * sunEarthDistance.x / module, -earthGravConst * sunEarthDistance.y / module)
       earthFinal = earth.copy(gForceVector = gravitationalForceOnEntity(earth, sun))
       assert(earthFinal.gForceVector == shouldGForce)
-
-      val shouldSpeedVector = Pair(earthFinal.speedVector.x + (earthFinal.gForceVector.x * deltaTime / earthFinal.mass), earthFinal.speedVector.y +(earthFinal.gForceVector.y * deltaTime / earthFinal.mass))
+      
+      When("Pass some time")
+      val shouldSpeedVector = Pair(earthFinal.speedVector.x + (earthFinal.gForceVector.x * deltaTime / earthFinal.mass), earthFinal.speedVector.y + (earthFinal.gForceVector.y * deltaTime / earthFinal.mass))
       earthFinal = earthFinal.copy(speedVector = speedVectorAfterTime(earthFinal, deltaTime))
       assert(earthFinal.speedVector == shouldSpeedVector)
 
