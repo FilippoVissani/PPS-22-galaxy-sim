@@ -9,6 +9,7 @@ type SpeedVector = Pair
 type GravityForceVector = Pair
 type Mass = Double
 type GForce = Double
+/** PORCODIO */
 
 case class Pair(x: Double, y: Double)
 
