@@ -122,4 +122,23 @@ La struttura interna di tale package si ispira alla suddivisione in package dell
 
 - Syntax:
   - `CollisionSyntax`: arricchisce un generico tipo con operatori che sfruttano le API di collisione; 
-### Vissani FIlippo
+
+### Vissani Filippo
+In questo progetto mi sono occupato di definire, implementare e testare le componenti principali
+del pattern _MVC_ e gli attori che ne fanno uso. Entrando più nel dettaglio, le parti specifiche
+che mi riguardano sono le seguenti:
+
+Introduzione degli attori (package `galaxy_sim.actors`) e definizione delle loro interazioni:
+- `SimulationManagerActor`
+- `CelestialBodyActor`
+- `ControllerActor`
+- `ViewActor`
+
+Introduzione dei seguenti componenti del _Model_, presenti nel package `galaxy_sim.model`:
+- `Boundary`
+- `CelestialBody`
+- `Simulation`
+
+Introduzione dei seguenti componenti della _View_, presenti nel package `galaxy_sim.view`:
+- `SwingGUI`
+- `View`
