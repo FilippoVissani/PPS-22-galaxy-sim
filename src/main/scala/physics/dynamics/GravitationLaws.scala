@@ -2,13 +2,17 @@ package physics.dynamics
 
 import org.w3c.dom.EntityReference
 import physics.*
-import math.{pow, sqrt}
+import math.{pow, sqrt, cbrt}
+
+/**
+ * @author Angela Cortecchia
+ */
 
 /**
  * Trait with different constants that can be useful
  */
 trait Constants:
-  val gravityConstant: Double = 6.6743e-11
+  val gravityConstant: Double = 6.6743e-11 //Nm^2/kg^2
   val daySec: Double = 24.0 * 60 * 60 //seconds in a day
   val deltaYear: Double = daySec * 365 //one year
   val moduleConstant: Double = 1.5
@@ -153,7 +157,7 @@ object GravitationLaws extends Constants:
    */
   def calculateEntityReferenceSpeedVector[A <: PhysicalEntity](biggerEntity: PhysicalEntity, entities: Set[A], deltaTime: Double): SpeedVector =
     Pair( - entities.iterator.map(e => e.gForceVector.x).sum * deltaTime / biggerEntity.mass,
-      - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / biggerEntity.mass)
+          - entities.iterator.map(e => e.gForceVector.y).sum * deltaTime / biggerEntity.mass)
   /**
    * Calculate the magnitude of a vector
    * @param vector Pair[Double, Double]
