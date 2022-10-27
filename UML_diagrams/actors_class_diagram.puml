@@ -30,7 +30,7 @@ component SimulationManagerActor{
   class AskSimulationState extends SimulationManagerActorCommand
   class SimulationStateResponse
 }
-AskSimulationState ..> SimulationStateResponse
+AskSimulationState --> SimulationStateResponse : use
 ControllerActor ..> SimulationStateResponse
 
 component CelestialBodyActor {
@@ -45,12 +45,12 @@ component CelestialBodyActor {
 
 ViewActor ..> ViewActorCommand
 ControllerActor ..> ControllerActorCommand
-SimulationManagerActor ..> SimulationManagerActorCommand
+SimulationManagerActor --> SimulationManagerActorCommand : use
 CelestialBodyActor ..> CelestialBodyActorCommand
 
-ViewActor ..> ControllerActorCommand
-ControllerActor ..> ViewActorCommand
-ControllerActor ..> SimulationManagerActorCommand
-SimulationManagerActor ..> CelestialBodyActorCommand
+ViewActor --> ControllerActorCommand : use
+ControllerActor --> ViewActorCommand : use
+ControllerActor --> SimulationManagerActorCommand : use
+SimulationManagerActor "1"-->"*" CelestialBodyActorCommand : use
 
 @enduml
