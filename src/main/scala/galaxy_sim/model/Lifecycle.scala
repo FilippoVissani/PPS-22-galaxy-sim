@@ -22,13 +22,13 @@ object Lifecycle:
      * @param bodyType the type of celestial body
      * @return a tuple (celestialBody, bodyType) with the modified entity and the type. The type is calculated based on the new entity properties.
      */
-    def oneStep(entity: CelestialBody, bodyType: A): (CelestialBody, A)
+    def updateMassAndTemperature(entity: CelestialBody, bodyType: A): (CelestialBody, A)
 
   /**
    * This given is used to modify the properties of the entity, based on the type.
    */
   given LifecycleRules[CelestialBodyType] with
-    override def oneStep(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bType match
+    override def updateMassAndTemperature(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bType match
       case Planet => (celestialBody, bType)
       case Asteroid => {
         val newCelestialBody = celestialBody.updateMass(mass => mass * 0.99)
@@ -59,7 +59,7 @@ object Lifecycle:
    * @return a tuple (celestialBody, bodyType) with the modified entity and the type. The type is calculated based on the new entity properties.
    */
   def entityOneStep[A](entity: CelestialBody, bodyType: A)(using lifecycleRules: LifecycleRules[A]): (CelestialBody, A) =
-    lifecycleRules.oneStep(entity, bodyType)
+    lifecycleRules.updateMassAndTemperature(entity, bodyType)
 
   private def bodyType(celestialBody: CelestialBody): CelestialBodyType =
     EntityIdentifier.checkEntityType(celestialBody.mass, celestialBody.temperature)
