@@ -32,10 +32,18 @@ given CircleToCircleIntersection: Intersection[CircleCollisionBox] =
     })
 ```
 
-### Lifecycle
-La classe Lifecycle fornisce il metodo entityOneStep, il quale, oltre ai parametri di input CelestialBody e un generico A, richiede un parametro di contesto. Il generico A corrisponde al "tipo" di CelestialBody e in questo modo si possono definire i parametri di contesto per ogni "tipo" di CelestialBody attraverso le given instances.
+Anche la funzione `entityOneStep` della classe `Lifecycle` fa uso di given instances:
+```scala
+def entityOneStep[A](entity: CelestialBody, bodyType: A)(using lifecycleRules: LifecycleRules[A]): (CelestialBody, A) =
+  lifecycleRules.oneStep(entity, bodyType)
+```
+Come si può vedere dal codice viene infatti richiesto un parametro di contesto, oltre ai parametri di input _entity_ di tipo CelestialBody e _bodyType_ generico. In questo modo si possono definire i parametri di contesto per ogni _bodyType_ attraverso le given instances.
 
-Nel progetto è presente una sola given instance in quanto il "tipo" di CelestialBody è definito dal valore di una enum. Avendo però definito questo design è facile e immediato aggiungere delle given instances nel caso in cui si voglia estendere il sistema aggiungendo dei nuovi "tipi" di CelestialBody.
+Nel progetto è presente una sola given instance in quanto il _bodyType_ corrisponde all'enum `CelestialBodyType`. Avendo però prodotto questa implementazione è facile e immediato aggiungere delle given instances nel caso in cui si voglia estendere il sistema, inserendo ad esempio delle case class invece dell'enum per indicare i _bodyType_.
+```scala
+given LifecycleRules[CelestialBodyType] with
+  override def oneStep(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = ...
+```
 
 ## Programmazione logica
 Il paradigma di programmazione logico è stato utilizzato in questo progetto per identificare i diversi tipi di entità, in base alla massa e alla temperatura.
