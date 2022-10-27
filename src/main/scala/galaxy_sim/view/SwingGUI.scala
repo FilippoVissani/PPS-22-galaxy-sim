@@ -47,7 +47,7 @@ object SwingGUI:
     val loggerPanelContainer: JPanel = JPanel(GridBagLayout())
 
     val statisticsPanel: StatisticsPanel = StatisticsPanel()
-    val statisticsPanelContainer: JPanel =JPanel(GridBagLayout())
+    val statisticsPanelContainer: JPanel = JPanel(GridBagLayout())
 
     val controlPanel: JPanel = JPanel()
     val startButton: JButton = JButton("Start Simulation")
@@ -137,7 +137,6 @@ object SwingGUI:
       def display(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit = textArea.append(viewLogger.bodiesLogger(bodiesInvolved, description))
 
   private class GridBagConstraintsBuilder:
-    val pie: GridBagConstraints = GridBagConstraints()
     val start: GridBagConstraints = GridBagConstraints()
     val stop: GridBagConstraints = GridBagConstraints()
     val infos: GridBagConstraints = GridBagConstraints()
@@ -145,27 +144,14 @@ object SwingGUI:
     infos.gridx = 1
     infos.gridy = 1
     infos.anchor = GridBagConstraints.CENTER
-    // Row 0 - Buttons
-    // Col 0
-    //gbc.fill = GridBagConstraints.HORIZONTAL
-    start.gridx = 0;
-    start.gridy = 0;
-    //gbc.insets = new Insets(5, 0, 0, 10);
-    start.anchor = GridBagConstraints.LINE_END
-    //    this.add(startButton, gbc);
 
-    // Col 1
-    //gbc.fill = GridBagConstraints.HORIZONTAL
+    start.gridx = 0
+    start.gridy = 0
+    start.anchor = GridBagConstraints.LINE_END
+
     stop.gridx = 1;
     stop.gridy = 0;
-    stop.anchor = GridBagConstraints.LINE_START;
-    //    this.add(stopButton, gbc);
-
-    // Row 1 - Chart
-    // Col 0
-
-    //gbc.insets = new Insets(5, 0, 0, 10);
-    //gbc.anchor = GridBagConstraints.CENTER;
+    stop.anchor = GridBagConstraints.LINE_START
 
   private class StatisticsPanel() extends JPanel(GridBagLayout()):
     val gbc: GridBagConstraints = GridBagConstraints()
