@@ -2,7 +2,8 @@ package physics.dynamics
 
 import org.w3c.dom.EntityReference
 import physics.*
-import math.{pow, sqrt}
+
+import math.{cbrt, pow, sqrt}
 
 /**
  * Trait with different constants that can be useful
@@ -159,7 +160,7 @@ object GravitationLaws extends Constants:
    * @param vector Pair[Double, Double]
    * @return double
    */
-  def calculateMagnitude(vector: Pair[Double, Double]): Double =
+  def calculateMagnitude(vector: Pair): Double =
     sqrt(pow(vector.x, 2) + pow(vector.y, 2))
 
   /**
