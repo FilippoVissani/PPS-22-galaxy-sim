@@ -25,7 +25,6 @@ object CelestialBodyAliases:
  *  @param speedVector
  *  @param position
  *  @param name
- *  @param birthTime
  *  @param radius
  *  @param temperature
  */
