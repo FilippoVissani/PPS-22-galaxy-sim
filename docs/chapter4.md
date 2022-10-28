@@ -126,12 +126,8 @@ Vengono offerte dunque due API: `PhysicsFormulas` indipendente e `GravitationLaw
 
 ## Pattern utilizzati
 ### Strategy
-Il pattern Strategy consiste nell'isolare un algoritmo o una strategia al di fuori di una classe, per fare in modo che quest'ultima possa variare dinamicamente il suo comportamento. In Scala è applicato in maniera semplice ed efficace con l'uso delle high order functions, un esempio è il seguente: 
-```scala
-def updateMass(f: Mass => Mass): CelestialBody = 
-    celestialBody.copy(mass = f(celestialBody.mass))
-```
-`updateMass` è una funzione alla quale viene iniettata la strategia da utilizzare per modificare la massa.
+Il pattern Strategy consiste nell'isolare un algoritmo o una strategia al di fuori di una classe, per fare in modo che quest'ultima possa variare dinamicamente il suo comportamento. In Scala è applicato in maniera semplice ed efficace con l'uso delle `higher-order functions`.
+
 ### Factory
 Il pattern Factory è un design pattern che consiste nel separare le logiche di creazione di un oggetto o dato dalla sua definizione. In scala, questo design pattern è facilmente
 implementabile attraverso l'uso del Companion Object: un particolare oggetto singleton che può fungere da contenitore di varie funzioni riguardanti un certo tipo di dato, tra cui
