@@ -125,6 +125,22 @@ L'obiettivo di questo modulo è fornire una API per definire come rilevare colli
 Lo scopo di questo modulo è fornire una API per il calcolo di formule gravitazionali, esse sono applicabili in uno spazio bi-dimensionale rappresentante l'universo.
 Vengono offerte dunque due API: `PhysicsFormulas` indipendente e `GravitationLaws` dipendente dalla precedente. La prima offre i calcoli individuali dai quali si possono ricavare alcune formule gravitazionali, mentre la seconda utilizza le formule della prima per l'implementazione vera e propria delle nozioni di astrofisica.
 
+Per quanto riguarda `PhysicsFormulas`, sono presenti funzioni per:
+- calcolo della costante gravitazionale tra due corpi;
+- calcolo della distanza euclidea tra due punti;
+- calcolo della sfera d'influenza
+- calcolo dello spostamento di un'entità;
+- calcolo dell'accelerazione.
+
+Mentre in `GravitationLaws` sono presenti:
+- il calcolo della forza gravitazionale applicata su un corpo data un'entità di riferimento;
+- calcolo della velocità dopo un periodo di tempo definito;
+- calcolo della nuova posizione dopo un dato periodo di tempo.
+
+Per il calcolo delle formule gravitazionali è stata messa a disposizione la struttura `PhysicalEntity` che contiene gli elementi essenziali per tali calcoli.
+Inoltre sono anche presenti costanti e unità di riferimento che possono essere utili sia per i calcoli, sia per la creazione di entità.
+
+
 ### Rigidbody
 Il modulo `physics.rigidbody`contiene la definizione di struttre dati utili per interfacciarsi con i due moduli di `physics`.
 
