@@ -5,6 +5,8 @@ import physics.collisions.intersection.Intersection
 import physics.collisions.syntax.ImpactSyntax.*
 import physics.collisions.syntax.IntersectionSyntax.*
 
+import scala.annotation.tailrec
+
 /** Provides an access point for the Collision API, reuniting [[Intersection]] and [[Impact]] with a facade. */
 object CollisionEngine:
   /** Checks whether the two elements are intersecting, given an appropriate [[Intersection]] */
@@ -24,5 +26,8 @@ object CollisionEngine:
     if collides(a1, a2) then a1 impact a2 else a1
 
   /** Computes the impact between an element of [[A]] and a sequence of other elements of [[A]] */
+  @tailrec
   def impactMany[A](a: A, others: Seq[A])(using Intersection[A])(using Impact[A]): A =
-    others.foldLeft(a)((acc, a1) => acc impact a1)
+    others match
+      case h +: t => val a1 = impact(a, h) ; impactMany(a1, t)
+      case Seq() => a
