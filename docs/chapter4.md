@@ -4,9 +4,9 @@
 
 ### Simulazione
 
-La simulazione è definita nel seguente modo è una composizione di:
+La simulazione è una composizione di:
 - Un insieme di corpi celesti, distinti tra loro, dei quali viene definito il tipo.
-- Dei confini, i quali stabiliscono i confini dello spazio toroidale nel quale i corpi celesti si possono muovere.
+- Confini, i quali stabiliscono i limiti dello spazio toroidale nel quale i corpi celesti si possono muovere.
 
 Inoltre, la simulazione detiene il tempo virtuale e il suo delta, utilizzato per incrementarlo.
 Un corpo celeste, dal punto di vista geometrico, viene considerato come circolare,
@@ -53,9 +53,11 @@ Il trait `View` quindi si frappone tra `SwingGUI` e `ViewActor`, evitando di agg
 e di introdurre la programmazione ad attori nell'interfaccia grafica effettiva.
 In altre parole, `SwingGUI` e `ViewActor` interagiscono tra loro indirettamente, sfruttando il trait `View`.
 
+Diagramma delle classi che gestiscono la _View_:
+
 ![View class diagram](./images/view_class_diagram.svg)
 
-## Interazioni tra attori
+## Paradigma di programmazione basato sugli attori
 
 Sono presenti quattro tipi di attori, che comunicano tra loro tramite scambio di messaggi.
 Ogni attore ha uno scopo specifico e dispone di un set di comandi che gli possono essere impartiti.

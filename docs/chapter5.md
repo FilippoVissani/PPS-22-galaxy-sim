@@ -72,7 +72,27 @@ def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType =
     solveOneAndGetTerm(engine, goal, "E") 
 ```
 
+# Programmazione basata su scambio di messaggi
+
+Il paradigma di programmazione basato su scambio di messaggi è stato introdotto facendo uso della libreria Akka.
+
+Di seguito vengono riportati i diagrammi di sequenza che definiscono le interazioni tra gli attori
+che sono già stati descritti nei capitoli precedenti.
+
+Ciclo di vita degli attori:
+
+![Actor lifecycle sequence](./images/actors_lifecycle_sequence.svg)
+
+Sequenza di messaggi che vengono scambiati all'interno di un'iterazione della simulazione:
+
+![Actor simulation loop sequence](./images/actors_simulation_loop_sequence.svg)
+
+Sequenza dei messaggi utilizzati per aggiornare la _View_:
+
+![Actor view update sequence](./images/actors_view_update_sequence.svg)
+
 ## Sezioni personali
+
 ### Barzi Eddie
 Inizialmente mi sono occupato di gestire il ciclo di vita delle entità, sfruttando Prolog per l'identificazione delle stesse. Le classi relative a questo lavoro sono le seguenti:
 - `Scala2P`
