@@ -2,7 +2,7 @@ package galaxy_sim.view
 
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
-import physics.dynamics.GravitationLaws.astronomicUnit
+import physics.dynamics.GravitationLaws.*
 
 import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, GridBagConstraints, GridBagLayout, RenderingHints, Toolkit}
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}

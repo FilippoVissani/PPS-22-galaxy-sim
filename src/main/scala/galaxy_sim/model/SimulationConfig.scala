@@ -3,6 +3,7 @@ package galaxy_sim.model
 import physics.dynamics.GravitationLaws.*
 import physics.{Pair, SpeedVector}
 import physics.dynamics.PhysicalEntity
+import physics.dynamics.PhysicsFormulas.*
 
 object SimulationConfig:
   /** Time between two requests of the simulation state. */
