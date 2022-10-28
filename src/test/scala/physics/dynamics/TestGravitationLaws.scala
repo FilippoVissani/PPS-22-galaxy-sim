@@ -38,7 +38,7 @@ class TestGravitationLaws extends AnyFeatureSpec with GivenWhenThen:
       assert(earthFinal.position == newPos)
 
       Then("I can see the entity in its new position, changing speed and gravity force on it")
-      val shouldEarth = PhysicalEntityImpl(5.972e24, newPos, 29290, shouldSpeedVector, shouldGForce)
+      val shouldEarth = PhysicalEntityImpl(earthMass, newPos, earth.aphelionSpeed, shouldSpeedVector, shouldGForce)
       assert(earthFinal === shouldEarth)
     }
 

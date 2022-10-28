@@ -19,6 +19,5 @@ object Utils:
   val deltaTime: Double = daySec * 1 //one day
   val blackHole: PhysicalEntityImpl = PhysicalEntityImpl(mass = solarMass * 5, position = Pair(0,0), aphelionSpeed = 0, speedVector = Pair(0, 0), gForceVector = Pair(0, 0))
   val sun: PhysicalEntityImpl = PhysicalEntityImpl(mass = solarMass, position = Pair(blackHole.position.x + astronomicUnit * 5, blackHole.position.y + astronomicUnit * 5), aphelionSpeed = 50000, speedVector = Pair(0, 50000), gForceVector = Pair(0, 0))
-  val earth: PhysicalEntityImpl = PhysicalEntityImpl(mass = earthMass, position = Pair(sun.position.x + astronomicUnit, sun.position.y + astronomicUnit), aphelionSpeed = 0, speedVector = Pair(0, 29290), gForceVector = Pair(0, 0))
+  val earth: PhysicalEntityImpl = PhysicalEntityImpl(mass = earthMass, position = Pair(sun.position.x + astronomicUnit, sun.position.y + astronomicUnit), aphelionSpeed = 29290, speedVector = Pair(0, 29290), gForceVector = Pair(0, 0))
   val moon: PhysicalEntityImpl = PhysicalEntityImpl(mass = earthMass * 0.0123, position = Pair(earth.position.x + 384400, earth.position.y + 384400), aphelionSpeed = 3683, speedVector = Pair(0, 3683), gForceVector = Pair(0, 0))
-  
