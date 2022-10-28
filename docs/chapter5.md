@@ -206,6 +206,10 @@ La struttura interna di tale package si ispira alla suddivisione in package dell
 
 Mi sono anche occupato di introdurre delle strutture dati che potessero fungere come punto di partenza per interfacciarsi con le librerie contenute nel modulo physics, vale a dire `CollisionBox` e `Rigidbody`, contenute nel modulo `physics.rigidbody`.
 
+Infine, per quanto riguarda il testing dei componenti da me sviluppati, ho prodotto:
+- `CollisionSpec`: una classe di specifica per le collisioni, che rispecchiasse i requisiti utente riguardanti le collisioni. Questa classe è stata implementata utilizzando le funzionalità di `AnyFeatureSpec` e `GivenWhenThen` fornite da ScalaTest;
+- `TestColliderMonad`, `TestIntersection`, `TestImpact`: classi di unit testing per le rispettive funzionalità, implementate attraverso `AnyFunSuite`.
+
 ### Vissani Filippo
 In questo progetto mi sono occupato di definire, implementare e testare le componenti principali
 del pattern _MVC_ e gli attori che ne fanno uso. Entrando più nel dettaglio, le parti specifiche
