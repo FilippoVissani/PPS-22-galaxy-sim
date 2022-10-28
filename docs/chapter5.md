@@ -1,6 +1,17 @@
 # Implementazione
 
 ## Programmazione funzionale
+### Recursion
+Il concetto di ricorsione si riferisce ad un metodo di risoluzione di un problema computazionale, a partire dalle soluzioni di istanze più piccole dello stesso problema. Nella programmazione funzionale si realizza questo pattern risolutivo attraverso la definizione di funzioni che si richiamano da sole nel proprio codice, come nel seguente esempio:
+```scala
+  @tailrec
+  def impactMany[A](a: A, others: Seq[A])(using Intersection[A])(using Impact[A]): A =
+    others match
+      case h +: t => val a1 = impact(a, h) ; impactMany(a1, t)
+      case Seq() => a
+```
+In questo caso la ricorsione è tail, poichè l'ultima istruzione della funzione è una chiamata ricorsiva alla funzione stessa, senza mettere in pila ulteriori operazioni "deferred". Questo tipo di ricorsione è particolarmente utile nell'algoritmica in quanto facilmente ottimizzabile tramite loop. In scala, possiamo forzare l'ottimizzazione di una funzione tail recursive tramite l'annotazionwe @tailrec.
+
 ### For comprehension
 ### Higher-order functions
  Una Higher order function è una funzione che prende in input funzioni come parametri e/o restituisce funzioni come risultato. L'utilizzo di questo meccanismo nella programmazione funzionale permette di applicare in maniera semplice il _pattern Strategy_, oltre a rendere il codice riusabile.
