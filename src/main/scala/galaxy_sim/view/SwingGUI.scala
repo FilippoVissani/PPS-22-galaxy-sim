@@ -55,6 +55,7 @@ object SwingGUI:
     mainFrame.setResizable(false)
     mainFrame.add(controlPanel, BorderLayout.NORTH)
     mainFrame.add(simulationPanelContainer, BorderLayout.WEST)
+    mainFrame.add(statisticsPanel, BorderLayout.EAST)
     mainFrame.setVisible(true)
 
     override def display(simulation: Simulation): Unit =
