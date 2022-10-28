@@ -25,7 +25,32 @@ def updateTemperature(f: Temperature => Temperature): CelestialBody =
 `updateTemperature` è una funzione alla quale viene iniettata la strategia da utilizzare per modificare la temperatura, sotto forma di funzione _f_.
 
 ### Pattern matching
+È un meccanismo che permette di avere codice conciso e leggibile, ma allo stesso tempo concede la possibilità di fare matching di elementi su pattern complessi, anziché su un solo esatto valore.
+È stato utilizzato in varie parti del progetto, un esempio di pattern matching è il seguente:
+```scala
+def toToroidal(position: Pair): Pair =
+    val x = position match
+      case Pair(x, _) if x < leftBound => rightBound
+      case Pair(x, _) if x > rightBound => leftBound
+      case _ => position.x
+    [...]
+```
+Meccanismo utile anche nell'implementazione dello scambio di messaggi ad attori con il framework _akka_, in quanto utilizzato per fare il matching dei messaggi ricevuti dai vari attori.
+
 ### Option
+La classe `Option` nella programmazione funzionale viene utilizzata nel caso in cui è possibile che un valore sia assente, in tal modo si evita l'utilizzo del valore `null`.
+All'interno del progetto è stata utilizzata ad esempio nella classe `EntityReferenceDetector` in quanto necessaria la possibilità di restituire un'entità di riferimento, qualora non fosse l'entità stessa l'oggetto più massiccio della simulazione.
+```scala
+ override def getReference(entity: CelestialBody, entities: Set[CelestialBody]): Option[CelestialBody] = 
+    [...]
+    check(list)
+    
+    @tailrec
+    private def check(list: List[(CelestialBody, Double, Double)], ref: Option[(CelestialBody, Double, Double)] = Option.empty): Option[CelestialBody] = ref match
+    [...]
+```
+Si può notarne l'utilizzo anche nella funzione ricorsiva `check()` in quanto prende come parametro un riferimento temporaneo, che può appunto essere assente.
+
 ### Type members
 
 ### Given conversion
@@ -169,20 +194,32 @@ La seguente tabella riporta i meccanismi avanzati e/o i pattern utilizzati nelle
 </table>
 
 ### Cortecchia Angela
-Il mio scopo principale è stato quello di creare una libreria di calcoli fisici, assieme a Micelli, in dettaglio mi sono occupata della comprensione dei calcoli e delle formule sulle leggi gravitazionali applicabili nello spazio, formulate da Isaac Newton.
+Il mio scopo principale è stato quello di creare una libreria di calcoli fisici, assieme a Micelli, in dettaglio mi sono occupata della comprensione dei calcoli e delle formule sulle leggi gravitazionali e astrofisiche applicabili nello spazio.
 Dopo la comprensione di tali formule mi sono occupata della loro implementazione per poterle rendere utilizzabili in una simulazione bi-dimensionale.
+
 I sorgenti riguardanti questo lavoro si trovano nel package `physics.dynamics`.
-Tale package è stato suddiviso in maniera tale da permettere agli utenti della libreria di usufruire dei vari calcoli e funzioni in maniera indipendente, oppure permette utilizzare le varie formule complete ed ottenere il risultato finale delle varie funzioni.
+Tale package è stato suddiviso in maniera tale da permettere agli utenti della libreria di usufruire dei vari calcoli e funzioni in maniera indipendente, oppure permette utilizzare le varie formule complete e ottenere il risultato finale delle varie funzioni.
 Le classi all'interno di questo package sono dunque:
 - `PhysicalEntity`: contiene un'entità rappresentabile nell'universo fisico e costanti utili per formule e simulazione;
 - `PhysicsFormulas`: type class che contiene logica riguardante le varie formule e calcoli per l'implementazione delle formule gravitazionali;
 - `GravitationLaws`: type class che contiene l'implementazione delle formule gravitazionali.
 
+Per quanto riguarda i calcoli astrofisici, ho introdotto una struttura base per riuscire a utilizzare le formule all'interno della libreria in maniera corretta, ovvero `PhysicalEntity` che appunto contiene gli elementi fondamentali per i vari calcoli.
+
+Inoltre sono state messe a disposizioni costanti che vengono utilizzate nei calcoli o che possono essere utili nella simulazione, come ad esempio la _costante gravitazionale_ o unità di riferimento come l'_unità astronomica_ o l'_anno luce_.
+
 Dopodiché ho provveduto all'implementazione di una funzionalità che permettesse di trovare l'entità di riferimento di un corpo, ovvero l'entità attorno alla quale il corpo orbita. 
 Situata nel package `utils`, la type class `EntityReferenceDetector`, dato il corpo celeste soggetto dei calcoli e un set di tutti i corpi presenti nella simulazione, si occupa di calcolare quale sia effettivamente l'entità attorno alla quale il soggetto deve orbitare.
 Per capirlo vengono utilizzati calcoli inerenti all'astrodinamica.
 
-Infine mi sono occupata d'implementare nella schermata principale della simulazione un'area in cui si potessero vedere le informazioni dei vari corpi presenti.
+Infine mi sono occupata d'implementare nella schermata principale della simulazione un'area in cui si potessero vedere le informazioni dei vari corpi presenti e un logger che mostra gli eventi principali avvenuti.
+
+Mentre, per quanto riguarda il testing dei componenti sopra elencati, mi sono occupata d'implementare:
+- `TestPhysicsFormulas`: classe di testing per i singoli calcoli che compongono le formule;
+- `TestGravitationLaws`: classe di testing per le vere e proprie formule gravitazionali applicate ai corpi;
+- `TestEntityDetector`: classe di testing per l'ottenimento del riferimento di un'entità
+
+E una classe `Utils` per la creazione di corpi e valori utilizzati nelle prime due classi di testing elencate.
 
 ### Micelli Leonardo
 Il mio ruolo all'interno del team di sviluppo è consistito nello sviluppare, assieme a Cortecchia, una libreria per calcoli fisici da utilizzare all'interno della simulazione. In particolare, il mio compito è stato quello di modellare e sviluppare la logica riguardante la rilevazione di collisioni tra entità della simulazione e la risoluzione di eventuali impatti tra esse. I sorgenti riguardanti il mio lavoro si trovano dunque nel package `physics.collisions`.
