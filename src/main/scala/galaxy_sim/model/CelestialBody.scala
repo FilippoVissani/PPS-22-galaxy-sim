@@ -34,9 +34,7 @@ case class CelestialBody(
   override val aphelionSpeed: Speed,
   override val gForceVector: GravityForceVector,
   override val speedVector: SpeedVector,
-  
   override val position: Position,
-  
   name: String,
   radius: Radius,
   temperature: Temperature,
