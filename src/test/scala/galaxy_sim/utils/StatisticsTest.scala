@@ -23,7 +23,6 @@ class StatisticsTest extends AnyFlatSpec with should.Matchers:
   "the simulation" should "contains 2 planets and 1 MassiveStar" in {
     val simulation = Simulation(galaxy = celestialBodiesMap, bounds = bounds, virtualTime = 0, deltaTime = 1000)
     val celestialBodiesQuantity = Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy)
-    //celestialBodiesQuantity.foreach((k, v) => println(s"tipo $k, Quantità $v"))
     celestialBodiesQuantity(CelestialBodyType.Planet) shouldBe 2
     celestialBodiesQuantity(CelestialBodyType.MassiveStar) shouldBe 1
   }
@@ -31,7 +30,6 @@ class StatisticsTest extends AnyFlatSpec with should.Matchers:
   "the simulation" should "contains 67% planet and 33% MassiveStar" in {
     val simulation = Simulation(galaxy = celestialBodiesMap, bounds = bounds, virtualTime = 0, deltaTime = 1000)
     val celestialBodiesPercentage = Statistics.percentageOfCelestialBodiesForEachType(simulation.galaxy)
-    //celestialBodiesPercentage.foreach((k, v) => println(s"tipo $k, Quantità $v"))
     celestialBodiesPercentage(CelestialBodyType.Planet) shouldBe 67
     celestialBodiesPercentage(CelestialBodyType.MassiveStar) shouldBe 33
   }

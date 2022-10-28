@@ -20,19 +20,3 @@ object EntityIdentifier:
   def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType =
     val goal = s"typeOfEntity($temperature, $mass, E)"
     solveOneAndGetTerm(engine, goal, "E")
-
-  /**
-   * Get the minimum mass value for a given celestial body type
-   *
-   * @param celestialBodyType the celestial body type
-   * @return the minimum mass
-   */
-  def minMassFor(celestialBodyType: CelestialBodyType): Mass =
-    val prologCelestialBodyType = celestialBodyType.toString.substring(0, 1).toLowerCase() + celestialBodyType.toString.substring(1)
-    val goal = s"minMass(E, $prologCelestialBodyType)"
-    val term = solveOneAndGetTerm(engine, goal, "E")
-    val numbers = ("""\d+""".r findAllIn term.toString).toList
-    if numbers.size == 1 then
-      numbers.head.toDouble
-    else
-      scala.math.pow(numbers.head.toDouble, numbers.last.toDouble)
