@@ -11,8 +11,8 @@ object SimulationConfig:
   val frameRate = 33
   val bounds: Boundary = Boundary(0, astronomicUnit * 3, 0, astronomicUnit * 3)
 //  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
-  val blackHoleDistance = astronomicUnit * 5
-  val deltaTime = daySec
+  val blackHoleDistance: Double = astronomicUnit * 5
+  val deltaTime: Double = daySec
   val radiusScale = 1e4
 
   val moon: CelestialBody =
