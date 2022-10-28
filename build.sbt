@@ -12,7 +12,7 @@ lazy val root = (project in file("."))
     "it.unibo.alice.tuprolog" % "2p-core" % "4.1.1",
     "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
     "com.typesafe.akka" %% "akka-actor-testkit-typed" % AkkaVersion % Test,
-    "ch.qos.logback" % "logback-classic" % "1.4.4",
+    "ch.qos.logback" % "logback-classic" % "1.2.3",
     "org.jfree" % "jfreechart" % "1.5.3"
     ),
     assembly / mainClass := Some("galaxy_sim.Main"),
