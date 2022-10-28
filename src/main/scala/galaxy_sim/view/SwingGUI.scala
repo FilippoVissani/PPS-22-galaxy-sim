@@ -1,7 +1,7 @@
 package galaxy_sim.view
 
 import galaxy_sim.model.{CelestialBody, Simulation}
-import galaxy_sim.view.SwingGUI.SimulationPanel
+import galaxy_sim.view.SimulationPanel
 import physics.dynamics.GravitationLaws.*
 
 import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, GridBagConstraints, GridBagLayout, RenderingHints, Toolkit}
@@ -14,8 +14,6 @@ import galaxy_sim.utils.Percentage
 import org.jfree.chart.ChartPanel
 import galaxy_sim.utils.LoggerActions
 
-import scala.annotation.tailrec
-
 trait SwingGUI:
   def display(simulation: Simulation): Unit
   def updateInfos(): Unit
@@ -26,11 +24,10 @@ object SwingGUI:
     SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int, viewLogger: ViewLogger)
 
 
-  private class SwingGUIImpl(
-                              view: View,
-                              windowWidth: Int,
-                              windowHeight: Int,
-                              viewLogger: ViewLogger) extends SwingGUI:
+  private class SwingGUIImpl(view: View,
+                             windowWidth: Int,
+                             windowHeight: Int,
+                             viewLogger: ViewLogger) extends SwingGUI:
     val frameSize: Dimension = Dimension(
       windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100
@@ -41,7 +38,7 @@ object SwingGUI:
 
     val simulationPanel: SimulationPanel = SimulationPanel()
     val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
-    val informationPanel: InformationPanel = InformationPanel(viewLogger, gbc.infos)
+    val informationPanel: InformationPanel = InformationPanel(viewLogger)
     val informationPanelContainer: JPanel = JPanel(GridBagLayout())
     val loggerPanel: LoggerPanel = LoggerPanel(viewLogger)
     val loggerPanelContainer: JPanel = JPanel(GridBagLayout())
@@ -81,11 +78,9 @@ object SwingGUI:
     mainFrame.add(tp, BorderLayout.EAST)
     mainFrame.setVisible(true)
 
-    override def updateInfos(): Unit =
-      SwingUtilities.invokeLater(() => informationPanel.display())
+    override def updateInfos(): Unit = SwingUtilities.invokeLater(() => informationPanel.display())
 
-    override def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
-      SwingUtilities.invokeLater(() => loggerPanel.display(bodiesInvolved, description))
+    override def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit = SwingUtilities.invokeLater(() => loggerPanel.display(bodiesInvolved, description))
 
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
@@ -94,56 +89,9 @@ object SwingGUI:
       })
   end SwingGUIImpl
 
-  private class InformationPanel(viewLogger: ViewLogger, gbc: GridBagConstraints) extends JPanel, ActionListener:
-      var data: Option[List[String]] = Option.empty
-      val dropdown: JComboBox[String] = JComboBox()
-      val textArea: JTextArea = JTextArea()
-      dropdown.addActionListener(this)
-      dropdown.setEditable(false)
-      textArea.setEditable(false)
-      textArea.setPreferredSize(Dimension(
-        40 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
-        40 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
-      textArea.setLineWrap(true)
-      this.add(dropdown, BorderLayout.NORTH)
-      this.add(textArea, BorderLayout.CENTER)
-
-      override def actionPerformed(e: ActionEvent): Unit =
-        val cb: JComboBox[String] = e.getSource.asInstanceOf[JComboBox[String]]
-        val body = viewLogger.bodyInfos(cb.getSelectedItem.asInstanceOf[String])
-        if body.isDefined then
-          textArea.setText(s">>> Name = ${body.get.name}\n " +
-            s"Position = (${body.get.position.x}, ${body.get.position.y})\n" +
-            s"Speed = ${body.get.speedVector.y / 1000} km/s\n" +
-            s"Mass = ${body.get.mass} kg\n " +
-            s"Temperature = ${body.get.temperature} °C\n\n")
-
-      def display(): Unit =
-        this.data = Some(viewLogger.getBodiesNames)
-        textArea.setText("")
-        if data.isDefined then
-          dropdown.removeAllItems()
-          data.get.foreach(d => dropdown.addItem(d))
-
-  private class LoggerPanel(viewLogger: ViewLogger) extends JPanel:
-      val textArea: JTextArea = JTextArea()
-      textArea.setEditable(false)
-      textArea.setPreferredSize(Dimension(
-        40 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
-        40 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
-      val scrollPane: JScrollPane = JScrollPane(textArea)
-      this.add(scrollPane)
-
-      def display(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit = textArea.append(viewLogger.bodiesLogger(bodiesInvolved, description))
-
   private class GridBagConstraintsBuilder:
     val start: GridBagConstraints = GridBagConstraints()
     val stop: GridBagConstraints = GridBagConstraints()
-    val infos: GridBagConstraints = GridBagConstraints()
-
-    infos.gridx = 1
-    infos.gridy = 1
-    infos.anchor = GridBagConstraints.CENTER
 
     start.gridx = 0
     start.gridy = 0
@@ -152,80 +100,3 @@ object SwingGUI:
     stop.gridx = 1;
     stop.gridy = 0;
     stop.anchor = GridBagConstraints.LINE_START
-
-  private class SimulationPanel extends JPanel:
-    var simulation: Option[Simulation] = Option.empty
-
-    def display(simulation: Simulation): Unit =
-      this.simulation = Option(simulation)
-      repaint()
-
-    override def paint(g: Graphics): Unit =
-      simulation.foreach(x =>{
-        val g2: Graphics2D = g.asInstanceOf[Graphics2D]
-        g2.setRenderingHint(
-          RenderingHints.KEY_ANTIALIASING,
-          RenderingHints.VALUE_ANTIALIAS_ON
-        )
-        g2.setRenderingHint(
-          RenderingHints.KEY_RENDERING,
-          RenderingHints.VALUE_RENDER_QUALITY
-        )
-        cleanPanel(g2)
-        drawVirtualTime(g2, x.virtualTime.toString)
-        x.galaxy.foreach((k, v) => {
-          v.foreach(y => drawCelestialBody(g2, y, k))
-        })
-      })
-
-    override def getPreferredSize: Dimension =
-      val d: Dimension = this.getParent.getSize()
-      var newSize: Int = if d.width > d.height then d.height else d.width
-      newSize = if newSize == 0 then 100 else newSize
-      Dimension(newSize, newSize)
-
-    private def scaleX(value: Double): Int =
-      val percent = value * 100 / simulation.get.bounds.rightBound
-      Math.round(percent * this.getWidth / 100).toInt
-
-    private def scaleY(value: Double): Int =
-      val percent = value * 100 / simulation.get.bounds.bottomBound
-      Math.round(percent * this.getHeight / 100).toInt
-
-    private def cleanPanel(g: Graphics2D): Unit = 
-      g.setColor(java.awt.Color.BLACK)
-      g.fillRect(0, 0, this.getWidth, this.getHeight)
-
-    private def drawVirtualTime(g: Graphics2D, virtualTime: String): Unit = 
-      g.setColor(java.awt.Color.WHITE)
-      g.drawString("Virtual Time: " + virtualTime, 10, 10)
-
-    private def drawCelestialBody(g: Graphics2D, celestialBody: CelestialBody, celestialBodyType: CelestialBodyType): Unit =
-      g.setColor(java.awt.Color.WHITE)
-      g.drawString(celestialBody.name, scaleX(celestialBody.position.x), scaleY(celestialBody.position.y))
-      selectCelestialBodyColor(g, celestialBodyType)
-      g.fillOval(
-        scaleX(celestialBody.position.x),
-        scaleY(celestialBody.position.y),
-        scaleX(celestialBody.radius),
-        scaleY(celestialBody.radius)
-        )
-      g.setColor(java.awt.Color.WHITE)
-      g.drawOval(
-        scaleX(celestialBody.position.x),
-        scaleY(celestialBody.position.y),
-        scaleX(celestialBody.radius),
-        scaleY(celestialBody.radius)
-        )
-      
-    private def selectCelestialBodyColor(g: Graphics2D, celestialBodyType: CelestialBodyType): Unit =
-      celestialBodyType match
-        case MassiveStar => g.setColor(java.awt.Color.YELLOW)
-        case RedSuperGiant => g.setColor(java.awt.Color.RED)
-        case Supernova => g.setColor(java.awt.Color.BLUE)
-        case BlackHole => g.setColor(java.awt.Color.BLACK)
-        case Planet => g.setColor(java.awt.Color.DARK_GRAY)
-        case Asteroid => g.setColor(java.awt.Color.WHITE)
-        case InterstellarCloud => g.setColor(java.awt.Color.CYAN)
-    
-  end SimulationPanel
