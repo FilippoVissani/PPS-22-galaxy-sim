@@ -17,6 +17,21 @@ def updateTemperature(f: Temperature => Temperature): CelestialBody =
 ### Option
 ### Type members
 
+### Given conversion
+Il meccanismo delle given conversion permette di applicare in maniera semplice e immediata il _pattern adapter_ in Scala. In questo progetto sono state utilizzate nella classe `Scala2P` per migliorare l'integrazione con Prolog, come riportato di seguito:
+```scala
+given Conversion[String, Term] = Term.createTerm(_)
+given Conversion[String, Theory] = Theory.parseLazilyWithStandardOperators(_)
+given Conversion[Term, CelestialBodyType] = _.toString match
+  case "massiveStar" => MassiveStar
+  case "redSuperGiant" => RedSuperGiant
+  case "supernova" => Supernova
+  case "blackHole" => BlackHole
+  case "planet" => Planet
+  case "asteroid" => Asteroid
+  case "interstellarCloud" => InterstellarCloud
+```
+
 ### Currying
 In scala è possibile sfruttare il meccanismo di currying per convertire una funzione a più argomenti in una sequenza di funzioni che prendono un solo argomento. Ogni funzione ritorna un'altra funzione che consuma l'argomento successivo.
 

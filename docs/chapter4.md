@@ -185,21 +185,6 @@ object OperationsOnCelestialBody:
 ```
 In questo caso è stato creato un oggetto `OperationsOnCelestialBody` il quale, se importato nella classe desiderata, permette di utilizzare i metodi `updateMass` e `updateTemperature` come se fossero dei metodi definiti nella classe `CelestialBody`.
 
-### Adapter
-Il pattern Adapter è facilmente implementabile in Scala attraverso il meccanismo delle _given conversion_. In questo progetto sono state utilizzate nella classe `Scala2P` per migliorare l'integrazione con Prolog, come riportato di seguito:
-```scala
-given Conversion[String, Term] = Term.createTerm(_)
-given Conversion[String, Theory] = Theory.parseLazilyWithStandardOperators(_)
-given Conversion[Term, CelestialBodyType] = _.toString match
-  case "massiveStar" => MassiveStar
-  case "redSuperGiant" => RedSuperGiant
-  case "supernova" => Supernova
-  case "blackHole" => BlackHole
-  case "planet" => Planet
-  case "asteroid" => Asteroid
-  case "interstellarCloud" => InterstellarCloud
-```
-
 ### Type classes
 La Type Class è una tipologia di classe astratta e parametrizzata sul tipo, che permette di aggiungere un dato comportamento ad un qualunque tipo di dato senza utilizzare
 ereditarietà. In scala, si definiscono type classes in questo modo: Combiner[A], dove il tipo A racchiuso tra quadre rappresenta un qualunque tipo chiuso. All'interno del progetto, possiamo trovare
