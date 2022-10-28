@@ -29,11 +29,11 @@ object RootActor:
       val controllerActor = ctx.spawn(ControllerActor(Option.empty, simulationManagerActor), "controller")
       val viewActor = ctx.spawn(ViewActor(controllerActor), "view")
       controllerActor ! SetView(viewActor)
-      Behaviors.receive[RootActorCommand]((ctx, msg) => msg match
+      Behaviors.receive[RootActorCommand]((_, msg) => msg match
         case _ => {
           Behaviors.stopped
         }
-      ).receiveSignal { case (ctx, Terminated(_)) =>
+      ).receiveSignal { case (_, Terminated(_)) =>
         Behaviors.stopped
       }
     )

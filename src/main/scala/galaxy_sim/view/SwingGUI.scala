@@ -31,7 +31,6 @@ object SwingGUI:
       )
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
-    val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
 
     val statisticsPanel: StatisticsPanel = StatisticsPanel()
 

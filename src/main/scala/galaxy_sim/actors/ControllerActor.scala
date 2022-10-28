@@ -83,7 +83,7 @@ object ControllerActor:
               for
                 x <- viewActor
                 y <- simulation
-              yield(x ! Display(y))
+              yield x ! Display(y)
               Behaviors.same
             }
             case Tick => {

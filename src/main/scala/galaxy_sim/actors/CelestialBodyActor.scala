@@ -66,7 +66,7 @@ object CelestialBodyActor:
     bounds: Boundary,
     deltaTime: Double,
     ): Behavior[CelestialBodyActorCommand] =
-    Behaviors.setup[CelestialBodyActorCommand](ctx =>
+    Behaviors.setup[CelestialBodyActorCommand](_ =>
       Behaviors.receiveMessage[CelestialBodyActorCommand](msg => msg match
         case GetCelestialBodyState(replyTo: ActorRef[SimulationManagerActorCommand]) => {
           replyTo ! CelestialBodyState(celestialBody, celestialBodyType)

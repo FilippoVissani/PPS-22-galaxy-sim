@@ -103,7 +103,7 @@ object SimulationManagerActor:
               val newCelestialBodies = for
                 (k, v) <- tmpGalaxy
                 x = if k == celestialBodyType then (k, v + celestialBody) else (k, v)
-              yield(x)
+              yield x
               if newCelestialBodies.values.map(x => x.size).sum == celestialBodyActors.size then ctx.self ! IterationStep
               SimulationManagerActor(celestialBodyActors, actualSimulation, iterationState, newCelestialBodies)
             }

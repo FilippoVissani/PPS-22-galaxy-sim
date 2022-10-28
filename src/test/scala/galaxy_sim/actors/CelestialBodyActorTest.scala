@@ -44,7 +44,6 @@ class CelestialBodyActorTest extends AnyFunSuite:
 
   test("Kill"){
     val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
-    val inbox = TestInbox[SimulationManagerActorCommand]()
     testKit.run(CelestialBodyActor.Kill)
     testKit.returnedBehavior shouldBe Behaviors.stopped
   }
