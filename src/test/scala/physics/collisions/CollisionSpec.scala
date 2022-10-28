@@ -7,6 +7,7 @@ import physics.rigidbody.CollisionBoxes.CircleCollisionBox
 import physics.collisions.instances.IntersectionInstances.given
 import physics.collisions.CollisionMockups.Star
 import physics.collisions.CollisionMockups.given
+import physics.collisions.collision.CollisionEngine
 import physics.collisions.collision.CollisionEngine.*
 import physics.collisions.intersection.Intersection
 
@@ -77,5 +78,19 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       val res = impact(star1, star2)
       Then("I can see the result of the collision")
       assert(res == Star(Pair(0.0,0.0),2.0,100.66666666666667))
+    }
+
+    import physics.collisions.instances.ImpactInstances.given
+    info("I want to see the result of a body colliding with multiple bodies")
+    Scenario("An entity is colliding with other entities") {
+      Given("Many entities")
+      val star1 = Star(Pair(0, 0), 2, 100)
+      val star2 = Star(Pair(1, 2), 10, 1)
+      val star3 = Star(Pair(100, 100), 10, 20)
+      val star4 = Star(Pair(2, 2), 4, 50)
+      When("I check the impact result of the collision")
+      val res: Star = CollisionEngine.impactMany(star1, star2 :: star3 :: star4 :: Nil)
+      Then("I can see the result of the collision")
+      assert(res == Star(Pair(0.0,0.0),2.0,134.0))
     }
   }
