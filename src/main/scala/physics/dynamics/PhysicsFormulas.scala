@@ -89,7 +89,7 @@ object PhysicsFormulas extends Constants:
    * Calculate the sphere of influence of an entity
    *
    * @param smallerEntity Physical Entity, the entity that orbits the bigger one
-   * @param biggerEntity  Physical Entity, the entity around which the smaller orbtis
+   * @param biggerEntity  Physical Entity, the entity around which the smaller orbits
    * @return Double, the radius of the sphere of influence
    */
   def calculateSphereOfInfluence(smallerEntity: PhysicalEntity, biggerEntity: PhysicalEntity): Double =
@@ -108,7 +108,7 @@ object PhysicsFormulas extends Constants:
     semiMayorAxis * (1 - eccentricity) * cbrt(smallerEntityMass / (biggerEntityMass * 3))
 
   /**
-   * Calculate the radius of the sphere of influence without eccentricity of the orbit, means that the orbit it's circolar
+   * Calculate the radius of the sphere of influence without eccentricity of the orbit, means that the orbit it's circular
    *
    * @param semiMayorAxisDouble , the bigger axis of the elliptical orbit
    * @param smallerEntityMass   Mass, the mass of the smaller entity
