@@ -2,15 +2,16 @@ package galaxy_sim.view
 
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
-import physics.dynamics.GravitationLaws.astronomicUnit
 
-import java.awt.*
+import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, GridBagConstraints, GridBagLayout, RenderingHints, Toolkit}
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
-import javax.swing.{JButton, JFrame, JPanel, SwingUtilities}
+import javax.swing.{JButton, JComboBox, JFrame, JLabel, JPanel, JScrollPane, JTabbedPane, JTextArea, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.Statistics
+import galaxy_sim.utils.Percentage
 import org.jfree.chart.ChartPanel
+import galaxy_sim.view.StatisticsPanel
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
@@ -30,73 +31,37 @@ object SwingGUI:
       )
     val mainFrame: MainFrame = MainFrame()
     val simulationPanel: SimulationPanel = SimulationPanel()
-    val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
-    val controlPanel: JPanel = JPanel(GridBagLayout())
+
+    val statisticsPanel: StatisticsPanel = StatisticsPanel()
+
+    val controlPanel: JPanel = JPanel()
     val startButton: JButton = JButton("Start Simulation")
     val stopButton: JButton = JButton("Stop Simulation")
+
     startButton.addActionListener((_: ActionEvent) => view.start())
     stopButton.addActionListener((_: ActionEvent) => view.stop())
-
-    val pieChart: PieChart = PieChart("Celestial body types")
-    val pieChartPanel: ChartPanel = pieChart.wrapToPanel
-    pieChartPanel.setPreferredSize(Dimension(
-      25 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
-      50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
-
-    val gbc: GridBagConstraints = GridBagConstraints()
-
-    // Row 0 - Buttons
-    // Col 0
-    //gbc.fill = GridBagConstraints.HORIZONTAL
-    gbc.gridx = 0;
-    gbc.gridy = 0;
-    //gbc.insets = new Insets(5, 0, 0, 10);
-    gbc.anchor = GridBagConstraints.LINE_END
-    controlPanel.add(startButton, gbc);
-
-    // Col 1
-    //gbc.fill = GridBagConstraints.HORIZONTAL
-    gbc.gridx = 1;
-    gbc.gridy = 0;
-    gbc.anchor = GridBagConstraints.LINE_START;
-    controlPanel.add(stopButton, gbc);
-
-    // Row 1 - Chart
-    // Col 0
-    gbc.fill = GridBagConstraints.HORIZONTAL
-    gbc.gridwidth = 2;
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    //gbc.insets = new Insets(5, 0, 0, 10);
-    //gbc.anchor = GridBagConstraints.CENTER;
-    controlPanel.add(pieChartPanel, gbc);
-
-
-
-    //controlPanel.add(startButton)
-    //controlPanel.add(stopButton)
-    //controlPanel.add(pieChartPanel)
+    controlPanel.add(startButton)
+    controlPanel.add(stopButton)
     mainFrame.addWindowListener(new WindowAdapter {
       override def windowClosing(windowEvent: WindowEvent): Unit =
         System.exit(0)
     })
-    simulationPanelContainer.add(simulationPanel)
+
     mainFrame.setSize(frameSize)
     mainFrame.setResizable(false)
-    mainFrame.mainPanel.add(controlPanel, BorderLayout.EAST)
-    mainFrame.mainPanel.add(simulationPanelContainer, BorderLayout.CENTER)
+    mainFrame.mainPanel.add(controlPanel, BorderLayout.NORTH)
+    mainFrame.mainPanel.add(simulationPanel, BorderLayout.WEST)
+    mainFrame.mainPanel.add(statisticsPanel, BorderLayout.EAST)
     mainFrame.setVisible(true)
 
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
-        //Update the pie chart
-        pieChart.clearAllValues()
-        Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.setValue(element._1.toString, element._2))
+        statisticsPanel.update(simulation)
       })
   end SwingGUIImpl
 
-  private class MainFrame extends JFrame:
+  private class MainFrame extends JFrame :
     val mainPanel: JPanel = JPanel(BorderLayout())
     this.getContentPane.add(mainPanel)
 

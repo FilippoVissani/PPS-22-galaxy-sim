@@ -5,6 +5,7 @@ import akka.actor.typed.{ActorRef, Behavior}
 import galaxy_sim.actors.ControllerActor.*
 import galaxy_sim.model.{Boundary, CelestialBody, Simulation}
 import galaxy_sim.view.{SwingGUI, View}
+import galaxy_sim.model.SimulationConfig.windowSize
 
 /** In this object is defined the behaviour of view actor.
  *
@@ -41,9 +42,8 @@ object ViewActor:
    *  @param controllerActor to communicate with.
    */
   def apply(controllerActor: ActorRef[ControllerActorCommand]): Behavior[ViewActorCommand] =
-    val percentSize = 90
     Behaviors.setup[ViewActorCommand](ctx =>
-      val view = View(ctx.self, percentSize, percentSize)
+      val view = View(ctx.self, windowSize, windowSize)
 
       Behaviors.receiveMessage[ViewActorCommand](msg => msg match
         case Display(simulation: Simulation) => {

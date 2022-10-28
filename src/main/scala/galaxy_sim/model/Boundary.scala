@@ -23,7 +23,7 @@ trait Boundary:
   def bottomBound: Bound
 
   /** makes bounds toroidal */
-  def toToroidal(position: Pair[Double, Double]): Pair[Double, Double] = 
+  def toToroidal(position: Pair): Pair =
     val x = position match
       case Pair(x, _) if x < leftBound => rightBound
       case Pair(x, _) if x > rightBound => leftBound

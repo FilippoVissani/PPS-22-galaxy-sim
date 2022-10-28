@@ -100,7 +100,10 @@ object SimulationManagerActor:
                 )
             }
             case CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) => {
-              val newCelestialBodies = for (k, v) <- tmpGalaxy yield(if k == celestialBodyType then (k, v + celestialBody) else (k, v))
+              val newCelestialBodies = for
+                (k, v) <- tmpGalaxy
+                x = if k == celestialBodyType then (k, v + celestialBody) else (k, v)
+              yield x
               if newCelestialBodies.values.map(x => x.size).sum == celestialBodyActors.size then ctx.self ! IterationStep
               SimulationManagerActor(celestialBodyActors, actualSimulation, iterationState, newCelestialBodies)
             }
