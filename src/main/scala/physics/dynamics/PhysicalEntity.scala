@@ -13,16 +13,13 @@ import physics.*
  *
  * position is a Pair(Double, Double)
  *
- * aphelionSpeed is in m/s
- *
- * speedVector is a Pair(0, aphelionSpeed)
+ * speedVector is a Pair(0, speed)
  *
  * gForceVector is a Pair(Double, Double)
  */
 trait PhysicalEntity:
   def mass: Mass
   def position: Position
-  def aphelionSpeed: Speed
   def speedVector: SpeedVector
   def gForceVector: GravityForceVector
 
