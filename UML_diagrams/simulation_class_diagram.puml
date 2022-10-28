@@ -1,6 +1,9 @@
 @startuml
 
-left to right direction
+package galaxy_sim.actors{
+  class CelestialBodyActor << object >>
+  class SimulationManagerActor << object >>
+}
 
 package physics.rigidbody.RigidBody {
   class CircularEntity << trait >>
@@ -20,5 +23,8 @@ Simulation "1"*--"*" CelestialBody
 Simulation "1"*--"*" CelestialBodyType
 Simulation "1"*--"1" Boundary
 CelestialBody "*"--"1" CelestialBodyType
+
+CelestialBodyActor "1"-->"1" CelestialBody: use
+SimulationManagerActor "1"-->"1" Simulation: use
 
 @enduml

@@ -8,11 +8,14 @@ La simulazione è definita nel seguente modo è una composizione di:
 - Un insieme di corpi celesti, distinti tra loro, dei quali viene definito il tipo.
 - Dei confini, i quali stabiliscono i confini dello spazio toroidale nel quale i corpi celesti si possono muovere.
 
-Inoltre la simulazione detiene il tempo virtuale e il suo delta, utilizzato per incrementarlo.
+Inoltre, la simulazione detiene il tempo virtuale e il suo delta, utilizzato per incrementarlo.
 Un corpo celeste, dal punto di vista geometrico, viene considerato come circolare,
 questo per fare in modo che le collisioni vengano rilevate correttamente.
 A ogni corpo celeste corrisponde uno e un solo tipo (es: pianeta) e allo stesso tempo più
 corpi celesti possono essere dello stesso tipo.
+
+`CelestialBody` e `Simulation` sono componenti passivi e le uniche API che espongono possono essere utilizzate per osservarne lo stato.
+La gestione dei componenti appena descritti viene demandata ad attori specifici, che verranno descritti più nel dettaglio successivamente.
 
 Di seguito il diagramma delle classi che riguardano la simulazione:
 
@@ -41,13 +44,29 @@ Di seguito il diagramma delle classi coinvolte con il ciclo di vita:
 
 ## View
 
-## Controller
-
-## Attori
+## Interazioni tra attori
 
 Sono presenti quattro tipi di attori, che comunicano tra loro tramite scambio di messaggi.
 Ogni attore ha uno scopo specifico e dispone di un set di comandi che gli possono essere impartiti.
-La tabella seguente contiene i comandi degli attori:
+Entrando nel dettaglio, gli attori sono i seguenti:
+- `ViewActor`:
+  - Interagisce esclusivamente con `ControllerActor`
+  - Si occupa di aggiornare la _View_
+  - Notifica gli input della _View_ al `ControllerActor`
+- `ControllerActor`:
+  - Interagisce con `ViewActor` e `SimulationManagerActor`
+  - Gestisce esclusivamente la parte di _Controller_
+  - Contatta `SimulationManagerActor` per far avviare e fermare la simulazione e per richiederne lo stato
+  - Invia gli aggiornamenti di stato al `ViewActor`
+- `SimulationManagerActor`:
+  - Comunica direttamente con `CelestialBodyActor` e indirettamente con `ControllerActor` (tramite pattern Ask)
+  - Coordina i `CelestialBodyActor` durante l'esecuzione della simulazione
+  - Invia lo stato della simulazione al `ControllerActor` nel momento in cui gli viene fatta una richiesta
+- `CelestialBodyActor`:
+  - Interagisce esclusivamente con il `SimulationManagerActor`
+  - Si occupa di gestire lo stato di un singolo corpo celeste
+
+Di seguito vengono riportati i messaggi che possono essere mandati a ogni attore:
 
 <table>
 <tr><th>Attore</th><th>Comando</th><th>Descrizione</th></tr>
@@ -71,6 +90,11 @@ La tabella seguente contiene i comandi degli attori:
 <tr><td>CelestialBodyActor</td><td>SolveCollisions</td><td>Risolve le collisioni con gli altri corpi celesti</td></tr>
 <tr><td>CelestialBodyActor</td><td>Kill</td><td>Termina l'attore</td></tr>
 </table>
+
+Nel pattern architetturale _MVC_ ogni componente ha dipendenze specifiche e ben definite,
+per esempio il _Controller_ sfrutta sia le API esposte dalla _View_, che quelle esposte dal _Model_.
+Con l'introduzione degli attori si è deciso di mantenere questo schema di dipendenze,
+le quali però vengono definite dai messaggi disponibili per un dato attore, invece che dall'attore stesso.
 
 Di seguito il diagramma delle classi degli attori:
 
