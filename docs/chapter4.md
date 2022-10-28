@@ -119,11 +119,14 @@ Il componente `physics` del sistema si occupa di definire i concetti riguardanti
 - Gestione della dinamica: implementata nel package `physics.dynamics`
 
 ### Collisions
-L'obiettivo di questo modulo è fornire una API per definire come rilevare collisioni tra due oggetti, implementata nel package `collisions.intersection` e specificare la reazione all'impatto avvenuto, realizzata nel package `collisions.impact`. Questi due concetti offrono una loro API indipendente compresa di moduli di funzioni utili, come `Intersection` e `Impact`, e sintassi ad-hoc. A questi sotto-moduli si unisce un modulo `CollisionEngine` che riunisce le due API per implementare le collisioni in maniera più sintetica.
+L'obiettivo di questo modulo è fornire una API per definire come rilevare collisioni tra due oggetti, implementata nel package `collisions.intersection` e specificare la reazione all'impatto avvenuto, realizzata nel package `collisions.impact`. Questi due concetti offrono una loro API indipendente compresa di moduli di funzioni utili, come `Intersection` e `Impact`, e sintassi ad-hoc. A questi sotto-moduli si unisce un modulo `CollisionEngine` che riunisce le due API per implementare le collisioni in maniera più sintetica, ed una sua versione monadica, `Collider`, per poter usare le API di collisione all'interno di for-comprehensions.
 
 ### Dynamics
 Lo scopo di questo modulo è fornire una API per il calcolo di formule gravitazionali, esse sono applicabili in uno spazio bi-dimensionale rappresentante l'universo.
 Vengono offerte dunque due API: `PhysicsFormulas` indipendente e `GravitationLaws` dipendente dalla precedente. La prima offre i calcoli individuali dai quali si possono ricavare alcune formule gravitazionali, mentre la seconda utilizza le formule della prima per l'implementazione vera e propria delle nozioni di astrofisica.
+
+### Rigidbody
+Il modulo `physics.rigidbody`contiene la definizione di struttre dati utili per interfacciarsi con i due moduli di `physics`.
 
 
 ## Pattern utilizzati
