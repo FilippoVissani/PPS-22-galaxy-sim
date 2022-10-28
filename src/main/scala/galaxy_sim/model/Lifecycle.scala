@@ -39,13 +39,6 @@ object Lifecycle:
         val newCelestialBody = celestialBody.updateMass(mass => mass * 1.01).updateTemperature(temperature => temperature * 1.01)
         (newCelestialBody, bodyType(newCelestialBody))
       }
-      case BlackHole => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass +- deltaMass)
-        if newCelestialBody.mass > EntityIdentifier.minMassFor(BlackHole) then
-          (newCelestialBody, BlackHole)
-        else
-          (newCelestialBody, bodyType(newCelestialBody))
-      }
       case _ => {
         val newCelestialBody = celestialBody.updateMass(mass => mass +- deltaMass)
         (newCelestialBody, bodyType(newCelestialBody))
@@ -70,5 +63,5 @@ object Lifecycle:
    */
   extension (n: Mass)
     @targetName("addOrSubtract")
-    def +-(otherN: Mass): Mass =
+    infix def +-(otherN: Mass): Mass =
       if Random.nextBoolean then n + otherN else n - otherN
