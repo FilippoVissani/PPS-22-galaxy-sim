@@ -17,7 +17,6 @@ object SimulationConfig:
 
   val moon: CelestialBody =
     CelestialBody(mass = earthMass * 0.0123,
-    aphelionSpeed = 3683,
     gForceVector = Pair(0,0),
     speedVector = Pair(0, 3683),
     position = Pair(astronomicUnit * 1.0167 + 384400, 0),
@@ -28,7 +27,6 @@ object SimulationConfig:
 
   val sun: CelestialBody =
     CelestialBody(mass = solarMass,
-      aphelionSpeed = 0,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 50000),
       position = Pair(astronomicUnit * 3 / 2, astronomicUnit * 3 / 2),
@@ -39,7 +37,6 @@ object SimulationConfig:
 
   val earth: CelestialBody =
     CelestialBody(mass = earthMass,
-      aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(1, 29290),
       position = Pair(sun.position.x + astronomicUnit * 1.0167, sun.position.y + 0),
@@ -49,7 +46,6 @@ object SimulationConfig:
 
   val earth2: CelestialBody =
     CelestialBody(mass = earthMass,
-      aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(-1, 29290),
       position = Pair(sun.position.x - astronomicUnit * 1.0167, sun.position.y + 0),
@@ -60,7 +56,6 @@ object SimulationConfig:
 
   val blackHole: CelestialBody =
     CelestialBody(mass = solarMass * 5,
-      aphelionSpeed = 0,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 0),
       position = Pair(0, 0),
@@ -70,7 +65,6 @@ object SimulationConfig:
 
   val interstellarCloud2: CelestialBody =
     CelestialBody(mass = 5.972e24,
-      aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(0, 29290),
       position = Pair(-(astronomicUnit/2), 0),
@@ -81,7 +75,6 @@ object SimulationConfig:
   def groupOFInterstellarClouds(cloudsNumber: Int): Set[CelestialBody] =
     (0 until cloudsNumber).map(x => {
       CelestialBody(mass = 5.972e24 - Math.pow(10, x),
-        aphelionSpeed = 29290 - x * 1000,
         gForceVector = Pair(0, 0),
         speedVector = Pair(0, 29290 - x * 1000),
         position = Pair(-(astronomicUnit - Math.pow(100, x)), 0),

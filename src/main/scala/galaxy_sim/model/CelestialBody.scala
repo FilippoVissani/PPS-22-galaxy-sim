@@ -20,7 +20,6 @@ object CelestialBodyAliases:
 /** Definition of celestial body.
  *  
  *  @param mass
- *  @param aphelionSpeed
  *  @param gForceVector
  *  @param speedVector
  *  @param position
@@ -30,7 +29,6 @@ object CelestialBodyAliases:
  */
 case class CelestialBody(
   override val mass: Mass,
-  override val aphelionSpeed: Speed,
   override val gForceVector: GravityForceVector,
   override val speedVector: SpeedVector,
   override val position: Position,
