@@ -28,8 +28,8 @@ class LifecycleTest extends AnyFlatSpec with should.Matchers:
     EntityIdentifier.checkEntityType(10, 101) shouldBe CelestialBodyType.InterstellarCloud
   }
 
-  "entity with mass 10 and temperature 10" should "be a 'planet'" in {
-    EntityIdentifier.checkEntityType(10, 10) shouldBe CelestialBodyType.Planet
+  "entity with mass 10 and temperature 55" should "be a 'planet'" in {
+    EntityIdentifier.checkEntityType(10, 55) shouldBe CelestialBodyType.Planet
   }
 
   "entity with mass 10 and temperature 0" should "be a 'asteroid'" in {

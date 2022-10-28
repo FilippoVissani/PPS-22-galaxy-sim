@@ -19,10 +19,10 @@ class OperationsOnCelestialBodyTest extends AnyFlatSpec with should.Matchers:
     sun.updateMass(_ => minMass - minMass).mass shouldBe minMass * 1.1
   }
 
-  "the temperature after the update to a temperature < minTemp" should "equals to minTemp * 0.9" in {
-    sun.updateTemperature(_ => minTemp * 2).temperature shouldBe minTemp * 0.9
+  "the temperature after the update to a temperature < minTemp" should "equals to minTemp * 1.1" in {
+    sun.updateTemperature(_ => minTemp - minTemp).temperature shouldBe minTemp * 1.1
   }
 
   "the temperature after the update to a temperature > maxTemp" should "equals to maxTemp * 0.9" in {
-    sun.updateTemperature(_ => maxTemp * 2).temperature shouldBe maxTemp * 0.9
+    sun.updateTemperature(_ => maxTemp + maxTemp).temperature shouldBe maxTemp * 0.9
   }
