@@ -204,6 +204,8 @@ La struttura interna di tale package si ispira alla suddivisione in package dell
 - Syntax:
   - `CollisionSyntax`: arricchisce un generico tipo con operatori che sfruttano le API di collisione; 
 
+Mi sono anche occupato di introdurre delle strutture dati che potessero fungere come punto di partenza per interfacciarsi con le librerie contenute nel modulo physics, vale a dire `CollisionBox` e `Rigidbody`, contenute nel modulo `physics.rigidbody`.
+
 ### Vissani Filippo
 In questo progetto mi sono occupato di definire, implementare e testare le componenti principali
 del pattern _MVC_ e gli attori che ne fanno uso. Entrando più nel dettaglio, le parti specifiche
