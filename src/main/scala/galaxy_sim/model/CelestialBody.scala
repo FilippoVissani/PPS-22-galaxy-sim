@@ -25,7 +25,6 @@ object CelestialBodyAliases:
  *  @param speedVector
  *  @param position
  *  @param name
- *  @param birthTime
  *  @param radius
  *  @param temperature
  */
@@ -34,9 +33,7 @@ case class CelestialBody(
   override val aphelionSpeed: Speed,
   override val gForceVector: GravityForceVector,
   override val speedVector: SpeedVector,
-  
   override val position: Position,
-  
   name: String,
   radius: Radius,
   temperature: Temperature,

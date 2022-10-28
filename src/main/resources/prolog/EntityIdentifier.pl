@@ -4,8 +4,8 @@ Mass and Temperature defines the entity type.
 the temperature defines if the entity is a Star, Planet, Asteroid or InterstellarCloud:
 	1000 < Temp <= _ 		is a Star.
 	100 < Temp <= 1000 		is a InterstellarCloud
-	0 	< Temp <= 100 		is an Planet
-		_ < Temp <= 0 		is an Asteroid
+	50 	< Temp <= 100 		is an Planet
+		_ < Temp <= 50		is an Asteroid
 
 the mass defines the type of the Star.
 */
@@ -31,5 +31,5 @@ typeOfStar(Mass, Star) :- minMass(MinMass, Star), Mass > MinMass.
 
 typeOfEntity(Temp, Mass, X) :- 1000 < Temp, typeOfStar(Mass, X), !.
 typeOfEntity(Temp, _, interstellarCloud) :- 100 < Temp, !.
-typeOfEntity(Temp, _, planet) :- 0 < Temp, !.
+typeOfEntity(Temp, _, planet) :- 50 < Temp, !.
 typeOfEntity(Temp, _, asteroid).

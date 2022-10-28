@@ -5,13 +5,14 @@ import galaxy_sim.model.CelestialBodyType.{BlackHole, InterstellarCloud, Massive
 import physics.collisions.impact.Impact
 import physics.collisions.instances.IntersectionInstances.given
 import physics.collisions.intersection.Intersection
+import galaxy_sim.utils.OperationsOnCelestialBody.{updateTemperature, updateMass}
 
 object SimulationGivens:
   private def absorb(bigger: CelestialBody, smaller: CelestialBody): CelestialBody =
-    bigger.copy(mass = bigger.mass + smaller.mass / 2, temperature = bigger.temperature * 1.5)
+    bigger.updateMass(mass => mass + smaller.mass / 2).updateTemperature(temperature => temperature * 1.5)
 
   private def disintegrate(smaller: CelestialBody): CelestialBody =
-    smaller.copy(mass = smaller.mass / 2, temperature = smaller.temperature * 0.8)
+    smaller.updateMass(mass => mass / 2).updateTemperature(temperature => temperature * 0.8)
 
   given CelestialBodyIntersection: Intersection[CelestialBody] =
     Intersection.from((a1, a2) => CircleToCircleCollision.intersects(a1.collisionBox, a2.collisionBox))
