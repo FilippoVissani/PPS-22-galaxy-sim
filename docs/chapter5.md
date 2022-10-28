@@ -189,7 +189,7 @@ Il mio ruolo all'interno del team di sviluppo è consistito nello sviluppare, as
 La struttura interna di tale package si ispira alla suddivisione in package della libreria scala `cats`: all'interno troviamo un package per ogni type class sviluppata, un package `instances` contenente le implementazioni di libreria per ogni type class, un package `syntax` contenente estensioni che possono arricchire l'uso delle type class presenti nella libreria, ed infine un package `monads` contenente le monadi sviluppate. Questa suddivisione permette ad un utente della libreria di utilizzare solamente i concetti e le funzionalità che gli sono strettamente necessarie, partendo quindi da un core molto semplice (quello della sola type class) e aggiungendo tramite importazione ulteriori funzionalità o sintassi ad hoc. All'interno del package collisions troviamo dunque:
 - Type classes:
   - `Intersection`: Questa type class incapsula la logica di intersezione tra due elementi dello stesso tipo;
-  - `Impact`: agisce come una sorta di monoide (o combinatore), tuttavia in questa sede si è preferito distinguere i due concetti per attenersi meglio al dominio delle collisioni;
+  - `Impact`: agisce come una sorta di monoide (o combinatore), tuttavia, non essendo l'applicazione di un urto un'operazione commutativa, si è preferito distinguere i due concetti per attenersi meglio al dominio delle collisioni;
 
 - Instances:
   - `IntersectionInstances`
