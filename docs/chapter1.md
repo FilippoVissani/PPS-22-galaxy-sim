@@ -4,7 +4,7 @@ Per lo sviluppo del progetto è stato adottato un processo ispirato alle tecnich
 - Scrum Master: il compito dello scrum master è quello di guidare il team circa l'adozione del paradigma scrum;
 - Team di sviluppo
 
-## Produzione dei requirements
+## Produzione dei requirement
 La prima attività intrapresa dal team è stata quella di analisi dei requisiti del sistema, durante la quale è stato prodotto un `documento dei requirements` che abbracciavano caratteristiche del sistema sia funzionali che non, con particolare attenzione anche ai requisiti user-centric, che apportano valore all'utente e alla sua esperienza di uso del software.
 
 ## Product Backlog
