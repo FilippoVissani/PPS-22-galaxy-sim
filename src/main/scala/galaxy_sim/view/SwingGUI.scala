@@ -47,15 +47,12 @@ object SwingGUI:
       override def windowClosing(windowEvent: WindowEvent): Unit =
         System.exit(0)
     })
-    simulationPanelContainer.add(simulationPanel)
-    simulationPanelContainer.setPreferredSize(Dimension(
-      45 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
-      45 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
+
     mainFrame.setSize(frameSize)
     mainFrame.setResizable(false)
-    mainFrame.add(controlPanel, BorderLayout.NORTH)
-    mainFrame.add(simulationPanelContainer, BorderLayout.WEST)
-    mainFrame.add(statisticsPanel, BorderLayout.EAST)
+    mainFrame.mainPanel.add(controlPanel, BorderLayout.NORTH)
+    mainFrame.mainPanel.add(simulationPanel, BorderLayout.WEST)
+    mainFrame.mainPanel.add(statisticsPanel, BorderLayout.EAST)
     mainFrame.setVisible(true)
 
     override def display(simulation: Simulation): Unit =
