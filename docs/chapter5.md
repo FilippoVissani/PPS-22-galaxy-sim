@@ -52,7 +52,7 @@ I termini prolog utilizzati per identificare le entità sono contenuti nel file 
 ```prolog
 typeOfEntity(Temp, Mass, X) :- 1000 < Temp, typeOfStar(Mass, X), !.
 typeOfEntity(Temp, _, interstellarCloud) :- 100 < Temp, !.
-typeOfEntity(Temp, _, planet) :- 0 < Temp, !.
+typeOfEntity(Temp, _, planet) :- 50 < Temp, !.
 typeOfEntity(Temp, _, asteroid).
 ```
 A loro volta le Star vengono identificate in _BlackHole, Supernova, Red Super Giant_ e _Massive Star_ in base alla loro massa.
