@@ -2,20 +2,16 @@ package galaxy_sim.view
 
 import galaxy_sim.model.{CelestialBody, Simulation}
 import galaxy_sim.view.SwingGUI.SimulationPanel
-import physics.dynamics.GravitationLaws.astronomicUnit
 
 import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, GridBagConstraints, GridBagLayout, RenderingHints, Toolkit}
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import javax.swing.{JButton, JComboBox, JFrame, JLabel, JPanel, JScrollPane, JTabbedPane, JTextArea, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
-import galaxy_sim.utils.{Statistics, ViewLogger}
+import galaxy_sim.utils.Statistics
 import galaxy_sim.utils.Percentage
 import org.jfree.chart.ChartPanel
-import galaxy_sim.utils.LoggerActions
 import galaxy_sim.view.StatisticsPanel
-
-import scala.annotation.tailrec
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
