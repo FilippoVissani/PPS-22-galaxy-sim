@@ -1,6 +1,6 @@
 package galaxy_sim
 
-import akka.actor.ActorRef
+import akka.actor.{ActorRef, scala2ActorRef}
 import akka.actor.typed.{ActorSystem, Behavior, Terminated}
 import akka.actor.typed.scaladsl.Behaviors
 import galaxy_sim.actors.ControllerActor.*
@@ -18,12 +18,20 @@ object RootActor:
 
   def apply(): Behavior[RootActorCommand] =
     Behaviors.setup[RootActorCommand](ctx =>
-      val galaxy = emptyGalaxy ++ Map(
-        MassiveStar -> Set(sun2),
-        Planet -> Set(earth, earth2),
-      )
+//      val galaxy = emptyGalaxy ++ Map(
 //        BlackHole -> Set(blackHole),
-      //         InterstellarCloud -> Set(interstellarCloud2)
+//        MassiveStar -> Set(sun),
+//        Planet -> Set(earth, earth2),
+//        InterstellarCloud -> groupOFInterstellarClouds(10)
+//      )
+
+      //solar system
+      val galaxy = emptyGalaxy ++ Map(
+        BlackHole -> Set(blackHole),
+        MassiveStar -> Set(body01),
+        Planet -> Set(body02, body03, body04, body05, body06, body07, body08, body09, body10),
+        InterstellarCloud -> groupOFInterstellarClouds(10)
+      )
       val celestialBodyActors = galaxy
       .map((k, v) => (k, v.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, k, bounds, deltaTime)))))
       .values

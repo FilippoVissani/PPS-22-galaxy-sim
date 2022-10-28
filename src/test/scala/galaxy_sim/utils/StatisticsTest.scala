@@ -1,6 +1,6 @@
 package galaxy_sim.utils
 
-import galaxy_sim.model.SimulationConfig.{sun, earth, bounds, mars, blackHole}
+import galaxy_sim.model.SimulationConfig.{body01, body04, bounds, body05, blackHole}
 import galaxy_sim.model.{CelestialBodyType, Simulation, CelestialBody}
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.Statistics
@@ -10,8 +10,8 @@ import org.scalatest.matchers.should
 class StatisticsTest extends AnyFlatSpec with should.Matchers:
 
   val celestialBodiesMap: Map[CelestialBodyType, Set[CelestialBody]] = Map(
-    MassiveStar -> Set(sun),
-    Planet -> Set(earth, mars),
+    MassiveStar -> Set(body01),
+    Planet -> Set(body04, body05),
   )
 
   "planet quantity" should "be 2 (moon and earth)" in {

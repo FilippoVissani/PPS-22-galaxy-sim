@@ -15,28 +15,28 @@ import galaxy_sim.actors.CelestialBodyActor.SolveCollisions
 
 class CelestialBodyActorTest extends AnyFunSuite:
   test("GetCelestialBodyState"){
-    val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val testKit = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
     val inbox = TestInbox[SimulationManagerActorCommand]()
     testKit.run(CelestialBodyActor.GetCelestialBodyState(inbox.ref))
-    inbox.expectMessage(CelestialBodyState(sun, MassiveStar))
+    inbox.expectMessage(CelestialBodyState(body01, MassiveStar))
   }
 
   test("MoveToNextPosition"){
-    val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val testKit = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
     val inbox = TestInbox[SimulationManagerActorCommand]()
     testKit.run(MoveToNextPosition(emptyGalaxy, inbox.ref))
-    inbox.expectMessage(CelestialBodyState(sun, MassiveStar))
+    inbox.expectMessage(CelestialBodyState(body01, MassiveStar))
   }
 
   test("SolveCollisions"){
-    val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val testKit = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
     val inbox = TestInbox[SimulationManagerActorCommand]()
     testKit.run(SolveCollisions(emptyGalaxy, inbox.ref))
-    inbox.expectMessage(CelestialBodyState(sun, MassiveStar))
+    inbox.expectMessage(CelestialBodyState(body01, MassiveStar))
   }
 
   test("Kill"){
-    val testKit = BehaviorTestKit(CelestialBodyActor(sun, MassiveStar, bounds, deltaTime))
+    val testKit = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
     val inbox = TestInbox[SimulationManagerActorCommand]()
     testKit.run(CelestialBodyActor.Kill)
     testKit.returnedBehavior shouldBe Behaviors.stopped
