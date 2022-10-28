@@ -23,10 +23,10 @@ class TestEntityReferenceDetection extends AnyFeatureSpec with GivenWhenThen:
   info("I have to know which one is the entity reference of another one")
 
   Feature("Understand which one is the entity reference of another one"){
-    val blackHoleCB: CelestialBody = CelestialBody(mass = solarMass * 5, aphelionSpeed = 0, gForceVector = Pair(0, 0), speedVector = Pair(0, 0),  position = Pair(0, 0), name = "BlackHole", radius = 0, temperature = 0)
-    val sunCB: CelestialBody = CelestialBody(mass = solarMass, aphelionSpeed = 0, gForceVector = Pair(0, 0), speedVector = Pair(0, 50000), position = Pair(blackHole.position.x + astronomicUnit * 5, blackHole.position.y + astronomicUnit * 5), name = "Sun", radius = 0, temperature = 0)
-    val earthCB: CelestialBody = CelestialBody(mass = earthMass, aphelionSpeed = 0, gForceVector = Pair(0, 0), speedVector = Pair(0, 29290), position = Pair(sun.position.x + astronomicUnit, sun.position.y + astronomicUnit), name = "Earth", radius = 0, temperature = 0)
-    val moonCB: CelestialBody = CelestialBody(mass = earthMass * 0.0123, aphelionSpeed = 0, gForceVector = Pair(0, 0), speedVector = Pair(0, 3683), position = Pair(earth.position.x + 384400, earth.position.y + 384400), name = "Moon", radius = 0, temperature = 0)
+    val blackHoleCB: CelestialBody = CelestialBody(mass = solarMass * 5, gForceVector = Pair(0, 0), speedVector = Pair(0, 0),  position = Pair(0, 0), name = "BlackHole", radius = 0, temperature = 0)
+    val sunCB: CelestialBody = CelestialBody(mass = solarMass, gForceVector = Pair(0, 0), speedVector = Pair(0, 50000), position = Pair(blackHole.position.x + astronomicUnit * 5, blackHole.position.y + astronomicUnit * 5), name = "Sun", radius = 0, temperature = 0)
+    val earthCB: CelestialBody = CelestialBody(mass = earthMass, gForceVector = Pair(0, 0), speedVector = Pair(0, 29290), position = Pair(sun.position.x + astronomicUnit, sun.position.y + astronomicUnit), name = "Earth", radius = 0, temperature = 0)
+    val moonCB: CelestialBody = CelestialBody(mass = earthMass * 0.0123, gForceVector = Pair(0, 0), speedVector = Pair(0, 3683), position = Pair(earth.position.x + 384400, earth.position.y + 384400), name = "Moon", radius = 0, temperature = 0)
 
     Scenario("Two or more smaller entities") {
       Given("A set of entities")
