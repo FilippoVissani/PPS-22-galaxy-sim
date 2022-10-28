@@ -6,12 +6,15 @@ import physics.dynamics.GravitationLaws.astronomicUnit
 
 import java.awt.{BorderLayout, Dimension, Graphics, Graphics2D, GridBagConstraints, GridBagLayout, RenderingHints, Toolkit}
 import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
-import javax.swing.{JButton, JComboBox, JFrame, JPanel, JScrollPane, JTabbedPane, JTextArea, SwingUtilities}
+import javax.swing.{JButton, JComboBox, JFrame, JLabel, JPanel, JScrollPane, JTabbedPane, JTextArea, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.{Statistics, ViewLogger}
+import galaxy_sim.utils.Percentage
 import org.jfree.chart.ChartPanel
 import galaxy_sim.utils.LoggerActions
+
+import scala.annotation.tailrec
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
@@ -43,10 +46,8 @@ object SwingGUI:
     val loggerPanel: LoggerPanel = LoggerPanel(viewLogger)
     val loggerPanelContainer: JPanel = JPanel(GridBagLayout())
 
-    val pieChart: PieChart = PieChart("Celestial body types")
-
-    val statisticsPanel: StatisticsPanel = StatisticsPanel(pieChart, gbc.pie)
-    val statisticsPanelContainer: JPanel =JPanel(GridBagLayout())
+    val statisticsPanel: StatisticsPanel = StatisticsPanel()
+    val statisticsPanelContainer: JPanel = JPanel(GridBagLayout())
 
     val controlPanel: JPanel = JPanel()
     val startButton: JButton = JButton("Start Simulation")
@@ -89,9 +90,7 @@ object SwingGUI:
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
-        //Update the pie chart
-        pieChart.clearAllValues()
-        Statistics.numberOfCelestialBodiesForEachType(simulation.galaxy).filter(element => element._2 != 0).foreach(element => pieChart.setValue(element._1.toString, element._2))
+        statisticsPanel.update(simulation)
       })
   end SwingGUIImpl
 
@@ -139,7 +138,6 @@ object SwingGUI:
       def display(body: CelestialBody, description: LoggerActions): Unit = textArea.append(viewLogger.bodiesLogger(body, description))
 
   private class GridBagConstraintsBuilder:
-    val pie: GridBagConstraints = GridBagConstraints()
     val start: GridBagConstraints = GridBagConstraints()
     val stop: GridBagConstraints = GridBagConstraints()
     val infos: GridBagConstraints = GridBagConstraints()
@@ -147,37 +145,14 @@ object SwingGUI:
     infos.gridx = 1
     infos.gridy = 1
     infos.anchor = GridBagConstraints.CENTER
-    // Row 0 - Buttons
-    // Col 0
-    //gbc.fill = GridBagConstraints.HORIZONTAL
-    start.gridx = 0;
-    start.gridy = 0;
-    //gbc.insets = new Insets(5, 0, 0, 10);
-    start.anchor = GridBagConstraints.LINE_END
-    //    this.add(startButton, gbc);
 
-    // Col 1
-    //gbc.fill = GridBagConstraints.HORIZONTAL
+    start.gridx = 0
+    start.gridy = 0
+    start.anchor = GridBagConstraints.LINE_END
+
     stop.gridx = 1;
     stop.gridy = 0;
-    stop.anchor = GridBagConstraints.LINE_START;
-    //    this.add(stopButton, gbc);
-
-    // Row 1 - Chart
-    // Col 0
-    pie.fill = GridBagConstraints.HORIZONTAL
-    pie.gridwidth = 2;
-    pie.gridx = 0;
-    pie.gridy = 1;
-    //gbc.insets = new Insets(5, 0, 0, 10);
-    //gbc.anchor = GridBagConstraints.CENTER;
-
-  private class StatisticsPanel(pieChart: PieChart, gbc: GridBagConstraints) extends JPanel:
-    val pieChartPanel: ChartPanel = pieChart.wrapToPanel
-    pieChartPanel.setPreferredSize(Dimension(
-      25 * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
-      50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
-    this.add(pieChartPanel, gbc);
+    stop.anchor = GridBagConstraints.LINE_START
 
   private class SimulationPanel extends JPanel:
     var simulation: Option[Simulation] = Option.empty
