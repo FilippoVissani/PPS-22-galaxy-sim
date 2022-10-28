@@ -107,14 +107,16 @@ object CelestialBodyActor:
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
           val newCelestialBody = CollisionEngine.impactMany(celestialBody, others.toSeq)
-          if viewActorRef.nonEmpty then
-            viewActorRef.get ! LoggerMessage(newCelestialBody, Collided)
+          others.foreach(c => if CollisionEngine.collides(celestialBody, c) then
+            if viewActorRef.nonEmpty then
+              viewActorRef.get ! LoggerMessage((newCelestialBody, Option(c)), Collided)
+          )
           replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
           CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime, viewActorRef)
         }
         case Kill => {
           if viewActorRef.nonEmpty then
-            viewActorRef.get ! LoggerMessage(celestialBody, Died)
+            viewActorRef.get ! LoggerMessage((celestialBody, Option.empty), Died)
           Behaviors.stopped
         }
       )

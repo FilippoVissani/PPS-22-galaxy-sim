@@ -19,7 +19,7 @@ import scala.annotation.tailrec
 trait SwingGUI:
   def display(simulation: Simulation): Unit
   def updateInfos(): Unit
-  def updateLogger(body: CelestialBody, description: LoggerActions): Unit
+  def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
 
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int, viewLogger: ViewLogger): SwingGUI =
@@ -84,8 +84,8 @@ object SwingGUI:
     override def updateInfos(): Unit =
       SwingUtilities.invokeLater(() => informationPanel.display())
 
-    override def updateLogger(body: CelestialBody, description: LoggerActions): Unit =
-      SwingUtilities.invokeLater(() => loggerPanel.display(body, description))
+    override def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
+      SwingUtilities.invokeLater(() => loggerPanel.display(bodiesInvolved, description))
 
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
@@ -116,7 +116,7 @@ object SwingGUI:
             s"Position = (${body.get.position.x}, ${body.get.position.y})\n" +
             s"Speed = ${body.get.speedVector.y / 1000} km/s\n" +
             s"Mass = ${body.get.mass} kg\n " +
-            s"Temperature = ${body.get.temperature}\n " +
+            s"Temperature = ${body.get.temperature} °C\n" +
             s"Birth time = ${body.get.birthTime}\n\n")
 
       def display(): Unit =
@@ -135,7 +135,7 @@ object SwingGUI:
       val scrollPane: JScrollPane = JScrollPane(textArea)
       this.add(scrollPane)
 
-      def display(body: CelestialBody, description: LoggerActions): Unit = textArea.append(viewLogger.bodiesLogger(body, description))
+      def display(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit = textArea.append(viewLogger.bodiesLogger(bodiesInvolved, description))
 
   private class GridBagConstraintsBuilder:
     val start: GridBagConstraints = GridBagConstraints()

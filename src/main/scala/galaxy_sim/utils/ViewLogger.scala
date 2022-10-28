@@ -34,7 +34,7 @@ trait ViewLogger:
    * @param description
    * @return
    */
-  def bodiesLogger(body: CelestialBody, description: LoggerActions): String
+  def bodiesLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): String
   def bodyUpdated(celestialBody: CelestialBody): Unit
   def bodyDied(celestialBody: CelestialBody): Unit
   def getBodiesNames: List[String]
@@ -59,7 +59,10 @@ object ViewLogger:
 
     override def bodyInfos(bodyName: String): Option[CelestialBody] = galaxyList.find(b => b.name == bodyName)
 
-    override def bodiesLogger(body: CelestialBody, description: LoggerActions): String = s"${body.name} just ${description.toString.toUpperCase}\n"
+    override def bodiesLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): String =
+      val res = s"${bodiesInvolved._1.name} just ${description.toString.toUpperCase}\n"
+      if bodiesInvolved._2.isDefined then res + s" with ${bodiesInvolved._2.get.name}"
+      res
       /*description match
       case Collided => s"${body.name} ${Collided.toString.toUpperCase}\n"
       case Spawn => s"${bodiesInvolved._1.name.toUpperCase} just ${Spawn.toString.toUpperCase}\n"

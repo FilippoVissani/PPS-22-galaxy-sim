@@ -39,7 +39,7 @@ object ViewActor:
    * @param body pair of Celestial Bodies involved, the second one is Option
    * @param description    enum to describe what happened
    */
-  case class LoggerMessage(body: CelestialBody, description: LoggerActions) extends ViewActorCommand
+  case class LoggerMessage(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions) extends ViewActorCommand
 
   //todo
   case class UpdateBody(celestialBody: CelestialBody) extends ViewActorCommand
@@ -68,8 +68,8 @@ object ViewActor:
           view.display(simulation)
           Behaviors.same
         }
-        case LoggerMessage(body, description) => {
-          view.sendLogger(body, description)
+        case LoggerMessage(bodiesInvolved, description) => {
+          view.sendLogger(bodiesInvolved, description)
           Behaviors.same
         }
         case SetGalaxy(galaxy) => {

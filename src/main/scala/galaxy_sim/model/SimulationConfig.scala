@@ -14,6 +14,16 @@ object SimulationConfig:
   val deltaTime = daySec //40 //e-10
   val radiusScale = 1e4
 
+  val sun2: CelestialBody =
+    CelestialBody(mass = solarMass,
+      aphelionSpeed = 0,
+      gForceVector = Pair(0, 0),
+      speedVector = Pair(0, 50000),
+      position = Pair(bounds.rightBound / 2, bounds.bottomBound / 2),
+      name = "Sun",
+      radius = 695_508 * radiusScale,
+      temperature = 1100)
+
   val blackHole: CelestialBody =
     CelestialBody(mass = solarMass * 15,
       aphelionSpeed = 0,
@@ -40,7 +50,7 @@ object SimulationConfig:
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(1, 29290),
-      position = Pair(sun.position.x + astronomicUnit * 1.0167, sun.position.y),
+      position = Pair(sun2.position.x + astronomicUnit * 1.0167, sun2.position.y),
       name = "Earth",
       radius = 695_508 * radiusScale,
       temperature = 150)
@@ -61,7 +71,7 @@ object SimulationConfig:
       aphelionSpeed = 29290,
       gForceVector = Pair(0, 0),
       speedVector = Pair(-1, 29290),
-      position = Pair(sun.position.x - astronomicUnit * 1.0167, sun.position.y),
+      position = Pair(sun2.position.x - astronomicUnit * 1.0167, sun2.position.y),
       name = "Earth2",
       radius = 695_508 * radiusScale,
       temperature = 150)
