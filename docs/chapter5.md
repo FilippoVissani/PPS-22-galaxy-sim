@@ -3,17 +3,52 @@
 ## Programmazione funzionale
 ### For comprehension
 ### Higher-order functions
- Una High order function è una funzione che prende in input funzioni come parametri e/o restituisce funzioni come risultato. L'utilizzo di questo meccanismo nella programmazione funzionale permette di applicare in maniera semplice il _pattern Strategy_, oltre a rendere il codice riusabile.
+ Una Higher order function è una funzione che prende in input funzioni come parametri e/o restituisce funzioni come risultato. L'utilizzo di questo meccanismo nella programmazione funzionale permette di applicare in maniera semplice il _pattern Strategy_, oltre a rendere il codice riusabile.
 
- Sono state utilizzate in diverse parti del progetto, un esempio di high order function è il seguente:
+ Sono state utilizzate in diverse parti del progetto, un esempio di higher order function è il seguente:
  ```scala
-def updateTemperature(f: Temperature => Temperature): CelestialBody = 
-    celestialBody.copy(temperature = f(celestialBody.temperature))
+def updateTemperature(f: Temperature => Temperature): CelestialBody =
+  val normalizer = normalize(minTemp, maxTemp)
+  celestialBody.copy(temperature = normalizer(f(celestialBody.temperature)))
  ```
- In questa funzione viene applicata alla temperatura del celestial body la funzione _f_ presa come parametro in input.
+`updateTemperature` è una funzione alla quale viene iniettata la strategia da utilizzare per modificare la temperatura, sotto forma di funzione _f_.
+
 ### Pattern matching
 ### Option
 ### Type members
+
+### Given conversion
+Il meccanismo delle given conversion permette di applicare in maniera semplice e immediata il _pattern adapter_ in Scala. In questo progetto sono state utilizzate nella classe `Scala2P` per migliorare l'integrazione con Prolog, come riportato di seguito:
+```scala
+given Conversion[String, Term] = Term.createTerm(_)
+given Conversion[String, Theory] = Theory.parseLazilyWithStandardOperators(_)
+given Conversion[Term, CelestialBodyType] = _.toString match
+  case "massiveStar" => MassiveStar
+  case "redSuperGiant" => RedSuperGiant
+  case "supernova" => Supernova
+  case "blackHole" => BlackHole
+  case "planet" => Planet
+  case "asteroid" => Asteroid
+  case "interstellarCloud" => InterstellarCloud
+```
+
+### Currying
+In scala è possibile sfruttare il meccanismo di currying per convertire una funzione a più argomenti in una sequenza di funzioni che prendono un solo argomento. Ogni funzione ritorna un'altra funzione che consuma l'argomento successivo.
+
+Esempio di funzione curried in questo progetto:
+```scala
+private def normalize(minBound: Double, maxBound: Double)(value: Double): Double = ...
+```
+
+Utilizzo della funzione curried con applicazione parziale:
+```scala
+def updateMass(f: Mass => Mass): CelestialBody =
+  val normalizer = normalize(minMass, maxMass)
+  celestialBody.copy(mass = normalizer(f(celestialBody.mass)))
+```
+
+Questo meccanismo favorisce il riuso di codice e quindi l'applicazione del principio DRY, in quanto permette di applicare parzialmente la funzione per poi utilizzarla in più punti del codice.
+
 ### Contextual programming
 Il concetto di `contesto` di una funzione si riferisce a quegli argomenti che vengono usati per influenzare il modo in cui la funzione produce il suo output a partire dagli input. Questa tipologia di modellazione delle funzioni è facilmente implementabile in Scala attraverso il meccanismo delle Given instance: si possono definire dei parametri di contesto di una funzione con la keyword `using`. Quando la funzione verrà invocata, il compilatore si occuperà di cercare nello scope corrente dei parametri di contesto appropriati definiti con la keyword `given`. Se la ricerca ha successo, la funzione utilizzerà tali parametri senza bisogno che vengano specificati come input dall'utente.
 Un esempio di funzione che fa uso di given instances è la seguente:
@@ -115,7 +150,7 @@ La seguente tabella riporta i meccanismi avanzati e/o i pattern utilizzati nelle
 <tr><td>Scala2P</td><td>- Implicit conversions</td></tr>
 <tr><td>EntityIdentifier</td><td>- Singleton</td></tr>
 <tr><td>Lifecycle</td><td>- Contextual programming <br /> - Type classes <br /> - Pattern matching <br /> - Infix extension method</td></tr>
-<tr><td>OperationsOnCelestialBody</td><td>- Extension method <br /> - Higher-order functions</td></tr>
+<tr><td>OperationsOnCelestialBody</td><td>- Extension method <br /> - Higher-order functions <br /> - Curried function</td></tr>
 <tr><td>Statistics</td><td>- Type alias <br /> - Higher-order functions</td></tr>
 <tr><td>PieChart</td><td>- Facade <br /> - Factory</td></tr>
 <tr><td>StatisticsPanel</td><td>- Tail recursive function</td></tr>

@@ -128,12 +128,8 @@ Vengono offerte dunque due API: `PhysicsFormulas` indipendente e `GravitationLaw
 
 ## Pattern utilizzati
 ### Strategy
-Il pattern Strategy consiste nell'isolare un algoritmo o una strategia al di fuori di una classe, per fare in modo che quest'ultima possa variare dinamicamente il suo comportamento. In Scala è applicato in maniera semplice ed efficace con l'uso delle high order functions, un esempio è il seguente: 
-```scala
-def updateMass(f: Mass => Mass): CelestialBody = 
-    celestialBody.copy(mass = f(celestialBody.mass))
-```
-`updateMass` è una funzione alla quale viene iniettata la strategia da utilizzare per modificare la massa.
+Il pattern Strategy consiste nell'isolare un algoritmo o una strategia al di fuori di una classe, per fare in modo che quest'ultima possa variare dinamicamente il suo comportamento. In Scala è applicato in maniera semplice ed efficace con l'uso delle `higher-order functions`.
+
 ### Factory
 Il pattern Factory è un design pattern che consiste nel separare le logiche di creazione di un oggetto o dato dalla sua definizione. In scala, questo design pattern è facilmente
 implementabile attraverso l'uso del Companion Object: un particolare oggetto singleton che può fungere da contenitore di varie funzioni riguardanti un certo tipo di dato, tra cui
@@ -190,21 +186,6 @@ object OperationsOnCelestialBody:
             celestialBody.copy(temperature = f(celestialBody.temperature))
 ```
 In questo caso è stato creato un oggetto `OperationsOnCelestialBody` il quale, se importato nella classe desiderata, permette di utilizzare i metodi `updateMass` e `updateTemperature` come se fossero dei metodi definiti nella classe `CelestialBody`.
-
-### Adapter
-Il pattern Adapter è facilmente implementabile in Scala attraverso il meccanismo delle _given conversion_. In questo progetto sono state utilizzate nella classe `Scala2P` per migliorare l'integrazione con Prolog, come riportato di seguito:
-```scala
-given Conversion[String, Term] = Term.createTerm(_)
-given Conversion[String, Theory] = Theory.parseLazilyWithStandardOperators(_)
-given Conversion[Term, CelestialBodyType] = _.toString match
-  case "massiveStar" => MassiveStar
-  case "redSuperGiant" => RedSuperGiant
-  case "supernova" => Supernova
-  case "blackHole" => BlackHole
-  case "planet" => Planet
-  case "asteroid" => Asteroid
-  case "interstellarCloud" => InterstellarCloud
-```
 
 ### Type classes
 La Type Class è una tipologia di classe astratta e parametrizzata sul tipo, che permette di aggiungere un dato comportamento ad un qualunque tipo di dato senza utilizzare
