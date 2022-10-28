@@ -44,6 +44,17 @@ Di seguito il diagramma delle classi coinvolte con il ciclo di vita:
 
 ## View
 
+La _View_ è composta da un trait (`View`) che espone le API e ha una sua implementazione (`ViewImpl`).
+L'implementazione effettiva fa uso di una classe apposita che definisce l'interfaccia grafica
+facendo uso della libreria Swing (`SwingGUI`).
+Per permettere l'interazione con gli altri componenti, che sono incapsulati dentro gli attori
+viene introdotto il `ViewActor`.
+Il trait `View` quindi si frappone tra `SwingGUI` e `ViewActor`, evitando di aggiungere dipendenze di Swing in `ViewActor`
+e di introdurre la programmazione ad attori nell'interfaccia grafica effettiva.
+In altre parole, `SwingGUI` e `ViewActor` interagiscono tra loro indirettamente, sfruttando il trait `View`.
+
+![View class diagram](./images/view_class_diagram.svg)
+
 ## Interazioni tra attori
 
 Sono presenti quattro tipi di attori, che comunicano tra loro tramite scambio di messaggi.

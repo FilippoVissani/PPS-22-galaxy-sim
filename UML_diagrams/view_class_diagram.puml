@@ -3,16 +3,19 @@
 
 package galaxy_sim.view{
     class View << trait >>
+    class ViewImpl extends View
     class SwingGUI
 }
 
 package galaxy_sim.actors{
     class ViewActor << object >>
+    class ViewActorCommand << trait >>
 }
 
-View --> SwingGUI : use
+ViewActor ..> ViewActorCommand
+ViewImpl --> SwingGUI : use
 SwingGUI --> View : use
-View --> ViewActor : use
+ViewImpl --> ViewActorCommand : use
 ViewActor --> View : use
 
 @enduml

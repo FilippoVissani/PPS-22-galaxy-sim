@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" height="407px" preserveAspectRatio="none" style="width:472px;height:407px;background:#FFFFFF;" version="1.1" viewBox="0 0 472 407" width="472px" zoomAndPan="magnify"><defs/><g><!--MD5=[ce459f196581b481b0e25e89995254c2]
+cluster galaxy_sim.view--><g id="cluster_galaxy_sim.view"><path d="M8.5,6 L137.5,6 A3.75,3.75 0 0 1 140,8.5 L147,28.2969 L228.5,28.2969 A2.5,2.5 0 0 1 231,30.7969 L231,393.5 A2.5,2.5 0 0 1 228.5,396 L8.5,396 A2.5,2.5 0 0 1 6,393.5 L6,8.5 A2.5,2.5 0 0 1 8.5,6 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="6" x2="147" y1="28.2969" y2="28.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="128" x="10" y="20.9951">galaxy_sim.view</text></g><!--MD5=[6016b25235c3d762f2fa022dcd5cc380]
+cluster galaxy_sim.actors--><g id="cluster_galaxy_sim.actors"><path d="M257.5,160 L398.5,160 A3.75,3.75 0 0 1 401,162.5 L408,182.2969 L462.5,182.2969 A2.5,2.5 0 0 1 465,184.7969 L465,397.5 A2.5,2.5 0 0 1 462.5,400 L257.5,400 A2.5,2.5 0 0 1 255,397.5 L255,162.5 A2.5,2.5 0 0 1 257.5,160 " fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="255" x2="408" y1="182.2969" y2="182.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="140" x="259" y="174.9951">galaxy_sim.actors</text></g><!--MD5=[c045e12321b83266d36d22b9096c24ea]
+class View--><g id="elem_View"><rect codeLine="4" fill="#F1F1F1" height="56.2656" id="View" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="67" x="132.5" y="41"/><ellipse cx="147.5" cy="61.1328" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M151.7344,56.0391 L151.7344,58.5547 Q150.4844,57.3984 149.5625,57.0234 Q148.6563,56.6484 147.625,56.6484 Q145.625,56.6484 144.5625,57.8672 Q143.5,59.0703 143.5,61.4297 Q143.5,63.7891 144.5625,65.0078 Q145.625,66.2109 147.625,66.2109 Q148.6563,66.2109 149.5625,65.8359 Q150.4844,65.4609 151.7344,64.3047 L151.7344,66.8047 Q150.6875,67.5078 149.6719,67.8203 Q148.6719,68.1172 147.5156,68.1172 Q144.5938,68.1172 142.8906,66.3203 Q141.2031,64.5234 141.2031,61.4297 Q141.2031,58.3359 142.8906,56.5391 Q144.5938,54.7266 147.5156,54.7266 Q148.6875,54.7266 149.6875,55.0391 Q150.7031,55.3359 151.7344,56.0391 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39" x="159.5" y="57.1387">«trait»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="34" x="162" y="72.9639">View</text><line style="stroke:#181818;stroke-width:0.5;" x1="133.5" x2="198.5" y1="81.2656" y2="81.2656"/><line style="stroke:#181818;stroke-width:0.5;" x1="133.5" x2="198.5" y1="89.2656" y2="89.2656"/></g><!--MD5=[04c2c032bd919a229e1359c127dd70fc]
+class ViewImpl--><g id="elem_ViewImpl"><rect codeLine="5" fill="#F1F1F1" height="48" id="ViewImpl" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="97" x="117.5" y="199"/><ellipse cx="132.5" cy="215" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M136.7344,209.9063 L136.7344,212.4219 Q135.4844,211.2656 134.5625,210.8906 Q133.6563,210.5156 132.625,210.5156 Q130.625,210.5156 129.5625,211.7344 Q128.5,212.9375 128.5,215.2969 Q128.5,217.6563 129.5625,218.875 Q130.625,220.0781 132.625,220.0781 Q133.6563,220.0781 134.5625,219.7031 Q135.4844,219.3281 136.7344,218.1719 L136.7344,220.6719 Q135.6875,221.375 134.6719,221.6875 Q133.6719,221.9844 132.5156,221.9844 Q129.5938,221.9844 127.8906,220.1875 Q126.2031,218.3906 126.2031,215.2969 Q126.2031,212.2031 127.8906,210.4063 Q129.5938,208.5938 132.5156,208.5938 Q133.6875,208.5938 134.6875,208.9063 Q135.7031,209.2031 136.7344,209.9063 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="65" x="146.5" y="219.8467">ViewImpl</text><line style="stroke:#181818;stroke-width:0.5;" x1="118.5" x2="213.5" y1="231" y2="231"/><line style="stroke:#181818;stroke-width:0.5;" x1="118.5" x2="213.5" y1="239" y2="239"/></g><!--MD5=[a37cd4905b561e92e231b6b626399afc]
+class SwingGUI--><g id="elem_SwingGUI"><rect codeLine="6" fill="#F1F1F1" height="48" id="SwingGUI" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="99" x="69.5" y="332"/><ellipse cx="84.5" cy="348" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M88.7344,342.9063 L88.7344,345.4219 Q87.4844,344.2656 86.5625,343.8906 Q85.6563,343.5156 84.625,343.5156 Q82.625,343.5156 81.5625,344.7344 Q80.5,345.9375 80.5,348.2969 Q80.5,350.6563 81.5625,351.875 Q82.625,353.0781 84.625,353.0781 Q85.6563,353.0781 86.5625,352.7031 Q87.4844,352.3281 88.7344,351.1719 L88.7344,353.6719 Q87.6875,354.375 86.6719,354.6875 Q85.6719,354.9844 84.5156,354.9844 Q81.5938,354.9844 79.8906,353.1875 Q78.2031,351.3906 78.2031,348.2969 Q78.2031,345.2031 79.8906,343.4063 Q81.5938,341.5938 84.5156,341.5938 Q85.6875,341.5938 86.6875,341.9063 Q87.7031,342.2031 88.7344,342.9063 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="67" x="98.5" y="352.8467">SwingGUI</text><line style="stroke:#181818;stroke-width:0.5;" x1="70.5" x2="167.5" y1="364" y2="364"/><line style="stroke:#181818;stroke-width:0.5;" x1="70.5" x2="167.5" y1="372" y2="372"/></g><!--MD5=[c0b63fc4a3fcfad45391963a5f65a156]
+class ViewActor--><g id="elem_ViewActor"><rect codeLine="10" fill="#F1F1F1" height="56.2656" id="ViewActor" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="104" x="289" y="195"/><ellipse cx="304" cy="215.1328" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M308.2344,210.0391 L308.2344,212.5547 Q306.9844,211.3984 306.0625,211.0234 Q305.1563,210.6484 304.125,210.6484 Q302.125,210.6484 301.0625,211.8672 Q300,213.0703 300,215.4297 Q300,217.7891 301.0625,219.0078 Q302.125,220.2109 304.125,220.2109 Q305.1563,220.2109 306.0625,219.8359 Q306.9844,219.4609 308.2344,218.3047 L308.2344,220.8047 Q307.1875,221.5078 306.1719,221.8203 Q305.1719,222.1172 304.0156,222.1172 Q301.0938,222.1172 299.3906,220.3203 Q297.7031,218.5234 297.7031,215.4297 Q297.7031,212.3359 299.3906,210.5391 Q301.0938,208.7266 304.0156,208.7266 Q305.1875,208.7266 306.1875,209.0391 Q307.2031,209.3359 308.2344,210.0391 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="51" x="328.5" y="211.1387">«object»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="72" x="318" y="226.9639">ViewActor</text><line style="stroke:#181818;stroke-width:0.5;" x1="290" x2="392" y1="235.2656" y2="235.2656"/><line style="stroke:#181818;stroke-width:0.5;" x1="290" x2="392" y1="243.2656" y2="243.2656"/></g><!--MD5=[4e4e72e0ef29f5bed22cd15f6258c70d]
+class ViewActorCommand--><g id="elem_ViewActorCommand"><rect codeLine="11" fill="#F1F1F1" height="56.2656" id="ViewActorCommand" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="178" x="271" y="328"/><ellipse cx="286" cy="348.1328" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1.0;"/><path d="M290.2344,343.0391 L290.2344,345.5547 Q288.9844,344.3984 288.0625,344.0234 Q287.1563,343.6484 286.125,343.6484 Q284.125,343.6484 283.0625,344.8672 Q282,346.0703 282,348.4297 Q282,350.7891 283.0625,352.0078 Q284.125,353.2109 286.125,353.2109 Q287.1563,353.2109 288.0625,352.8359 Q288.9844,352.4609 290.2344,351.3047 L290.2344,353.8047 Q289.1875,354.5078 288.1719,354.8203 Q287.1719,355.1172 286.0156,355.1172 Q283.0938,355.1172 281.3906,353.3203 Q279.7031,351.5234 279.7031,348.4297 Q279.7031,345.3359 281.3906,343.5391 Q283.0938,341.7266 286.0156,341.7266 Q287.1875,341.7266 288.1875,342.0391 Q289.2031,342.3359 290.2344,343.0391 Z " fill="#000000"/><text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="39" x="353.5" y="344.1387">«trait»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146" x="300" y="359.9639">ViewActorCommand</text><line style="stroke:#181818;stroke-width:0.5;" x1="272" x2="448" y1="368.2656" y2="368.2656"/><line style="stroke:#181818;stroke-width:0.5;" x1="272" x2="448" y1="376.2656" y2="376.2656"/></g><!--MD5=[9350844bd132e7d3e0366bf5f561a948]
+reverse link View to ViewImpl--><g id="link_View_ViewImpl"><path d="M166,117.29 C166,144.29 166,176.96 166,198.55 " fill="none" id="View-backto-ViewImpl" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="none" points="159,117.17,166,97.17,173,117.17,159,117.17" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[c034f89de1b54242c831aa0a1319f4d1]
+link ViewActor to ViewActorCommand--><g id="link_ViewActor_ViewActorCommand"><path codeLine="14" d="M344.94,251.14 C347.96,271.96 352.13,300.75 355.32,322.74 " fill="none" id="ViewActor-to-ViewActorCommand" style="stroke:#181818;stroke-width:1.0;stroke-dasharray:7.0,7.0;"/><polygon fill="#181818" points="356.07,327.89,358.7417,318.4104,355.3549,322.9414,350.8239,319.5546,356.07,327.89" style="stroke:#181818;stroke-width:1.0;"/></g><!--MD5=[1b5af7f27f0286afad7bf34cd3ae1558]
+link ViewImpl to SwingGUI--><g id="link_ViewImpl_SwingGUI"><path codeLine="15" d="M148.99,247.06 C142.41,257.04 135.41,269.13 131,281 C125.59,295.56 122.62,312.63 120.98,326.7 " fill="none" id="ViewImpl-to-SwingGUI" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="120.44,331.74,125.3691,323.2133,120.9686,326.768,117.414,322.3675,120.44,331.74" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="132" y="294.0669">use</text></g><!--MD5=[a4bf49af03ac8cd98a9a5445ea7b3e26]
+link SwingGUI to View--><g id="link_SwingGUI_View"><path codeLine="16" d="M104.99,331.82 C83.51,293.1 47.66,213.45 75,152 C85.85,127.61 107.94,107.43 127.63,93.19 " fill="none" id="SwingGUI-to-View" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="132.05,90.06,122.3911,91.9849,127.966,92.9445,127.0063,98.5194,132.05,90.06" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="76" y="227.5669">use</text></g><!--MD5=[8caf79a0579584259f3e6f26e6c2fc2c]
+link ViewImpl to ViewActorCommand--><g id="link_ViewImpl_ViewActorCommand"><path codeLine="17" d="M200.24,247.12 C232.33,268.79 280.48,301.3 315.53,324.97 " fill="none" id="ViewImpl-to-ViewActorCommand" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="319.73,327.81,314.5132,319.4563,315.5874,325.0102,310.0335,326.0844,319.73,327.81" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="275" y="294.0669">use</text></g><!--MD5=[4730c0c4be91537dd32bf02fa0ca734e]
+link ViewActor to View--><g id="link_ViewActor_View"><path codeLine="18" d="M309.69,194.8 C279.17,168.29 232.83,128.05 201.08,100.47 " fill="none" id="ViewActor-to-View" style="stroke:#181818;stroke-width:1.0;"/><polygon fill="#181818" points="197.29,97.17,201.4484,106.0979,201.06,100.4544,206.7035,100.066,197.29,97.17" style="stroke:#181818;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="23" x="249" y="140.0669">use</text></g><!--MD5=[c111900c12a092565e0167ba3dd6056c]
+@startuml
+'https://plantuml.com/class-diagram
+
+package galaxy_sim.view{
+    class View << trait >>
+    class ViewImpl extends View
+    class SwingGUI
+}
+
+package galaxy_sim.actors{
+    class ViewActor << object >>
+    class ViewActorCommand << trait >>
+}
+
+ViewActor ..> ViewActorCommand
+ViewImpl - -> SwingGUI : use
+SwingGUI - -> View : use
+ViewImpl - -> ViewActorCommand : use
+ViewActor - -> View : use
+
+@enduml
+
+@startuml
+
+package galaxy_sim.view{
+    class View << trait >>
+    class ViewImpl extends View
+    class SwingGUI
+}
+
+package galaxy_sim.actors{
+    class ViewActor << object >>
+    class ViewActorCommand << trait >>
+}
+
+ViewActor ..> ViewActorCommand
+ViewImpl - -> SwingGUI : use
+SwingGUI - -> View : use
+ViewImpl - -> ViewActorCommand : use
+ViewActor - -> View : use
+
+@enduml
+
+PlantUML version 1.2022.12(Sun Oct 23 20:12:26 CEST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: US
+--></g></svg>
