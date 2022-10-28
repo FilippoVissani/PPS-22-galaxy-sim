@@ -11,7 +11,6 @@ class CelestialBodyTest extends AnyFunSuite:
 
   test("Body operations") {
     """CelestialBody(mass = 750,
-      |    aphelionSpeed = 20,
       |    gForceVector = Pair(0, 0.98),
       |    speedVector = Pair(0, 0),
       |    position = Pair(500, 500),

@@ -116,8 +116,7 @@ object SwingGUI:
             s"Position = (${body.get.position.x}, ${body.get.position.y})\n" +
             s"Speed = ${body.get.speedVector.y / 1000} km/s\n" +
             s"Mass = ${body.get.mass} kg\n " +
-            s"Temperature = ${body.get.temperature} °C\n" +
-            s"Birth time = ${body.get.birthTime}\n\n")
+            s"Temperature = ${body.get.temperature} °C\n\n")
 
       def display(): Unit =
         this.data = Some(viewLogger.getBodiesNames)

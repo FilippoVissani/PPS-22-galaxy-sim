@@ -19,25 +19,22 @@ object CelestialBodyAliases:
 /** Definition of celestial body.
  *  
  *  @param mass
- *  @param aphelionSpeed
  *  @param gForceVector
  *  @param speedVector
  *  @param position
  *  @param name
- *  @param birthTime
  *  @param radius
  *  @param temperature
  */
-case class CelestialBody(override val mass: Mass,
-                         override val aphelionSpeed: Speed,
-                         override val gForceVector: GravityForceVector,
-                         override val speedVector: SpeedVector,
-                         override val position: Position,
-                         name: String,
-                         birthTime: Double = 0,
-                         radius: Radius,
-                         temperature: Temperature,
-                         ) extends CircularEntity
+case class CelestialBody(
+  override val mass: Mass,
+  override val gForceVector: GravityForceVector,
+  override val speedVector: SpeedVector,
+  override val position: Position,
+  name: String,
+  radius: Radius,
+  temperature: Temperature,
+  ) extends CircularEntity
 
 object CelestialBody:
   def generateSystem(b: CelestialBody, maxRand: Int = 10): List[CelestialBody] =
