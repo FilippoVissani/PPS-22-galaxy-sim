@@ -1,5 +1,5 @@
 # Design di dettaglio
-
+In questa sezione, si mostrano le scelte di design più critiche circa l'organizzazione della struttura del sistema e dei suoi componenti.
 ## Model
 
 ### Simulazione

@@ -1,5 +1,5 @@
 # Implementazione
-
+In questa sezione, si chiariscono i meccanismi e le tecnologie impiegati per l'implementazione delle funzionalità del sistema.
 ## Programmazione funzionale
 ### Recursion
 Il concetto di ricorsione si riferisce ad un metodo di risoluzione di un problema computazionale, a partire dalle soluzioni di istanze più piccole dello stesso problema. Nella programmazione funzionale si realizza questo pattern risolutivo attraverso la definizione di funzioni che si richiamano da sole nel proprio codice, come nel seguente esempio:
@@ -173,7 +173,7 @@ Sequenza dei messaggi utilizzati per aggiornare la _View_:
 ![Actor view update sequence](./images/actors_view_update_sequence.svg)
 
 ## Sezioni personali
-
+In questa sotto sezione, ogni membro del team spiegherà brevemente in cosa è consistito il suo contributo all'interno del team di sviluppo, con eventuali note riguardanti l'implementazione del proprio lavoro.
 ### Barzi Eddie
 Inizialmente mi sono occupato di gestire il ciclo di vita delle entità, sfruttando Prolog per l'identificazione delle stesse. Le classi relative a questo lavoro sono le seguenti:
 - `Scala2P`

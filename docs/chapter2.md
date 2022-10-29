@@ -1,6 +1,7 @@
 # Requisiti
 
 ## Requisiti di business
+L'obiettivo del progetto è quello di realizzare una simulazione che rappresenti l'evoluzione di una galassia nel corso del tempo. In particolare:
 <table>
 <tr><th>ID/Numero</th><th>Testo del requisito</th></tr>
 <tr><td>1.1</td><td>La simulazione deve permettere di visualizzare l'evoluzione di una galassia, dove sono presenti le seguenti entità: stelle, pianeti, asteroidi e nuvole di gas.</td></tr>
