@@ -1,15 +1,14 @@
 package galaxy_sim.view
 
-import galaxy_sim.utils.ViewLogger
+import galaxy_sim.model.CelestialBody
 
 import java.awt.{BorderLayout, Dimension, Toolkit}
-import java.awt.event.{ActionListener, ActionEvent}
+import java.awt.event.{ActionEvent, ActionListener}
 import javax.swing.{JComboBox, JPanel, JTextArea}
 
-class InformationPanel(viewLogger: ViewLogger) extends JPanel, ActionListener :
-  var data: Option[List[String]] = Option.empty
+class InformationPanel(view: View) extends JPanel, ActionListener :
   val dropdown: JComboBox[String] = JComboBox()
-  val textArea: JTextArea = JTextArea()
+  val textArea: JTextArea = JTextArea("")
   dropdown.addActionListener(this)
   dropdown.setEditable(false)
   textArea.setEditable(false)
@@ -22,12 +21,17 @@ class InformationPanel(viewLogger: ViewLogger) extends JPanel, ActionListener :
 
   override def actionPerformed(e: ActionEvent): Unit =
     val cb: JComboBox[String] = e.getSource.asInstanceOf[JComboBox[String]]
-    val body = viewLogger.bodyInfos(cb.getSelectedItem.asInstanceOf[String])
-    textArea.setText(body)
+    view.getBodyInfo(cb.getSelectedItem.asInstanceOf[String])
+//    val body = viewLogger.bodyInfos(cb.getSelectedItem.asInstanceOf[String])
+//    textArea.setText(body)
 
-  def display(): Unit =
-    this.data = Some(viewLogger.getBodiesNames)
-    textArea.setText("")
-    if data.isDefined then
-      dropdown.removeAllItems()
-      data.get.foreach(d => dropdown.addItem(d))
+  def setDropdown(name: String): Unit =
+//    dropdown.removeAllItems()
+    dropdown.addItem(name)
+
+  def display(bodyInfo: CelestialBody): Unit =
+    textArea.setText(s"Name: ${bodyInfo.name.toUpperCase}\n" +
+      s"Position: (${bodyInfo.position.x.toString.substring(0, 4)} , ${bodyInfo.position.y.toString.substring(0, 4)})\n" +
+      s"Speed: ${bodyInfo.speedVector.y / 1000} Km/s\n" +
+      s"Mass = ${bodyInfo.mass} kg\n" +
+      s"Temperature = ${bodyInfo.temperature.toString.substring(0, 4)} °C\n\n")

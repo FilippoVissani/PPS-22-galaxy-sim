@@ -9,25 +9,25 @@ import java.awt.event.{ActionEvent, ActionListener, WindowAdapter, WindowEvent}
 import javax.swing.{JButton, JComboBox, JFrame, JLabel, JPanel, JScrollPane, JTabbedPane, JTextArea, SwingUtilities}
 import galaxy_sim.model.CelestialBodyType
 import galaxy_sim.model.CelestialBodyType.*
-import galaxy_sim.utils.{Statistics, ViewLogger}
+import galaxy_sim.utils.Statistics
 import galaxy_sim.utils.Percentage
 import org.jfree.chart.ChartPanel
-import galaxy_sim.utils.LoggerActions
+import galaxy_sim.actors.LoggerActions
 
 trait SwingGUI:
   def display(simulation: Simulation): Unit
-  def updateInfos(): Unit
-  def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
+  def updateNames(name: String): Unit
+  def updateInfos(bodyInfo: CelestialBody): Unit
+  def updateLogger(loggerText: String): Unit
 
 object SwingGUI:
-  def apply(view: View, windowWidth: Int, windowHeight: Int, viewLogger: ViewLogger): SwingGUI =
-    SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int, viewLogger: ViewLogger)
+  def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
+    SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int)
 
 
   private class SwingGUIImpl(view: View,
                              windowWidth: Int,
-                             windowHeight: Int,
-                             viewLogger: ViewLogger) extends SwingGUI:
+                             windowHeight: Int) extends SwingGUI:
     val frameSize: Dimension = Dimension(
       windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100
@@ -38,9 +38,9 @@ object SwingGUI:
 
     val simulationPanel: SimulationPanel = SimulationPanel()
     val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
-    val informationPanel: InformationPanel = InformationPanel(viewLogger)
+    val informationPanel: InformationPanel = InformationPanel(view)
     val informationPanelContainer: JPanel = JPanel(GridBagLayout())
-    val loggerPanel: LoggerPanel = LoggerPanel(viewLogger)
+    val loggerPanel: LoggerPanel = LoggerPanel()
     val loggerPanelContainer: JPanel = JPanel(GridBagLayout())
 
     val statisticsPanel: StatisticsPanel = StatisticsPanel()
@@ -78,9 +78,11 @@ object SwingGUI:
     mainFrame.add(tp, BorderLayout.EAST)
     mainFrame.setVisible(true)
 
-    override def updateInfos(): Unit = SwingUtilities.invokeLater(() => informationPanel.display())
+    override def updateInfos(bodyInfo: CelestialBody): Unit = SwingUtilities.invokeLater(() => informationPanel.display(bodyInfo))
 
-    override def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit = SwingUtilities.invokeLater(() => loggerPanel.display(bodiesInvolved, description))
+    override def updateLogger(loggerText: String): Unit = SwingUtilities.invokeLater(() => loggerPanel.display(loggerText))
+
+    override def updateNames(name: String): Unit = SwingUtilities.invokeLater(() => informationPanel.setDropdown(name))
 
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
