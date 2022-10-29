@@ -51,7 +51,8 @@ All'interno del progetto è stata utilizzata ad esempio nella classe `EntityRefe
 ```
 Si può notarne l'utilizzo anche nella funzione ricorsiva `check()` in quanto prende come parametro un riferimento temporaneo, che può appunto essere assente.
 
-### Type members
+### Type alias
+
 
 ### Given conversion
 Il meccanismo delle given conversion permette di applicare in maniera semplice e immediata il _pattern adapter_ in Scala. In questo progetto sono state utilizzate nella classe `Scala2P` per migliorare l'integrazione con Prolog, come riportato di seguito:

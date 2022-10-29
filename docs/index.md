@@ -8,5 +8,4 @@
 4. [Design architetturale](chapter3.md)
 5. [Design di dettaglio](chapter4.md)
 6. [Implementazione](chapter5.md)
-7. [Retrospettiva](chapter6.md)
-8. [Sviluppi futuri](chapter7.md)
+7. [Sviluppi futuri](chapter6.md)
