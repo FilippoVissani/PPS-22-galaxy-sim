@@ -45,6 +45,9 @@ Se due entità collidono, c'è un aumento di massa di una e la disgregazione del
 <tr><td>3.9</td><td>
 L'universo della simulazione è toroidale.
 </td></tr>
+ <tr><td>3.10</td><td>
+Deve essere possibile per l'utente stoppare la simulazione in qualsiasi momento senza dover terminare l'applicativo.
+</td></tr>
 </table>
 
 ## Requisiti non funzionali
