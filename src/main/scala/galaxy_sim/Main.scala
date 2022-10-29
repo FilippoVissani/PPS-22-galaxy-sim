@@ -16,9 +16,13 @@ object RootActor:
 
   def apply(): Behavior[RootActorCommand] =
     Behaviors.setup[RootActorCommand](ctx =>
+/*
+MassiveStar -> Set(body01),
+*/
       val galaxy = emptyGalaxy ++ Map(
-        MassiveStar -> Set(sun),
-        Planet -> Set(earth, earth2),
+        BlackHole -> Set(blackHole),
+        Planet -> Set(body02, body03, body04, body05, body06, body07, body08, body09, body10),
+        InterstellarCloud -> groupOFInterstellarClouds(100)
       )
       val celestialBodyActors = galaxy
       .map((k, v) => (k, v.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, k, bounds, deltaTime)))))
