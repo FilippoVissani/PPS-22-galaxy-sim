@@ -1,9 +1,10 @@
 package galaxy_sim.view
 
 import akka.actor.typed.ActorRef
-import galaxy_sim.actors.ViewActor.{StartPressed, StopPressed, ViewActorCommand}
+import galaxy_sim.actors.LoggerActions
+import galaxy_sim.actors.ViewActor.{GetBodyInfo, SetBodyInfo, StartPressed, StopPressed, ViewActorCommand}
 import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Simulation}
-import galaxy_sim.utils.{LoggerActions, ViewLogger}
+import galaxy_sim.actors.LoggerActions.*
 
 /** Defines view of the simulation. */
 trait View:
@@ -17,16 +18,11 @@ trait View:
   def display(simulation: Simulation): Unit
 
   /**
-   * Called to update the infos of the bodies
-   */
-  def updateInfos(): Unit //tmpCelestialBodies: Map[CelestialBodyType, Set[CelestialBody]]
-
-  /**
    * Called to update the logger shown in the GUI
    * @param bodiesInvolved
    * @param description
    */
-  def sendLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
+  def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit
 
   /** Called when start button is pressed.
    *
@@ -41,16 +37,23 @@ trait View:
   def stop(): Unit
 
   /**
-   * Called to set the entities' infos of the galaxy
-   * @param galaxy
+   * Send the body info to the gui
+   * @param celestialBody body information
    */
-  def setGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]): Unit
+  def showBodyInfo(celestialBody: CelestialBody): Unit
+
+  /**
+   * Send a new name to add to the dropdown to the gui
+   * @param bodyName the name to add
+   */
+  def updateNames(bodyName: String): Unit
 
   /**
    *
-   * @param celestialBody
-   */ //todo
-  def updateBody(celestialBody: CelestialBody): Unit
+   * @param bodyName
+   */
+  def getBodyInfo(bodyName: String): Unit
+
 /** Factory for View. */
 object View:
 
@@ -64,20 +67,20 @@ object View:
     ViewImpl(viewActor, windowWidth, windowHeight)
 
   private class ViewImpl(viewActor: ActorRef[ViewActorCommand], windowWidth: Int, windowHeight: Int) extends View:
-    val viewLogger: ViewLogger = ViewLogger()
-    val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight, viewLogger)
+    val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight)
 
     override def display(simulation: Simulation): Unit = gui.display(simulation)
 
-    override def setGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]): Unit = viewLogger.simulationGalaxy(galaxy)
+    override def updateNames(bodyName: String): Unit = gui.updateNames(bodyName) //galaxy.values.filter(x => x.nonEmpty).flatten.map(b => b.name).toList
 
-    override def updateInfos(): Unit = gui.updateInfos()
+    override def getBodyInfo(bodyName: String): Unit = viewActor ! GetBodyInfo(bodyName)
 
-    override def updateBody(celestialBody: CelestialBody): Unit = viewLogger.bodyUpdated(celestialBody)
+    override def showBodyInfo(celestialBody: CelestialBody): Unit = gui.updateInfos(celestialBody)
 
-    override def sendLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
-      gui.updateLogger(bodiesInvolved, description)
-    //      viewLogger.bodiesCollided(bodiesInvolved, description)
+    override def updateLogger(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions): Unit =
+      val text = s"${bodiesInvolved._1.name} just $description"
+      if bodiesInvolved._2.isDefined then gui.updateLogger(text + s" with ${bodiesInvolved._2.get.name}")
+      else gui.updateLogger(text)
 
     override def start(): Unit = viewActor ! StartPressed
 
