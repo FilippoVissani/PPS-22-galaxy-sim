@@ -14,14 +14,16 @@ import org.slf4j.event.Level
 
 class SimulationManagerActorTest extends AnyFunSuite:
   test("StartSimulation"){
-    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
+    val loggerActor = BehaviorTestKit(LoggerActor())
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime, loggerActor.ref))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(body01)), bounds, 0, deltaTime)))
     testKit.run(StartSimulation)
     testKit.selfInbox().expectMessage(IterationStep)
   }
 
   test("StopSimulation"){
-    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
+    val loggerActor = BehaviorTestKit(LoggerActor())
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime, loggerActor.ref))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(body01)), bounds, 0, deltaTime)))
     testKit.run(StopSimulation)
     celestialBody.selfInbox().expectMessage(Kill)
@@ -29,21 +31,24 @@ class SimulationManagerActorTest extends AnyFunSuite:
   }
 
   test("IterationStep"){
-    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
+    val loggerActor = BehaviorTestKit(LoggerActor())
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime, loggerActor.ref))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(body01)), bounds, 0, deltaTime)))
     testKit.run(IterationStep)
     assert(testKit.returnedBehavior == testKit.currentBehavior)
   }
 
   test("CelestialBodyState"){
-    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
+    val loggerActor = BehaviorTestKit(LoggerActor())
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime, loggerActor.ref))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(body01)), bounds, 0, deltaTime)))
     testKit.run(CelestialBodyState(body01, MassiveStar))
     testKit.selfInbox().expectMessage(IterationStep)
   }
 
   test("AskSimulationState"){
-    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime))
+    val loggerActor = BehaviorTestKit(LoggerActor())
+    val celestialBody = BehaviorTestKit(CelestialBodyActor(body01, MassiveStar, bounds, deltaTime, loggerActor.ref))
     val testKit = BehaviorTestKit(SimulationManagerActor(Set(celestialBody.ref), Simulation(galaxy = Map(MassiveStar -> Set(body01)), bounds, 0, deltaTime)))
     val inbox = TestInbox[SimulationStateResponse]()
     testKit.run(AskSimulationState(inbox.ref))
