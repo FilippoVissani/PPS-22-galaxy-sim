@@ -15,9 +15,28 @@ import org.jfree.chart.ChartPanel
 import galaxy_sim.actors.LoggerActions
 
 trait SwingGUI:
+  /**
+   * Used to display the graphical simulation
+   * @param simulation the simulation to display
+   */
   def display(simulation: Simulation): Unit
+
+  /**
+   * Used to add the names to the dropdown
+   * @param name to add
+   */
   def updateNames(name: String): Unit
+
+  /**
+   * Used to update the info of a celestial body inside the text area
+   * @param bodyInfo the body to show
+   */
   def updateInfos(bodyInfo: CelestialBody): Unit
+
+  /**
+   * Used to add a new log to the logger
+   * @param loggerText text to show in the log
+   */
   def updateLogger(loggerText: String): Unit
 
 object SwingGUI:
