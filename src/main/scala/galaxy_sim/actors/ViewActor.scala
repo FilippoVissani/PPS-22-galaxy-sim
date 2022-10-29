@@ -3,9 +3,9 @@ package galaxy_sim.actors
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 import galaxy_sim.actors.ControllerActor.*
-import galaxy_sim.actors.SimulationManagerActor.GreetCelestialBody
+import galaxy_sim.actors.LoggerActor.{BodiesNames, BodyInfo, LoggerActorCommand}
 import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Simulation}
-import galaxy_sim.utils.LoggerActions
+import galaxy_sim.actors.LoggerActions
 import galaxy_sim.view.{SwingGUI, View}
 
 /** In this object is defined the behaviour of view actor.
@@ -25,14 +25,6 @@ object ViewActor:
     *  @param simulation current state of the simulation.
     */
   case class Display(simulation: Simulation) extends ViewActorCommand
-
-  /**
-   * Call to update the galaxy infos
-   *
-   * @param galaxy current state of the galaxy
-   */
-  case class SetGalaxy(galaxy: Map[CelestialBodyType, Set[CelestialBody]]) extends ViewActorCommand
-
   /**
    * Call to send the logger a new event
    *
@@ -41,8 +33,24 @@ object ViewActor:
    */
   case class LoggerMessage(bodiesInvolved: (CelestialBody, Option[CelestialBody]), description: LoggerActions) extends ViewActorCommand
 
-  //todo
-  case class UpdateBody(celestialBody: CelestialBody) extends ViewActorCommand
+  /**
+   * Call to retrieve the information of a body
+   * @param bodyName the name of the body needed
+   */
+  case class GetBodyInfo(bodyName: String) extends ViewActorCommand
+
+  /**
+   * Call to send the information to the view
+   * @param body the body to send to the view
+   */
+  case class SetBodyInfo(body: CelestialBody) extends ViewActorCommand
+
+  /**
+   * Send the name to the view
+   * @param bodyName the name to send to the view
+   */
+  case class ShowNames(bodyName: String) extends ViewActorCommand
+
   /** Sent from the view when start button is pressed.
     *
     * This message should be sent from the view.
@@ -59,7 +67,8 @@ object ViewActor:
    *
    *  @param controllerActor to communicate with.
    */
-  def apply(controllerActor: ActorRef[ControllerActorCommand]): Behavior[ViewActorCommand] =
+  def apply(controllerActor: ActorRef[ControllerActorCommand],
+            loggerActorRef: ActorRef[LoggerActorCommand]): Behavior[ViewActorCommand] =
     val percentSize = 90
     Behaviors.setup[ViewActorCommand](ctx =>
       val view = View(ctx.self, percentSize, percentSize)
@@ -69,19 +78,21 @@ object ViewActor:
           Behaviors.same
         }
         case LoggerMessage(bodiesInvolved, description) => {
-          view.sendLogger(bodiesInvolved, description)
+          view.updateLogger(bodiesInvolved, description)
           Behaviors.same
         }
-        case SetGalaxy(galaxy) => {
-          view.setGalaxy(galaxy)
+        case GetBodyInfo(bodyName) =>
+          loggerActorRef ! BodyInfo(bodyName)
           Behaviors.same
-        }
-        case UpdateBody(celestialBody) => {
-          view.updateBody(celestialBody)
+        case SetBodyInfo(body) =>
+          view.showBodyInfo(body)
+          Behaviors.same
+        case ShowNames(bodyName) => {
+          view.updateNames(bodyName)
           Behaviors.same
         }
         case StartPressed => {
-          view.updateInfos()
+          loggerActorRef ! BodiesNames()
           controllerActor ! Start
           Behaviors.same
         }
