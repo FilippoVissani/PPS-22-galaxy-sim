@@ -46,12 +46,6 @@ object SimulationManagerActor:
    */
   case class AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) extends SimulationManagerActorCommand
 
-  /**
-   * Message to pass the reference to viewActor to the celestial body actor
-   *
-   * @param viewActor reference of the ViewActor
-   */
-  case class GreetCelestialBody(viewActor: ActorRef[ViewActorCommand]) extends SimulationManagerActorCommand
   /** Response of the ask pattern
    *  
    *  @param simulation current state of the simulation
@@ -90,10 +84,6 @@ object SimulationManagerActor:
             case StopSimulation => {
               celestialBodyActors.foreach(x => x ! Kill)
               Behaviors.stopped
-            }
-            case GreetCelestialBody(viewActor: ActorRef[ViewActorCommand]) => {
-              celestialBodyActors.foreach( x => x ! GreetFromView(viewActor))
-              Behaviors.same
             }
             case IterationStep => {
               iterationState.head match

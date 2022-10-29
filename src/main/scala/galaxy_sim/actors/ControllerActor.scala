@@ -77,8 +77,6 @@ object ControllerActor:
               Behaviors.stopped
             }
             case SetView(viewActor: ActorRef[ViewActorCommand], galaxy: Map[CelestialBodyType, Set[CelestialBody]]) => {
-              viewActor ! SetGalaxy(galaxy)
-              simulationManagerActor ! GreetCelestialBody(viewActor)
               timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
               ControllerActor(Option(viewActor), simulationManagerActor)
             }
