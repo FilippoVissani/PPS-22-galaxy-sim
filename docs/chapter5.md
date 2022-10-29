@@ -196,7 +196,7 @@ Durante tutto lo sviluppo ho cercato di adottare un approccio più vicino possib
 
 I test sono stati realizzati con lo stile `FlatSpec` e con l'utilizzo di `matchers` per verificare le condizioni.
 
-La seguente tabella riporta i meccanismi avanzati e/o i pattern utilizzati nelle classi indicate:
+La seguente tabella riporta i meccanismi avanzati e/o i pattern utilizzati più rilevanti:
 
 <table>
 <tr><th>Classe</th><th>Meccanismi o pattern utilizzati</th></tr>
