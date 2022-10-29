@@ -189,6 +189,13 @@ Infine ho provveduto ad integrare le statistiche della simulazione nella scherma
 - `StatisticsPanel`
 - `SimulationGUI`
 
+Durante tutto lo sviluppo ho cercato di adottare un approccio più vicino possibile al TDD. Le classi relative ai test sono :
+- `LifecycleTest`
+- `OperationsOnCelestialBodyTest`
+- `StatisticsTest`
+
+I test sono stati realizzati con lo stile `FlatSpec` e con l'utilizzo di `matchers` per verificare le condizioni.
+
 La seguente tabella riporta i meccanismi avanzati e/o i pattern utilizzati nelle classi indicate:
 
 <table>
