@@ -18,28 +18,23 @@ object RootActor:
 
   def apply(): Behavior[RootActorCommand] =
     Behaviors.setup[RootActorCommand](ctx =>
-//      val galaxy = emptyGalaxy ++ Map(
-//        BlackHole -> Set(blackHole),
-//        MassiveStar -> Set(sun),
-//        Planet -> Set(earth, earth2),
-//        InterstellarCloud -> groupOFInterstellarClouds(10)
-//      )
-
-      //solar system
+/*
+MassiveStar -> Set(body01),
+*/
       val galaxy = emptyGalaxy ++ Map(
         BlackHole -> Set(blackHole),
-        MassiveStar -> Set(body01),
         Planet -> Set(body02, body03, body04, body05, body06, body07, body08, body09, body10),
-        InterstellarCloud -> groupOFInterstellarClouds(10)
+        InterstellarCloud -> groupOFInterstellarClouds(100)
       )
+      //todo spawn logger actor
       val celestialBodyActors = galaxy
-      .map((k, v) => (k, v.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, k, bounds, deltaTime)))))
+      .map((k, v) => (k, v.map(x => ctx.spawnAnonymous(CelestialBodyActor(x, k, bounds, deltaTime))))) //todo pass logger actor
       .values
       .flatten
       .toSet
       val simulationManagerActor = ctx.spawn(SimulationManagerActor(celestialBodyActors, Simulation(galaxy = galaxy, bounds, 0, deltaTime)), "simulationManager")
       val controllerActor = ctx.spawn(ControllerActor(Option.empty, simulationManagerActor), "controller")
-      val viewActor = ctx.spawn(ViewActor(controllerActor), "view")
+      val viewActor = ctx.spawn(ViewActor(controllerActor), "view") //todo pass logger actor
       controllerActor ! SetView(viewActor, galaxy)
       Behaviors.receive[RootActorCommand]((ctx, msg) => msg match
         case _ => {

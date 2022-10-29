@@ -5,11 +5,14 @@ import physics.dynamics.PhysicalEntity
 import physics.dynamics.PhysicsFormulas.*
 import physics.*
 
+import scala.util.Random
+
+
 object SimulationConfig:
   val windowSize = 90
   /** Time between two requests of the simulation state. */
   val frameRate = 33
-  val bounds: Boundary = Boundary(0, lightYear, 0, lightYear)
+  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
 //  val solarSystemBounds: Boundary = Boundary(0, astronomicUnit * 50, 0, astronomicUnit * 50)
   val blackHoleDistance: Double = astronomicUnit * 5
   val deltaTime: Double = daySec
@@ -113,11 +116,12 @@ object SimulationConfig:
 
   def groupOFInterstellarClouds(cloudsNumber: Int): Set[CelestialBody] =
     (0 until cloudsNumber).map(x => {
+      val rand = Random
       CelestialBody(mass = 5.972e24 - Math.pow(10, x),
         gForceVector = Pair(0, 0),
         speedVector = Pair(0, 37000 - x * 1000),
-        position = Pair(blackHoleDistance - (astronomicUnit - Math.pow(100, x)), blackHoleDistance - (astronomicUnit - Math.pow(100, x))),
-        name = "Interstellar Cloud " + x.toString,
+        position = Pair(rand.between(bounds.leftBound, bounds.rightBound), rand.between(bounds.topBound, bounds.bottomBound)),
+        name = "Body # " + x.toString,
         radius = 10000,
         temperature = 0)
     }).toSet
