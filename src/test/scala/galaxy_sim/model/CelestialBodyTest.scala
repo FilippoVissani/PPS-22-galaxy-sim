@@ -20,3 +20,11 @@ class CelestialBodyTest extends AnyFunSuite:
       |    temperature = 1100)""".stripMargin should compile
   }
 
+  import galaxy_sim.prolog.EntityIdentifier.checkEntityType
+  test("System generation") {
+    val sun = SimulationConfig.sun
+    val anotherSolarSystem = generateSystem(sun)
+    println(anotherSolarSystem)
+    assert(anotherSolarSystem.size > 1)
+  }
+
