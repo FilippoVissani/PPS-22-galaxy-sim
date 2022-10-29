@@ -54,14 +54,16 @@ object SwingGUI:
     val tp: JTabbedPane = JTabbedPane()
     val mainFrame: JFrame = JFrame()
     val gbc: GridBagConstraintsBuilder = GridBagConstraintsBuilder()
-
+    
     val simulationPanel: SimulationPanel = SimulationPanel()
     val simulationPanelContainer: JPanel = JPanel(GridBagLayout())
+    
     val informationPanel: InformationPanel = InformationPanel(view)
     val informationPanelContainer: JPanel = JPanel(GridBagLayout())
+    
     val loggerPanel: LoggerPanel = LoggerPanel()
     val loggerPanelContainer: JPanel = JPanel(GridBagLayout())
-
+    
     val statisticsPanel: StatisticsPanel = StatisticsPanel()
     val statisticsPanelContainer: JPanel = JPanel(GridBagLayout())
 
