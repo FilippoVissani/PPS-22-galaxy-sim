@@ -188,23 +188,9 @@ permette di effettuare il pimping di un tipo di dato senza modificarlo. Un esemp
  extension [A](a: A)
     @targetName("collidesWith")
     def |#|(other: A)(using Intersection[A]): Boolean =
-      collides(a, other)
-
-    @targetName("impactWith")
-    def |*|(other: A)(using Intersection[A])(using Impact[A]): A =
-      impact(a, other)
+      ...
+    ...
 ```
-Con l'uso del meccanismo delle estensioni, si aggiungono ad un tipo generico A dei metodi che sfruttano le API di collisione.
-Un altro esempio di uso del pattern è il seguente:
-```scala
-object OperationsOnCelestialBody:
-    extension (celestialBody: CelestialBody)
-        def updateMass(f: Mass => Mass): CelestialBody = 
-            celestialBody.copy(mass = f(celestialBody.mass))
-        def updateTemperature(f: Temperature => Temperature): CelestialBody = 
-            celestialBody.copy(temperature = f(celestialBody.temperature))
-```
-In questo caso è stato creato un oggetto `OperationsOnCelestialBody` il quale, se importato nella classe desiderata, permette di utilizzare i metodi `updateMass` e `updateTemperature` come se fossero dei metodi definiti nella classe `CelestialBody`.
 
 ### Type classes
 La Type Class è una tipologia di classe astratta e parametrizzata sul tipo, che permette di aggiungere un dato comportamento ad un qualunque tipo di dato senza utilizzare

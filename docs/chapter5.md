@@ -66,6 +66,18 @@ given Conversion[Term, CelestialBodyType] = _.toString match
   case "interstellarCloud" => InterstellarCloud
 ```
 
+### Extension Methods
+Gli extension methods sono un potente meccanismo offerto da Scala, utile per implementare il pattern Pimp My Library, in cui i metodi vengono aggiunti dinamicamente e a posteriori ai tipi di dato. Un esempio di funzionalità implementata attraverso l'uso degli extension methods è la seguente:
+```scala
+object OperationsOnCelestialBody:
+    extension (celestialBody: CelestialBody)
+        def updateMass(f: Mass => Mass): CelestialBody = 
+            celestialBody.copy(mass = f(celestialBody.mass))
+        def updateTemperature(f: Temperature => Temperature): CelestialBody = 
+            celestialBody.copy(temperature = f(celestialBody.temperature))
+```
+In questo caso è stato creato un oggetto `OperationsOnCelestialBody` il quale, se importato nella classe desiderata, permette di utilizzare i metodi `updateMass` e `updateTemperature` come se fossero dei metodi definiti nella classe `CelestialBody`.
+
 ### Currying
 In scala è possibile sfruttare il meccanismo di currying per convertire una funzione a più argomenti in una sequenza di funzioni che prendono un solo argomento. Ogni funzione ritorna un'altra funzione che consuma l'argomento successivo.
 
