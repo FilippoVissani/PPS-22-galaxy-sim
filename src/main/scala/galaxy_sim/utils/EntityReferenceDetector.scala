@@ -10,6 +10,10 @@ import physics.dynamics.PhysicsFormulas.*
 import scala.annotation.tailrec
 import scala.language.postfixOps
 
+/**
+ * @author Angela Cortecchia
+ */
+
 trait EntityReferenceDetector:
   /**
    * Among a set of entities, calculate which one is the reference for a specific entity
