@@ -22,8 +22,8 @@
 <table>
 <tr><th>ID/Numero</th><th>Testo del requisito</th></tr>
 <tr><td>3.1</td><td>L'andamento della simulazione deve essere scandito da un tempo virtuale.</td></tr>
-<tr><td>3.2</td><td>Inizialmente si presuppone la presenza di nuvole di gas nella simulazione, le quali si muovono liberamente nello spazio.</td></tr>
-<tr><td>3.2.1</td><td>Nel momento in cui le nuvole di gas si concentrano in dei punti a elevata densità causano un'esplosione che genera una stella.</td></tr>
+<tr><td>3.2</td><td>Inizialmente si presuppone la presenza di nuvole di gas nella simulazione, le quali si muovono liberamente nello spazio, orbitando attorno ad un buco nero posto al centro della galassia.</td></tr>
+<tr><td>3.2.1</td><td>Nel momento in cui le nuvole di gas si concentrano in dei punti di sufficiente densità causano un'esplosione che genera una stella.</td></tr>
 <tr><td>//TODO </td><td>Nel momento in cui si genera una stella, viene anche creato un nuovo sistema di entità che le orbitano attorno.</td></tr>
 <tr><td>3.4</td><td>Le entità definite nel punto 1.1 si muovono seguendo un'orbita ellittica.</td></tr>
 <tr><td>3.5</td><td>
