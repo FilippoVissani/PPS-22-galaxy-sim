@@ -72,9 +72,9 @@ Gli extension methods sono un potente meccanismo offerto da Scala, utile per imp
 object OperationsOnCelestialBody:
     extension (celestialBody: CelestialBody)
         def updateMass(f: Mass => Mass): CelestialBody = 
-            celestialBody.copy(mass = f(celestialBody.mass))
+            ...
         def updateTemperature(f: Temperature => Temperature): CelestialBody = 
-            celestialBody.copy(temperature = f(celestialBody.temperature))
+            ...
 ```
 In questo caso è stato creato un oggetto `OperationsOnCelestialBody` il quale, se importato nella classe desiderata, permette di utilizzare i metodi `updateMass` e `updateTemperature` come se fossero dei metodi definiti nella classe `CelestialBody`.
 
@@ -83,7 +83,8 @@ In scala è possibile sfruttare il meccanismo di currying per convertire una fun
 
 Esempio di funzione curried in questo progetto:
 ```scala
-private def normalize(minBound: Double, maxBound: Double)(value: Double): Double = ...
+private def normalize(minBound: Double, maxBound: Double)(value: Double): Double = 
+  ...
 ```
 
 Utilizzo della funzione curried con applicazione parziale:
@@ -123,7 +124,8 @@ Come si può vedere dal codice viene infatti richiesto un parametro di contesto,
 Nel progetto è presente una sola given instance in quanto il _bodyType_ corrisponde all'enum `CelestialBodyType`. Avendo però prodotto questa implementazione è facile e immediato aggiungere delle given instances nel caso in cui si voglia estendere il sistema, inserendo ad esempio delle case class invece dell'enum per indicare i _bodyType_.
 ```scala
 given LifecycleRules[CelestialBodyType] with
-  override def updateMassAndTemperature(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = ...
+  override def updateMassAndTemperature(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = 
+    ...
 ```
 
 ## Programmazione logica
