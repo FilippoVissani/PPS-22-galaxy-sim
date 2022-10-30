@@ -69,7 +69,6 @@ object CelestialBodyActor:
     eventRecorderActor: ActorRef[EventRecorderActorCommand],
     ): Behavior[CelestialBodyActorCommand] =
     Behaviors.setup[CelestialBodyActorCommand](_ =>
-      eventRecorderActor ! RecordSpawn(celestialBody)
       Behaviors.receiveMessage[CelestialBodyActorCommand](msg => msg match
         case GetCelestialBodyState(replyTo: ActorRef[SimulationManagerActorCommand]) => {
           replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
