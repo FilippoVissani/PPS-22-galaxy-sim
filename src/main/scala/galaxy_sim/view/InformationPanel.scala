@@ -28,10 +28,10 @@ class InformationPanel(view: View) extends JPanel, ActionListener:
         .find(y => y.name == cb.getSelectedItem.asInstanceOf[String])
         .foreach(z =>
           textArea.setText(s"Name: ${z.name.toUpperCase}\n" +
-            s"Position: (${BigDecimal(z.position.x).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble} , ${BigDecimal(z.position.y).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble})\n" +
+            s"Position: (${BigDecimal(z.position.x).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble}, ${BigDecimal(z.position.y).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble})\n" +
             s"Speed: ${BigDecimal(z.speedVector.y / 1000).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble} Km/s\n" +
-            s"Mass = ${BigDecimal(z.mass / solarMass).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble}} Solar Mass\n" +
-            s"Temperature = ${BigDecimal(z.temperature).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble}} °C\n\n")
+            s"Mass = ${BigDecimal(z.mass / solarMass).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble} Solar Mass\n" +
+            s"Temperature = ${BigDecimal(z.temperature).setScale(6, BigDecimal.RoundingMode.HALF_UP).toDouble} °C\n\n")
         )
     )
 
