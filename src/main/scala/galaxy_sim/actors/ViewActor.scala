@@ -25,6 +25,12 @@ object ViewActor:
     */
   case class DisplaySimulation(simulation: Simulation) extends ViewActorCommand
 
+  /** Displays the events on the View.
+   *
+   * This message should be sent from ControllerActor.
+   *
+   * @param events events to display.
+   */
   case class DisplayEvents(events: List[String]) extends ViewActorCommand
 
   /** Sent from the view when start button is pressed.

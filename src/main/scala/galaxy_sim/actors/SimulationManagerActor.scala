@@ -38,13 +38,13 @@ object SimulationManagerActor:
    */
   case class CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) extends SimulationManagerActorCommand
 
-  /** Ask pattern called from ControllerActor
+  /** Ask pattern used to get simulation state
    *  
-   *  @param replyTo response of the Ask
+   *  @param replyTo response of the question
    */
   case class AskSimulationState(replyTo: ActorRef[SimulationStateResponse]) extends SimulationManagerActorCommand
 
-  /** Response of the ask pattern
+  /** Response of the Ask pattern
    *  
    *  @param simulation current state of the simulation
    */

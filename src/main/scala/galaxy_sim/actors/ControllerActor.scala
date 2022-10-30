@@ -51,6 +51,10 @@ object ControllerActor:
    */
   case class SimulationStateAdaptedResponse(simulation: Option[Simulation]) extends ControllerActorCommand
 
+  /** Used from an inside timer to request the events every frameRate seconds.
+   *
+   * This message should only be sent from ControllerActor's timer.
+   */
   case class RecordedEventsAdaptedResponse(recordedEvents: Option[List[String]]) extends ControllerActorCommand
 
   /** Used from an inside timer to request the simulation state every frameRate seconds.

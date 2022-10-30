@@ -19,6 +19,11 @@ trait SwingGUI:
    */
   def displaySimulation(simulation: Simulation): Unit
 
+  /**
+   * Used to log events on the graphical view
+   *
+   * @param events events to display
+   */
   def displayEvents(events: String): Unit
 
 object SwingGUI:
@@ -80,15 +85,6 @@ object SwingGUI:
     mainFrame.add(simulationPanelContainer, BorderLayout.WEST)
     mainFrame.add(tp, BorderLayout.EAST)
     mainFrame.setVisible(true)
-
-/*    override def updateInfos(bodyInfo: CelestialBody): Unit =
-      SwingUtilities.invokeLater(() => informationPanel.display(bodyInfo))
-
-    override def updateLogger(loggerText: String): Unit =
-      SwingUtilities.invokeLater(() => loggerPanel.display(loggerText))
-
-    override def updateNames(name: String): Unit =
-      SwingUtilities.invokeLater(() => informationPanel.setDropdown(name))*/
 
     override def displaySimulation(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {

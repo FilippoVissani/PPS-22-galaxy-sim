@@ -7,7 +7,7 @@ import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Simulation}
 /** Defines view of the simulation. */
 trait View:
 
-  /** Updates the view.
+  /** Updates the simulation view.
    *
    *  Called from ViewActor.
    *
@@ -15,6 +15,12 @@ trait View:
    */
   def displaySimulation(simulation: Simulation): Unit
 
+  /** Updates the log view.
+   *
+   * Called from ViewActor.
+   *
+   * @param events events to display
+   */
   def displayEvents(events: List[String]): Unit
 
   /** Called when start button is pressed.
