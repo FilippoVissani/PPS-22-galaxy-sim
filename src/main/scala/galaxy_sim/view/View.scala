@@ -2,7 +2,7 @@ package galaxy_sim.view
 
 import akka.actor.typed.ActorRef
 import galaxy_sim.actors.LoggerActions
-import galaxy_sim.actors.ViewActor.{GetBodyInfo, SetBodyInfo, StartPressed, StopPressed, ViewActorCommand}
+import galaxy_sim.actors.ViewActor.{StartPressed, StopPressed, ViewActorCommand}
 import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Simulation}
 
 /** Defines view of the simulation. */
@@ -70,7 +70,7 @@ object View:
 
     override def display(simulation: Simulation): Unit = gui.display(simulation)
 
-    override def updateNames(bodyName: String): Unit = gui.updateNames(bodyName) //galaxy.values.filter(x => x.nonEmpty).flatten.map(b => b.name).toList
+    override def updateNames(bodyName: String): Unit = gui.updateNames(bodyName)
 
     override def getBodyInfo(bodyName: String): Unit = viewActor ! GetBodyInfo(bodyName)
 
