@@ -67,9 +67,7 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
   Feature("The user can see the effect of a collision between entities") {
     info("As a programmer")
     info("I want to establish a mapping between colliding entities and the result of the collision")
-
-
-    import physics.collisions.syntax.CollisionSyntax.*
+    
     Scenario("Two entities are colliding") {
       Given("Two colliding entities")
       val star1 = Star(Pair(0, 0), 2, 100)
@@ -79,8 +77,7 @@ class CollisionSpec extends AnyFeatureSpec with GivenWhenThen:
       Then("I can see the result of the collision")
       assert(res == Star(Pair(0.0,0.0),2.0,100.66666666666667))
     }
-
-    import physics.collisions.instances.ImpactInstances.given
+    
     info("I want to see the result of a body colliding with multiple bodies")
     Scenario("An entity is colliding with other entities") {
       Given("Many entities")
