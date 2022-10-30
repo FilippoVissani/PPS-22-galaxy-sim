@@ -78,7 +78,7 @@ object ControllerActor:
             }
             case Stop => {
               simulationManagerActor ! StopSimulation
-              Behaviors.stopped
+              Behaviors.same
             }
             case SetView(viewActor: ActorRef[ViewActorCommand]) => {
               timers.startTimerAtFixedRate(Tick, frameRate.milliseconds)
