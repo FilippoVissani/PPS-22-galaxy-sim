@@ -119,6 +119,6 @@ object SwingGUI:
     start.gridy = 0
     start.anchor = GridBagConstraints.LINE_END
 
-    stop.gridx = 1;
-    stop.gridy = 0;
+    stop.gridx = 1
+    stop.gridy = 0
     stop.anchor = GridBagConstraints.LINE_START
