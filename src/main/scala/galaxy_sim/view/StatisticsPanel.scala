@@ -18,10 +18,10 @@ class StatisticsPanel extends JPanel(GridBagLayout()):
     50 * Toolkit.getDefaultToolkit.getScreenSize.height / 100))
 
   gbc.fill = GridBagConstraints.HORIZONTAL
-  gbc.gridheight = 2
-  gbc.gridx = 0
-  gbc.gridy = 0
-  this.add(pieChartPanel, gbc)
+  gbc.gridheight = 2;
+  gbc.gridx = 0;
+  gbc.gridy = 0;
+  this.add(pieChartPanel, gbc);
 
   val totalBodiesLabel: JLabel = JLabel()
   gbc.gridheight = 1

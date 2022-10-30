@@ -3,6 +3,7 @@ package galaxy_sim.actors
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 import galaxy_sim.actors.CelestialBodyActor.CelestialBodyActorCommand
+import galaxy_sim.actors.EventRecorderActor.{EventRecorderActorCommand, RecordCollision, RecordDeath, RecordSpawn}
 import galaxy_sim.actors.SimulationManagerActor.*
 import galaxy_sim.model.SimulationConfig.*
 import galaxy_sim.model.{Boundary, CelestialBody, CelestialBodyType, Lifecycle}
@@ -65,6 +66,7 @@ object CelestialBodyActor:
     celestialBodyType: CelestialBodyType,
     bounds: Boundary,
     deltaTime: Double,
+    eventRecorderActor: ActorRef[EventRecorderActorCommand],
     ): Behavior[CelestialBodyActorCommand] =
     Behaviors.setup[CelestialBodyActorCommand](_ =>
       Behaviors.receiveMessage[CelestialBodyActorCommand](msg => msg match
@@ -75,7 +77,7 @@ object CelestialBodyActor:
         case UpdateCelestialBodyType(replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val result = Lifecycle.entityOneStep(celestialBody, celestialBodyType)
           replyTo ! CelestialBodyState(result._1, result._2)
-          CelestialBodyActor(result._1, result._2, bounds, deltaTime)
+          CelestialBodyActor(result._1, result._2, bounds, deltaTime, eventRecorderActor)
         }
         case MoveToNextPosition(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val newCelestialBody = for
@@ -86,7 +88,7 @@ object CelestialBodyActor:
           yield w.copy(position = bounds.toToroidal(w.position))
           if newCelestialBody.isDefined then
             replyTo ! CelestialBodyState(newCelestialBody.get, celestialBodyType)
-            CelestialBodyActor(newCelestialBody.get, celestialBodyType, bounds, deltaTime)
+            CelestialBodyActor(newCelestialBody.get, celestialBodyType, bounds, deltaTime, eventRecorderActor)
           else
             replyTo ! CelestialBodyState(celestialBody, celestialBodyType)
             Behaviors.same
@@ -94,10 +96,14 @@ object CelestialBodyActor:
         case SolveCollisions(celestialBodies: Map[CelestialBodyType, Set[CelestialBody]], replyTo: ActorRef[SimulationManagerActorCommand]) => {
           val others = celestialBodies.values.flatten.filter(x => x != celestialBody)
           val newCelestialBody = CollisionEngine.impactMany(celestialBody, others.toSeq)
+          others
+            .filter(x => CollisionEngine.collides(celestialBody, x))
+            .foreach(x => eventRecorderActor ! RecordCollision(celestialBody, x))
           replyTo ! CelestialBodyState(newCelestialBody, celestialBodyType)
-          CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime)
+          CelestialBodyActor(newCelestialBody, celestialBodyType, bounds, deltaTime, eventRecorderActor)
         }
         case Kill => {
+          eventRecorderActor ! RecordDeath(celestialBody)
           Behaviors.stopped
         }
       )
