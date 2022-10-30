@@ -1,7 +1,6 @@
 package galaxy_sim.view
 
 import galaxy_sim.model.CelestialBody
-import galaxy_sim.actors.LoggerActions
 
 import java.awt.{BorderLayout, Dimension, Toolkit}
 import java.awt.event.{ActionEvent, ActionListener}

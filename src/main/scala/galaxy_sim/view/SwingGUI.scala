@@ -11,7 +11,6 @@ import galaxy_sim.model.CelestialBodyType.*
 import galaxy_sim.utils.Statistics
 import galaxy_sim.utils.Percentage
 import org.jfree.chart.ChartPanel
-import galaxy_sim.actors.LoggerActions
 
 trait SwingGUI:
   /**
@@ -20,32 +19,14 @@ trait SwingGUI:
    */
   def display(simulation: Simulation): Unit
 
-  /**
-   * Used to add the names to the dropdown
-   * @param name to add
-   */
-  def updateNames(name: String): Unit
-
-  /**
-   * Used to update the info of a celestial body inside the text area
-   * @param bodyInfo the body to show
-   */
-  def updateInfos(bodyInfo: CelestialBody): Unit
-
-  /**
-   * Used to add a new log to the logger
-   * @param loggerText text to show in the log
-   */
-  def updateLogger(loggerText: String): Unit
-
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
     SwingGUIImpl(view: View, windowWidth: Int, windowHeight: Int)
 
-
   private class SwingGUIImpl(view: View,
                              windowWidth: Int,
-                             windowHeight: Int) extends SwingGUI:
+                             windowHeight: Int,
+                            ) extends SwingGUI:
     val frameSize: Dimension = Dimension(
       windowWidth * Toolkit.getDefaultToolkit.getScreenSize.width / 100,
       windowHeight * Toolkit.getDefaultToolkit.getScreenSize.height / 100
@@ -98,16 +79,20 @@ object SwingGUI:
     mainFrame.add(tp, BorderLayout.EAST)
     mainFrame.setVisible(true)
 
-    override def updateInfos(bodyInfo: CelestialBody): Unit = SwingUtilities.invokeLater(() => informationPanel.display(bodyInfo))
+/*    override def updateInfos(bodyInfo: CelestialBody): Unit =
+      SwingUtilities.invokeLater(() => informationPanel.display(bodyInfo))
 
-    override def updateLogger(loggerText: String): Unit = SwingUtilities.invokeLater(() => loggerPanel.display(loggerText))
+    override def updateLogger(loggerText: String): Unit =
+      SwingUtilities.invokeLater(() => loggerPanel.display(loggerText))
 
-    override def updateNames(name: String): Unit = SwingUtilities.invokeLater(() => informationPanel.setDropdown(name))
+    override def updateNames(name: String): Unit =
+      SwingUtilities.invokeLater(() => informationPanel.setDropdown(name))*/
 
     override def display(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
         statisticsPanel.update(simulation)
+        informationPanel.updateData(simulation.galaxy)
       })
   end SwingGUIImpl
 
