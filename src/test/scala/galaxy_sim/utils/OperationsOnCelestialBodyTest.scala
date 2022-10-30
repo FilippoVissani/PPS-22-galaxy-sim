@@ -3,7 +3,7 @@ package galaxy_sim.utils
 import galaxy_sim.model.CelestialBody
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
-import galaxy_sim.model.SimulationConfig.{body01}
+import galaxy_sim.model.SimulationConfig.body01
 import galaxy_sim.utils.OperationsOnCelestialBody.{updateMass, updateTemperature}
 import galaxy_sim.utils.OperationsOnCelestialBody.CelestialBodyBounds.*
 
