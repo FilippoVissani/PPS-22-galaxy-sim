@@ -37,7 +37,7 @@ object SimulationManagerActor:
    *  @param celestialBodyType the type of the celestial body
    */
   case class CelestialBodyState(celestialBody: CelestialBody, celestialBodyType: CelestialBodyType) extends SimulationManagerActorCommand
-  
+
   /** Ask pattern called from ControllerActor
    *  
    *  @param replyTo response of the Ask

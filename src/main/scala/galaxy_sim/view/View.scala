@@ -13,7 +13,9 @@ trait View:
    *
    *  @param simulation current state of the simulation
    */
-  def display(simulation: Simulation): Unit
+  def displaySimulation(simulation: Simulation): Unit
+
+  def displayEvents(events: List[String]): Unit
 
   /** Called when start button is pressed.
    *
@@ -42,7 +44,9 @@ object View:
   private class ViewImpl(viewActor: ActorRef[ViewActorCommand], windowWidth: Int, windowHeight: Int) extends View:
     val gui: SwingGUI = SwingGUI(this, windowWidth, windowHeight)
 
-    override def display(simulation: Simulation): Unit = gui.display(simulation)
+    override def displaySimulation(simulation: Simulation): Unit = gui.displaySimulation(simulation)
+
+    override def displayEvents(events: List[String]): Unit = gui.displayEvents(events.mkString("\n"))
 
     override def start(): Unit = viewActor ! StartPressed
 

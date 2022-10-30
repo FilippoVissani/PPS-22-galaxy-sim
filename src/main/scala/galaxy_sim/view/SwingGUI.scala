@@ -17,7 +17,9 @@ trait SwingGUI:
    * Used to display the graphical simulation
    * @param simulation the simulation to display
    */
-  def display(simulation: Simulation): Unit
+  def displaySimulation(simulation: Simulation): Unit
+
+  def displayEvents(events: String): Unit
 
 object SwingGUI:
   def apply(view: View, windowWidth: Int, windowHeight: Int): SwingGUI =
@@ -88,12 +90,15 @@ object SwingGUI:
     override def updateNames(name: String): Unit =
       SwingUtilities.invokeLater(() => informationPanel.setDropdown(name))*/
 
-    override def display(simulation: Simulation): Unit =
+    override def displaySimulation(simulation: Simulation): Unit =
       SwingUtilities.invokeLater(() => {
         simulationPanel.display(simulation)
         statisticsPanel.update(simulation)
         informationPanel.updateData(simulation.galaxy)
       })
+
+    override def displayEvents(events: String): Unit =
+      loggerPanel.display(events)
   end SwingGUIImpl
 
   private class GridBagConstraintsBuilder:

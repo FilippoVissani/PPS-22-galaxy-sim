@@ -16,4 +16,4 @@ class LoggerPanel() extends JPanel :
   this.add(scrollPane, BorderLayout.CENTER)
 
   def display(text: String): Unit =
-    textArea.append(text + "\n")
+    textArea.setText(text)

@@ -15,19 +15,19 @@ object EventRecorderActor:
 
   case class AskRecordedEvents(replyTo: ActorRef[RecordedEventsResponse]) extends EventRecorderActorCommand
 
-  case class RecordedEventsResponse(recordedEvents: String)
+  case class RecordedEventsResponse(recordedEvents: List[String])
 
-  def apply(recordedEvents: String = ""): Behavior[EventRecorderActorCommand] =
+  def apply(recordedEvents: List[String] = List()): Behavior[EventRecorderActorCommand] =
     Behaviors.setup[EventRecorderActorCommand](_ =>
       Behaviors.receiveMessage[EventRecorderActorCommand](msg => msg match
         case RecordCollision(celestialBody1: CelestialBody, celestialBody2: CelestialBody) => {
-          EventRecorderActor(recordedEvents + s"${celestialBody1.name} collided with ${celestialBody2.name}\n")
+          EventRecorderActor(recordedEvents :+ s"${celestialBody1.name} collided with ${celestialBody2.name}")
         }
         case RecordSpawn(celestialBody: CelestialBody) => {
-          EventRecorderActor(recordedEvents + s"${celestialBody.name} spawned\n")
+          EventRecorderActor(recordedEvents :+ s"${celestialBody.name} spawned")
         }
         case RecordDeath(celestialBody: CelestialBody) => {
-          EventRecorderActor(recordedEvents + s"${celestialBody.name} died\n")
+          EventRecorderActor(recordedEvents :+ s"${celestialBody.name} died")
         }
         case AskRecordedEvents(replyTo: ActorRef[RecordedEventsResponse]) => {
           replyTo ! RecordedEventsResponse(recordedEvents)

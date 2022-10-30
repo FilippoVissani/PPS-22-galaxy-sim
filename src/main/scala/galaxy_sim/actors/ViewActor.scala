@@ -23,16 +23,18 @@ object ViewActor:
     * 
     *  @param simulation current state of the simulation.
     */
-  case class Display(simulation: Simulation) extends ViewActorCommand
-  
+  case class DisplaySimulation(simulation: Simulation) extends ViewActorCommand
+
+  case class DisplayEvents(events: List[String]) extends ViewActorCommand
+
   /** Sent from the view when start button is pressed.
-    * 
+    *
     * This message should be sent from the view.
     */
   case object StartPressed extends ViewActorCommand
-  
+
   /** Sent from the view when stop button is pressed.
-    * 
+    *
     * This message should be sent from the view.
     */
   case object StopPressed extends ViewActorCommand
@@ -46,8 +48,12 @@ object ViewActor:
       val view = View(ctx.self, windowSize, windowSize)
 
       Behaviors.receiveMessage[ViewActorCommand](msg => msg match
-        case Display(simulation: Simulation) => {
-          view.display(simulation)
+        case DisplaySimulation(simulation: Simulation) => {
+          view.displaySimulation(simulation)
+          Behaviors.same
+        }
+        case DisplayEvents(events: List[String]) => {
+          view.displayEvents(events)
           Behaviors.same
         }
         case StartPressed => {
