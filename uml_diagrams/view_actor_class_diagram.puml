@@ -1,0 +1,10 @@
+@startuml
+
+class ViewActor << object >>
+interface ViewActorCommand << trait >>
+class Display extends ViewActorCommand
+class StartPressed << object >> extends ViewActorCommand
+class StopPressed << object >> extends ViewActorCommand
+ViewActor ..> ViewActorCommand
+
+@enduml

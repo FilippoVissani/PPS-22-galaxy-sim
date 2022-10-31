@@ -67,51 +67,51 @@ Entrando nel dettaglio, gli attori sono i seguenti:
   - Si occupa di aggiornare la _View_
   - Notifica gli input della _View_ al `ControllerActor`
 - `ControllerActor`:
-  - Interagisce con `ViewActor` e `SimulationManagerActor`
+  - Interagisce con `ViewActor`, `SimulationManagerActor` e `EventRecorderActor`
   - Gestisce esclusivamente la parte di _Controller_
   - Contatta `SimulationManagerActor` per far avviare e fermare la simulazione e per richiederne lo stato
+  - Contatta `EventRecorderActor` per ricevere gli eventi che si sono generati durante l'esecuzione della simulazione
   - Invia gli aggiornamenti di stato al `ViewActor`
 - `SimulationManagerActor`:
   - Comunica direttamente con `CelestialBodyActor` e indirettamente con `ControllerActor` (tramite pattern Ask)
   - Coordina i `CelestialBodyActor` durante l'esecuzione della simulazione
   - Invia lo stato della simulazione al `ControllerActor` nel momento in cui gli viene fatta una richiesta
+- `EventRecorderActor`:
+  - Si occupa di registrare gli eventi che gli vengono mandati da `CelestialBodyActor`
+  - Comunica indirettamente con `ControllerActor` (tramite pattern Ask)
 - `CelestialBodyActor`:
-  - Interagisce esclusivamente con il `SimulationManagerActor`
+  - Interagisce con `SimulationManagerActor` e con `EventRecorderActor`
   - Si occupa di gestire lo stato di un singolo corpo celeste
+  - Ogni volta che genera un evento (es. collisione) contatta `EventRecorderActor`
 
-Di seguito vengono riportati i messaggi che possono essere mandati a ogni attore:
+Design `CelestialBodyActor`:
 
-<table>
-<tr><th>Attore</th><th>Comando</th><th>Descrizione</th></tr>
-<tr><td>ViewActor</td><td>Display</td><td>Aggiorna la View, viene inviato dal ControllerActor</td></tr>
-<tr><td>ViewActor</td><td>StartPressed</td><td>Viene inviato dalla View nel momento in cui il pulsante "Start" viene premuto</td></tr>
-<tr><td>ViewActor</td><td>StopPressed</td><td>Viene inviato dalla View nel momento in cui il pulsante "Stop" viene premuto</td></tr>
-<tr><td>ControllerActor</td><td>Start</td><td>Avvia la simulazione</td></tr>
-<tr><td>ControllerActor</td><td>Stop</td><td>Ferma la simulazione</td></tr>
-<tr><td>ControllerActor</td><td>SetView</td><td>Imposta il ViewActor che gestisce l'interfaccia grafica</td></tr>
-<tr><td>ControllerActor</td><td>SimulationStateAdaptedResponse</td><td>Utilizzato come Adapter per il pattern Ask</td></tr>
-<tr><td>ControllerActor</td><td>Tick</td><td>Inviato dal timer per richiedere lo stato della simulazione e aggiornare la View</td></tr>
-<tr><td>SimulationManagerActor</td><td>StartSimulation</td><td>Avvia la simulazione</td></tr>
-<tr><td>SimulationManagerActor</td><td>StopSimulation</td><td>Ferma la simulazione</td></tr>
-<tr><td>SimulationManagerActor</td><td>IterationStep</td><td>Esegue uno step all'interno dell'iterazioni corrente</td></tr>
-<tr><td>SimulationManagerActor</td><td>CelestialBodyState</td><td>Inviato da CelestialBodyActor per notificare lo stato di un corpo celeste</td></tr>
-<tr><td>SimulationManagerActor</td><td>AskSimulationState</td><td>Utilizzato dal ControllerActor per richiedere lo stato della simulazione, fa parte del pattern Ask</td></tr>
-<tr><td>SimulationManagerActor</td><td>SimulationStateResponse</td><td>Riposta dei AskSimulationState, non viene inviata a SimulationManagerActor</td></tr>
-<tr><td>CelestialBodyActor</td><td>GetCelestialBodyState</td><td>Richiede lo stato del corpo celeste</td></tr>
-<tr><td>CelestialBodyActor</td><td>UpdateCelestialBodyType</td><td>Aggiorna lo stato del corpo celeste</td></tr>
-<tr><td>CelestialBodyActor</td><td>MoveToNextPosition</td><td>Sposta il corpo celeste</td></tr>
-<tr><td>CelestialBodyActor</td><td>SolveCollisions</td><td>Risolve le collisioni con gli altri corpi celesti</td></tr>
-<tr><td>CelestialBodyActor</td><td>Kill</td><td>Termina l'attore</td></tr>
-</table>
+![Diagramma delle classi del CelestialBodyActor](./images/celestial_body_actor_class_diagram.svg)
+
+Design dettagliato `SimulationManagerActor`:
+
+![Diagramma delle classi del SimulationManagerActor](./images/simulation_manager_actor_class_diagram.svg)
+
+Design dettagliato `EventRecorderActor`:
+
+![Diagramma delle classi del EventRecorderActor](./images/event_recorder_actor_class_diagram.svg)
+
+Design dettagliato `ControllerActor`:
+
+![Diagramma delle classi del ControllerActor](./images/controller_actor_class_diagram.svg)
+
+Design dettagliato `ViewActor`:
+
+![Diagramma delle classi del ViewActor](./images/view_actor_class_diagram.svg)
 
 Nel pattern architetturale _MVC_ ogni componente ha dipendenze specifiche e ben definite,
 per esempio il _Controller_ sfrutta sia le API esposte dalla _View_, che quelle esposte dal _Model_.
 Con l'introduzione degli attori si è deciso di mantenere questo schema di dipendenze,
 le quali però vengono definite dai messaggi disponibili per un dato attore, invece che dall'attore stesso.
 
-Di seguito il diagramma delle classi degli attori:
+Design delle dipendenze tra attori:
 
-![Diagramma delle classi degli attori](./images/actors_class_diagram.svg)
+![Diagramma delle classi di massima degli attori](./images/actors_class_diagram.svg)
 
 ## Physics
 Il componente `physics` del sistema si occupa di definire i concetti riguardanti l'universo fisico ed i calcoli annessi. Nello specifico, si possono suddividere le responsabilità del modulo `physics` in due macro aspetti:
@@ -143,7 +143,6 @@ Inoltre sono anche presenti costanti e unità di riferimento che possono essere 
 
 ### Rigidbody
 Il modulo `physics.rigidbody`contiene la definizione di struttre dati utili per interfacciarsi con i due moduli di `physics`.
-
 
 ## Pattern utilizzati
 ### Strategy

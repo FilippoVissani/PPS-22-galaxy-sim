@@ -1,0 +1,15 @@
+@startuml
+
+class SimulationManagerActor << object >>
+interface SimulationManagerActorCommand << trait >>
+class StartSimulation << object >> extends SimulationManagerActorCommand
+class StopSimulation << object >> extends SimulationManagerActorCommand
+class IterationStep << object >> extends SimulationManagerActorCommand
+class CelestialBodyState extends SimulationManagerActorCommand
+class AskSimulationState extends SimulationManagerActorCommand
+class SimulationStateResponse
+
+SimulationManagerActor ..> SimulationManagerActorCommand
+AskSimulationState ..> SimulationStateResponse
+
+@enduml

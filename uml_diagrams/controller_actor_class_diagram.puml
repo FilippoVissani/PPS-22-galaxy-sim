@@ -1,0 +1,12 @@
+@startuml
+
+class ControllerActor << object >>
+interface ControllerActorCommand << trait >>
+class Start << object >> extends ControllerActorCommand
+class Stop << object >> extends ControllerActorCommand
+class SetView extends ControllerActorCommand
+class SimulationStateAdaptedResponse extends ControllerActorCommand
+class Tick << object >> extends ControllerActorCommand
+ControllerActor ..> ControllerActorCommand
+
+@enduml

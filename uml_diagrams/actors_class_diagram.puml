@@ -2,55 +2,46 @@
 
 left to right direction
 
-component ViewActorComponent {
-  class ViewActor << object >>
-  interface ViewActorCommand << trait >>
-  class Display extends ViewActorCommand
-  class StartPressed << object >> extends ViewActorCommand
-  class StopPressed << object >> extends ViewActorCommand
+component ViewComponent{
+    class ViewActor << object >>
+    interface ViewActorCommand << trait >>
 }
 
-component ControllerActorComponent {
-  class ControllerActor << object >>
-  interface ControllerActorCommand << trait >>
-  class Start << object >> extends ControllerActorCommand
-  class Stop << object >> extends ControllerActorCommand
-  class SetView extends ControllerActorCommand
-  class SimulationStateAdaptedResponse extends ControllerActorCommand
-  class Tick << object >> extends ControllerActorCommand
+component ControllerComponent{
+    class ControllerActor << object >>
+    interface ControllerActorCommand << trait >>
 }
 
-component SimulationManagerActorComponent {
-  class SimulationManagerActor << object >>
-  interface SimulationManagerActorCommand << trait >>
-  class StartSimulation << object >> extends SimulationManagerActorCommand
-  class StopSimulation << object >> extends SimulationManagerActorCommand
-  class IterationStep << object >> extends SimulationManagerActorCommand
-  class CelestialBodyState extends SimulationManagerActorCommand
-  class AskSimulationState extends SimulationManagerActorCommand
-  class SimulationStateResponse
+component ModelComponent{
+    class SimulationManagerActor << object >>
+    class EventRecorderActor << object >>
+    class CelestialBodyActor << object >>
+    interface SimulationManagerActorCommand << trait >>
+    interface EventRecorderActorCommand << trait >>
+    interface CelestialBodyActorCommand << trait >>
+
+    class AskSimulationState extends SimulationManagerActorCommand
+    class SimulationStateResponse
+
+    class AskRecordedEvents extends EventRecorderActorCommand
+    class RecordedEventsResponse
 }
-AskSimulationState --> SimulationStateResponse : use
+
 ControllerActor ..> SimulationStateResponse
-
-component CelestialBodyActorComponent {
-  class CelestialBodyActor << object >>
-  interface CelestialBodyActorCommand << trait >>
-  class GetCelestialBodyState extends CelestialBodyActorCommand
-  class UpdateCelestialBodyType extends CelestialBodyActorCommand
-  class MoveToNextPosition extends CelestialBodyActorCommand
-  class SolveCollisions extends CelestialBodyActorCommand
-  class Kill << object >> extends CelestialBodyActorCommand
-}
+ControllerActor ..> RecordedEventsResponse
+AskSimulationState ..> SimulationStateResponse
+AskRecordedEvents ..> RecordedEventsResponse
 
 ViewActor ..> ViewActorCommand
-ControllerActor --> ControllerActorCommand : use
-SimulationManagerActor --> SimulationManagerActorCommand : use
+ControllerActor ..> ControllerActorCommand
+SimulationManagerActor ..> SimulationManagerActorCommand
 CelestialBodyActor ..> CelestialBodyActorCommand
+EventRecorderActor ..> EventRecorderActorCommand
 
 ViewActor --> ControllerActorCommand : use
 ControllerActor --> ViewActorCommand : use
 ControllerActor --> SimulationManagerActorCommand : use
 SimulationManagerActor --> CelestialBodyActorCommand : use
+CelestialBodyActor --> EventRecorderActorCommand : use
 
 @enduml

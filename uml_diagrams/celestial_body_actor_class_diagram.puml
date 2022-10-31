@@ -1,0 +1,13 @@
+@startuml
+
+class CelestialBodyActor << object >>
+interface CelestialBodyActorCommand << trait >>
+class GetCelestialBodyState extends CelestialBodyActorCommand
+class UpdateCelestialBodyType extends CelestialBodyActorCommand
+class MoveToNextPosition extends CelestialBodyActorCommand
+class SolveCollisions extends CelestialBodyActorCommand
+class Kill << object >> extends CelestialBodyActorCommand
+
+CelestialBodyActor ..> CelestialBodyActorCommand
+
+@enduml

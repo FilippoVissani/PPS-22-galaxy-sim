@@ -20,7 +20,7 @@ package galaxy_sim.model {
 }
 
 Simulation "1"*--"*" CelestialBody
-Simulation "1"*--"*" CelestialBodyType
+Simulation ..> CelestialBodyType
 Simulation "1"*--"1" Boundary
 CelestialBody "*"--"1" CelestialBodyType
 

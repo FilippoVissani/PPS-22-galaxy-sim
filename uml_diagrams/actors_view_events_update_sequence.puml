@@ -1,0 +1,30 @@
+@startuml
+autonumber
+
+control ":RootActor" as root
+control ":ViewActor" as view
+control ":ControllerActor" as controller
+control ":EventRecorderActor" as eventRecorder
+
+activate root
+activate controller
+activate view
+activate eventRecorder
+
+root --> controller: SetView(viewActorRef)
+
+group Every X milliseconds
+    controller --> controller: Tick()
+    controller --> eventRecorder: AskRecordedEvents()
+    alt successful case
+        eventRecorder --> controller: Success(RecordedEventsResponse(events))
+        controller --> controller: RecordedEventsAdaptedResponse(Option(events))
+        controller --> view: Display(events)
+    else failure case
+        eventRecorder --> controller: Failure()
+        controller --> controller: RecordedEventsAdaptedResponse(Option.empty)
+    end
+end
+
+
+@enduml

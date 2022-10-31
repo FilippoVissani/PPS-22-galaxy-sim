@@ -164,15 +164,19 @@ che sono già stati descritti nei capitoli precedenti.
 
 Ciclo di vita degli attori:
 
-![Actor lifecycle sequence](./images/actors_lifecycle_sequence.svg)
+![Ciclo di vita degli attori](./images/actors_lifecycle_sequence.svg)
 
 Sequenza di messaggi che vengono scambiati all'interno di un'iterazione della simulazione:
 
-![Actor simulation loop sequence](./images/actors_simulation_loop_sequence.svg)
+![Sequenza dei messaggi nel loop](./images/actors_simulation_loop_sequence.svg)
 
-Sequenza dei messaggi utilizzati per aggiornare la _View_:
+Sequenza dei messaggi utilizzati per aggiornare il pannello della simulazione nella la _View_:
 
-![Actor view update sequence](./images/actors_view_update_sequence.svg)
+![Sequenza dei messaggi per l'aggiornamento del pannello della simulazione](./images/actors_view_simulation_update_sequence.svg)
+
+Sequenza dei messaggi utilizzati per aggiornare il pannello dei log nella la _View_:
+
+![Sequenza dei messaggi per l'aggiornamento del pannello degli eventi](./images/actors_view_events_update_sequence.svg)
 
 ## Sezioni personali
 In questa sotto sezione, ogni membro del team spiegherà brevemente in cosa è consistito il suo contributo all'interno del team di sviluppo, con eventuali note riguardanti l'implementazione del proprio lavoro.
@@ -276,6 +280,7 @@ Introduzione degli attori (package `galaxy_sim.actors`) e definizione delle loro
 - `CelestialBodyActor`
 - `ControllerActor`
 - `ViewActor`
+- `EventRecorderActor`
 
 Introduzione dei seguenti componenti del _Model_, presenti nel package `galaxy_sim.model`:
 - `Boundary`: Definisce i confini di una simulazione

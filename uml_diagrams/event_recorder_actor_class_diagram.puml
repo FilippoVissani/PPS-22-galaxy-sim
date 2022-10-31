@@ -1,0 +1,13 @@
+@startuml
+
+class EventRecorderActor << object >>
+interface EventRecorderActorCommand << trait >>
+class RecordSpawn extends EventRecorderActorCommand
+class RecordDeath extends EventRecorderActorCommand
+class AskRecordedEvents extends EventRecorderActorCommand
+class RecordedEventsResponse
+
+EventRecorderActor ..> EventRecorderActorCommand
+AskRecordedEvents ..> RecordedEventsResponse
+
+@enduml

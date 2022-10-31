@@ -13,10 +13,6 @@ activate simulationManager
 
 root --> controller: SetView(viewActorRef)
 
-== Simulation starts ==
-view --> controller: Start()
-controller --> simulationManager: StartSimulation()
-
 group Every X milliseconds
     controller --> controller: Tick()
     controller --> simulationManager: AskSimulationState()
@@ -29,9 +25,5 @@ group Every X milliseconds
         controller --> controller: SimulationStateAdaptedResponse(Option.empty)
     end
 end
-
-== Simulation ends ==
-view --> controller: Stop()
-controller --> simulationManager: StopSimulation()
 
 @enduml

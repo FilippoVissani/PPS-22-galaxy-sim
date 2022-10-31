@@ -4,10 +4,12 @@ autonumber
 control ":ControllerActor" as controller
 control ":SimulationManagerActor" as simulationManager
 control ":CelestialBodyActor" as celestialBody
+control ":EventRecorderActor" as eventRecorder
 
 activate controller
 activate simulationManager
 activate celestialBody
+activate eventRecorder
 
 controller --> simulationManager: StartSimulation()
 
@@ -20,6 +22,7 @@ loop
     celestialBody --> simulationManager: CelestialBodyState(celestialBody, celestialBodyType)
     simulationManager --> simulationManager: IterationStep()
     simulationManager --> celestialBody: SolveCollisions(tmpState, self)
+    celestialBody --> eventRecorder: RecordCollision(celestialBody1, celestialBody2)
     celestialBody --> simulationManager: CelestialBodyState(celestialBody, celestialBodyType)
     simulationManager --> simulationManager: IterationStep()
 end
