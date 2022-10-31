@@ -1,0 +1,25 @@
+@startuml
+
+class Lifecycle << object >> {
++entityOneStep(entity: CelestialBody, bodyType: A): (CelestialBody, A)
+}
+class OperationsOnCelestialBody << object >> {
++updateMass(f: Mass => Mass): CelestialBody
++updateTemperature(f: Temperature => Temperature): CelestialBody
+}
+
+class EntityIdentifier << object >>
+class Scala2P << object >>
+package EntityIdentifier.pl <<File>> {
+}
+class LifecycleRules {
++updateMassAndTemperature(entity: CelestialBody, bodyType: A): (CelestialBody, A)
+}
+
+EntityIdentifier --> Scala2P : use
+Lifecycle --> LifecycleRules : use
+LifecycleRules --> EntityIdentifier : use
+LifecycleRules --> OperationsOnCelestialBody : use
+Scala2P --> EntityIdentifier.pl : query
+
+@enduml
