@@ -1,13 +1,13 @@
-Priority,Description,EstimatedInitialEffort,Sprint1,Sprint2,Sprint3,Sprint4,Sprint5,Sprint6
-1,Setting up the build environment,2,0,0,0,0,0,0
-2,Understanding how orbits work,2,1,0,0,0,0,0
-3,As a user i want to visualize the interstellar clouds,6,6,5,2,0,0,0
-4,As a user i want to visualize orbit of the entities if present,15,15,6,2,0,0,0
-5,As a user i want to visualize collisions between entities,10,10,2,1,1,0,0
-6,As a user i want to visualize the life cycle of the entities,5,5,5,2,2,2,1
-7,As a user i want to visualize the generation of stars and systems,6,6,6,6,2,2,2
-8,As a user i want to visualize relevant information about each entity,4,4,4,4,4,4,4
-9,As a user i want to visualize some statistics about the simulation,4,4,4,4,4,2,2
-10,As a user i want to pause and resume the simulation,1,1,1,1,1,1,0
-11,Improve orbit calculation performances,6,6,6,6,2,1,0
-12,Refactoring architecture using actors paradigm,4,4,4,4,4,1,0
+Priority,Description,EstimatedInitialEffort,Sprint1,Sprint2,Sprint3,Sprint4,Sprint5,Sprint6,Sprint7
+1,Setting up the build environment,2,0,0,0,0,0,0,0
+2,Understanding how orbits work,2,1,0,0,0,0,0,0
+3,As a user i want to visualize the interstellar clouds,6,6,5,2,0,0,0,0
+4,As a user i want to visualize orbit of the entities if present,15,15,6,2,0,0,0,0
+5,As a user i want to visualize collisions between entities,10,10,2,1,1,0,0,0
+6,As a user i want to visualize the life cycle of the entities,5,5,5,2,2,2,1,0
+7,As a user i want to visualize the generation of stars and systems,6,6,6,6,2,2,2,0
+8,As a user i want to visualize relevant information about each entity,4,4,4,4,4,4,4,0
+9,As a user i want to visualize some statistics about the simulation,4,4,4,4,4,2,2,0
+10,As a user i want to pause and resume the simulation,1,1,1,1,1,1,0,0
+11,Improve orbit calculation performances,6,6,6,6,2,1,0,0
+12,Refactoring architecture using actors paradigm,4,4,4,4,4,1,0,0
