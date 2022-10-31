@@ -87,14 +87,15 @@ object SwingGUI:
     mainFrame.setVisible(true)
 
     override def displaySimulation(simulation: Simulation): Unit =
-      SwingUtilities.invokeLater(() => {
+      SwingUtilities.invokeLater(() =>
         simulationPanel.display(simulation)
         statisticsPanel.update(simulation)
         informationPanel.updateData(simulation.galaxy)
-      })
+      )
 
     override def displayEvents(events: String): Unit =
-      loggerPanel.display(events)
+      SwingUtilities.invokeLater(() => loggerPanel.display(events))
+
   end SwingGUIImpl
 
   private class GridBagConstraintsBuilder:
