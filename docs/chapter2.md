@@ -16,7 +16,8 @@ L'obiettivo del progetto è quello di realizzare una simulazione che rappresenti
 <tr><td>2.1.1</td><td>Rappresentazione delle entità presenti all'interno della galassia.</td></tr>
 <tr><td>2.1.2</td><td>Rappresentazione dell'orbita degli elementi della simulazione, se presente.</td></tr>
 <tr><td>2.1.3</td><td>Rappresentazione del tempo della simulazione.</td></tr>
-<tr><td>//TODO</td><td>Log dettagliato della simulazione in tempo reale. //todo CHECK</td></tr> 
+<tr><td>2.2</td><td>Log dettagliato della simulazione in tempo reale.</td></tr>
+<tr><td>2.3</td><td>Visualizzazione delle statistiche della galassia in tempo reale.</td></tr>
 </table>
 
 ## Requisiti funzionali
@@ -24,8 +25,6 @@ L'obiettivo del progetto è quello di realizzare una simulazione che rappresenti
 <tr><th>ID/Numero</th><th>Testo del requisito</th></tr>
 <tr><td>3.1</td><td>L'andamento della simulazione deve essere scandito da un tempo virtuale.</td></tr>
 <tr><td>3.2</td><td>Inizialmente si presuppone la presenza di nuvole di gas nella simulazione, le quali si muovono liberamente nello spazio, orbitando attorno ad un buco nero posto al centro della galassia.</td></tr>
-<tr><td>3.2.1</td><td>Nel momento in cui le nuvole di gas si concentrano in dei punti di sufficiente densità causano un'esplosione che genera una stella.</td></tr>
-<tr><td>//TODO </td><td>Nel momento in cui si genera una stella, viene anche creato un nuovo sistema di entità che le orbitano attorno.</td></tr>
 <tr><td>3.4</td><td>Le entità definite nel punto 1.1 si muovono seguendo un'orbita ellittica.</td></tr>
 <tr><td>3.5</td><td>
 Per ogni entità devono essere definite tipologia, massa, posizione, temperatura, velocità e attrazione gravitazionale.
@@ -34,7 +33,7 @@ Per ogni entità devono essere definite tipologia, massa, posizione, temperatura
 Le stelle hanno un ciclo di vita, durante il quale la sua massa cambia.
 </td></tr>
 <tr><td>3.7</td><td>
-La tipologia dell'entità cambia al variare di massa e temperatura della stesso.
+La tipologia dell'entità cambia al variare di massa e temperatura della stessa.
 </td></tr>
 <tr><td>3.8</td><td>
 Il risultato della collisione di due entità dipende dalle caratteristiche delle entità.
@@ -43,10 +42,22 @@ Il risultato della collisione di due entità dipende dalle caratteristiche delle
 Se due entità collidono, c'è un aumento di massa di una e la disgregazione dell'altra.
 </td></tr>
 <tr><td>3.9</td><td>
+Le collisioni devono essere memorizzate come eventi e visualizzate sotto forma di log.
+</td></tr>
+<tr><td>3.10</td><td>
 L'universo della simulazione è toroidale.
 </td></tr>
- <tr><td>3.10</td><td>
-Deve essere possibile per l'utente stoppare la simulazione in qualsiasi momento senza dover terminare l'applicativo.
+ <tr><td>3.11</td><td>
+Deve essere possibile per l'utente fermare la simulazione in qualsiasi momento, senza dover terminare l'applicativo.
+</td></tr>
+ <tr><td>3.12</td><td>
+Possibilità di visualizzare il numero totale di corpi.
+</td></tr>
+ <tr><td>3.12.1</td><td>
+Possibilità di visualizzare la percentuale di corpi celesti per ogni tipo.
+</td></tr>
+ <tr><td>3.12.2</td><td>
+Possibilità di visualizzare tutte le proprietà di ogni singolo corpo.
 </td></tr>
 </table>
 
