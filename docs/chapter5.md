@@ -333,3 +333,8 @@ Introduzione dei seguenti componenti del _Model_, presenti nel package `galaxy_s
 Introduzione dei seguenti componenti della _View_, presenti nel package `galaxy_sim.view`:
 - `SwingGUI`: interfaccia grafica scritta utilizzando la libreria Swing
 - `View`: gestisce l'interfaccia grafica
+
+Riguardo al testing degli attori, Akka mette a disposizione Actor TestKit,
+che permette di verificare il corretto funzionamento degli attori in modo semplice,
+senza introdurre eccessiva complessità. È possibile integrare Actor TestKit nei test
+prodotti con ScalaTest.
