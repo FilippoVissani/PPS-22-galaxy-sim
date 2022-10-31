@@ -32,11 +32,11 @@ object Lifecycle:
     override def updateMassAndTemperature(celestialBody: CelestialBody, bType: CelestialBodyType): (CelestialBody, CelestialBodyType) = bType match
       case Planet => (celestialBody, bType)
       case Asteroid => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 0.99)
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 0.999)
         (newCelestialBody, bodyType(newCelestialBody))
       }
       case InterstellarCloud => {
-        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.01).updateTemperature(temperature => temperature * 1.01)
+        val newCelestialBody = celestialBody.updateMass(mass => mass * 1.001)
         (newCelestialBody, bodyType(newCelestialBody))
       }
       case _ => {

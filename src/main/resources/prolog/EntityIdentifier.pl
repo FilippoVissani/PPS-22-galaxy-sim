@@ -22,7 +22,7 @@ asteroid.
 interstellarCloud.
 */
 
-minMass(10**40, blackHole).
+minMass(10**30, blackHole).
 minMass(10**20, supernova).
 minMass(10**10, redSuperGiant).
 minMass(0, massiveStar).

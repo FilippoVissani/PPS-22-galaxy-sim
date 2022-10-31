@@ -11,19 +11,21 @@ object SimulationConfig:
   val windowSize = 90
   /** Time between two requests of the simulation state. */
   val frameRate = 33
-  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
+  /** Used to maintain stable the speed of the iterations */
+  val iterationInterval = 1
+  val bounds: Boundary = Boundary(0, lightYear * 2, 0, lightYear * 2)
 //  val solarSystemBounds: Boundary = Boundary(0, astronomicUnit * 50, 0, astronomicUnit * 50)
   val blackHoleDistance: Double = astronomicUnit * 5
   val deltaTime: Double = daySec
   val radiusScale = 1e5
 
-  val blackHole: CelestialBody = CelestialBody(mass = solarMass * 50,
+  val blackHole: CelestialBody = CelestialBody(mass = solarMass * 80,
     gForceVector = Pair(0, 0),
     speedVector = Pair(0, 0),
     position = Pair(bounds.rightBound / 2, bounds.bottomBound / 2),
     name = "Black hole",
-    radius = 1_000_000 * radiusScale,
-    temperature = 10)
+    radius = 3_000_000 * radiusScale,
+    temperature = 1300)
 
   val body01: CelestialBody = CelestialBody(mass = solarMass,
     gForceVector = Pair(0, 0),
@@ -101,7 +103,7 @@ object SimulationConfig:
     speedVector = Pair(0, 4700),
     position = Pair(body01.position.x + (astronomicUnit * 39), body01.position.y + (astronomicUnit * 39)),
     name = "Body10",
-    radius = 2300 * radiusScale,
+    radius = 230_000 * radiusScale,
     temperature = -225)
 
   val interstellarCloud2: CelestialBody =
@@ -110,7 +112,7 @@ object SimulationConfig:
       speedVector = Pair(0, 29290),
       position = Pair( blackHoleDistance - (astronomicUnit/2), blackHoleDistance - (astronomicUnit/2)),
       name = "Interstellar Cloud2",
-      radius = 10,
+      radius = 1_000_000,
       temperature = 0)
 
   def groupOFInterstellarClouds(cloudsNumber: Int): Set[CelestialBody] =
@@ -120,7 +122,7 @@ object SimulationConfig:
         gForceVector = Pair(0, 0),
         speedVector = Pair(0, 37000 - x * 1000),
         position = Pair(rand.between(bounds.leftBound, bounds.rightBound), rand.between(bounds.topBound, bounds.bottomBound)),
-        name = "Body # " + x.toString,
-        radius = 10000,
-        temperature = 0)
+        name = "# " + x.toString,
+        radius = 1_000_000 * radiusScale,
+        temperature = rand.between(101,1000))
     }).toSet
