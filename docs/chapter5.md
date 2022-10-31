@@ -13,6 +13,18 @@ Il concetto di ricorsione si riferisce ad un metodo di risoluzione di un problem
 In questo caso la ricorsione è tail, poichè l'ultima istruzione della funzione è una chiamata ricorsiva alla funzione stessa, senza mettere in pila ulteriori operazioni "deferred". Questo tipo di ricorsione è particolarmente utile nell'algoritmica in quanto facilmente ottimizzabile tramite loop. In scala, possiamo forzare l'ottimizzazione di una funzione tail recursive tramite l'annotazionwe @tailrec.
 
 ### For comprehension
+
+La For comprehension è un costrutto che permette di utilizzare foreach, map e flatMap in maniera concisa.
+Può risultare utile nel momento in cui bisogna eseguire esplorazioni nelle strutture dati, soprattutto se innestate.
+All'interno di questo progetto la For comprehension è stata utilizzata in svariati casi, ecco un esempio:
+
+```scala
+for
+  x <- viewActor
+  y <- simulation
+yield x ! DisplaySimulation(y)
+```
+
 ### Higher-order functions
  Una Higher order function è una funzione che prende in input funzioni come parametri e/o restituisce funzioni come risultato. L'utilizzo di questo meccanismo nella programmazione funzionale permette di applicare in maniera semplice il _pattern Strategy_, oltre a rendere il codice riusabile.
 
