@@ -13,13 +13,13 @@ object SimulationConfig:
   val frameRate = 33
   /** Used to maintain stable the speed of the iterations */
   val iterationInterval = 1
-  val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
+  val bounds: Boundary = Boundary(0, lightYear * 2, 0, lightYear * 2)
 //  val solarSystemBounds: Boundary = Boundary(0, astronomicUnit * 50, 0, astronomicUnit * 50)
   val blackHoleDistance: Double = astronomicUnit * 5
   val deltaTime: Double = daySec
   val radiusScale = 1e5
 
-  val blackHole: CelestialBody = CelestialBody(mass = solarMass * 50,
+  val blackHole: CelestialBody = CelestialBody(mass = solarMass * 80,
     gForceVector = Pair(0, 0),
     speedVector = Pair(0, 0),
     position = Pair(bounds.rightBound / 2, bounds.bottomBound / 2),
@@ -124,5 +124,5 @@ object SimulationConfig:
         position = Pair(rand.between(bounds.leftBound, bounds.rightBound), rand.between(bounds.topBound, bounds.bottomBound)),
         name = "Body # " + x.toString,
         radius = 10000,
-        temperature = 0)
+        temperature = rand.between(101,1000))
     }).toSet
