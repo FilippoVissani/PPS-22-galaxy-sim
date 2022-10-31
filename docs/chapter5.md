@@ -277,7 +277,8 @@ Dopodiché ho provveduto all'implementazione di una funzionalità che permettess
 Situata nel package `utils`, la type class `EntityReferenceDetector`, dato il corpo celeste soggetto dei calcoli e un set di tutti i corpi presenti nella simulazione, si occupa di calcolare quale sia effettivamente l'entità attorno alla quale il soggetto deve orbitare.
 Per capirlo vengono utilizzati calcoli inerenti all'astrodinamica.
 
-Infine mi sono occupata d'implementare nella schermata principale della simulazione un'area in cui si potessero vedere le informazioni dei vari corpi presenti e un logger che mostra gli eventi principali avvenuti.
+Infine mi sono occupata d'implementare nella schermata principale della simulazione un'area composta da tabs in cui si potessero vedere le informazioni dei vari corpi presenti e un logger che mostra gli eventi principali avvenuti.
+Il pannello logger e l'area delle informazioni sono state implementate rispettivamente nelle classi `LoggerPanel` e `InformationPanel`, mentre le tabs sono state aggiunte dentro a `SwingGUI`.
 
 Mentre, per quanto riguarda il testing dei componenti sopra elencati, mi sono occupata d'implementare:
 - `TestPhysicsFormulas`: classe di testing per i singoli calcoli che compongono le formule;
