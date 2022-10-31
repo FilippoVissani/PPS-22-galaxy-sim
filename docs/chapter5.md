@@ -160,19 +160,49 @@ def checkEntityType(mass: Mass, temperature: Temperature): CelestialBodyType =
 Il paradigma di programmazione basato su scambio di messaggi è stato introdotto facendo uso della libreria Akka.
 
 Di seguito vengono riportati i diagrammi di sequenza che definiscono le interazioni tra gli attori
-che sono già stati descritti nei capitoli precedenti.
+che sono stati descritti nel capitolo precedente.
 
-Ciclo di vita degli attori:
+## Ciclo di vita degli attori
+
+La generazione di tutti gli attori viene demandata al `RootActor`.
+Una volta avviati, gli attori sono pronti a svolgere il loro compito.
+Alla pressione del pulsante "Start" gli attori avviano la procedura per far partire la simulazione.
+Durante l'esecuzione gli attori interagiscono tramite scambio di messaggi al fine di calcolare gli stati successivi
+della simulazione e di farli visualizzare sulla _View_.
+Alla pressione del pulsante "Stop" la simulazione termina e gli attori di tipo `SimulationManagerActor` e `CelestialBodyActor` vengono terminati.
 
 ![Ciclo di vita degli attori](./images/actors_lifecycle_sequence.svg)
 
-Sequenza di messaggi che vengono scambiati all'interno di un'iterazione della simulazione:
+## Loop della simulazione
+
+Il loop della simulazione è definito come una serie potenzialmente infinita di iterazioni.
+Una singola iterazione viene suddivisa nelle seguenti fasi:
+
+1. Calcolo del nuovo tipo dei corpi celesti basato sul loro invecchiamento.
+2. Calcolo delle nuove posizioni dei corpi celesti.
+3. Risoluzione delle possibili collisioni che si presentano durante lo spostamento.
+
+Alla terminazione di ogni iterazione si ottiene un nuovo stato della simulazione.
+Gli eventi generati durante le iterazioni vengono registrati dal `EventRecorderActor`.
 
 ![Sequenza dei messaggi nel loop](./images/actors_simulation_loop_sequence.svg)
+
+## Aggiornamento della Vew
+
+Le differenti parti della _View_ vengono aggiornate separatamente dal `ControllerActor`.
+Per quanto riguarda l'aggiornamento del pannello della simulazione,
+il `ControllerActor` richiede periodicamente lo stato al `SimulationManager`,
+questa procedura viene eseguita tramite il pattern Ask offerto da Akka.
+Nel momento in cui il `SimulationManager` risponde, il `ControllerActor` invia lo stato all'attore che gestisce la _View_.
+Se la risposta non vene ricevuta entro un determinato lasso di tempo, l'aggiornamento viene ignorato.
 
 Sequenza dei messaggi utilizzati per aggiornare il pannello della simulazione nella la _View_:
 
 ![Sequenza dei messaggi per l'aggiornamento del pannello della simulazione](./images/actors_view_simulation_update_sequence.svg)
+
+L'aggiornamento del pannello dei log avviene in modo simile a quello del pannello della simulazione,
+ma in questo caso `ControllerActor` contatta `EventRecorderActor`.
+Questa richiesta da parte del `ControllerActor` viene sempre fatta sfruttando il pattern Ask.
 
 Sequenza dei messaggi utilizzati per aggiornare il pannello dei log nella la _View_:
 

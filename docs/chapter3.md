@@ -5,7 +5,7 @@ mantenendo comunque le dipendenze e le interazioni definite dal pattern architet
 
 ![Architettura](./images/mvc_actor_architecture.svg)
 
-All'interno dell'architettura generale troviamo quattro tipi di attori:
+I principali attori che compongono l'architettura sono i seguenti:
 - `SimulationManagerActor` e `CelestialBodyActor` gestiscono interamente la parte di _Model_:
   - `SimulationManagerActor` detiene lo stato attuale della simulazione e si occupa di coordinare le istanze di `CelestialBodyActor` durante le iterazioni della simulazione.
   - Ogni `CelestialBodyActor` si occupa dello stato di un corpo celeste.

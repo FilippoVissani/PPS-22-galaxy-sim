@@ -27,7 +27,6 @@ controller --> simulationManager: StartSimulation()
 == Simulation ends ==
 view --> controller: Stop()
 controller --> simulationManager: StopSimulation()
-destroy controller
 simulationManager --> celestialBody: Kill()
 destroy simulationManager
 destroy celestialBody

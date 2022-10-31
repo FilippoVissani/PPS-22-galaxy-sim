@@ -59,7 +59,7 @@ Diagramma delle classi che gestiscono la _View_:
 
 ## Paradigma di programmazione basato sugli attori
 
-Sono presenti quattro tipi di attori, che comunicano tra loro tramite scambio di messaggi.
+Sono presenti cinque tipi di attori, che comunicano tra loro tramite scambio di messaggi.
 Ogni attore ha uno scopo specifico e dispone di un set di comandi che gli possono essere impartiti.
 Entrando nel dettaglio, gli attori sono i seguenti:
 - `ViewActor`:
@@ -84,7 +84,7 @@ Entrando nel dettaglio, gli attori sono i seguenti:
   - Si occupa di gestire lo stato di un singolo corpo celeste
   - Ogni volta che genera un evento (es. collisione) contatta `EventRecorderActor`
 
-Design `CelestialBodyActor`:
+Design dettagliato `CelestialBodyActor`:
 
 ![Diagramma delle classi del CelestialBodyActor](./images/celestial_body_actor_class_diagram.svg)
 
@@ -106,8 +106,8 @@ Design dettagliato `ViewActor`:
 
 Nel pattern architetturale _MVC_ ogni componente ha dipendenze specifiche e ben definite,
 per esempio il _Controller_ sfrutta sia le API esposte dalla _View_, che quelle esposte dal _Model_.
-Con l'introduzione degli attori si è deciso di mantenere questo schema di dipendenze,
-le quali però vengono definite dai messaggi disponibili per un dato attore, invece che dall'attore stesso.
+Con l'introduzione degli attori si è deciso di mantenere questo schema di dipendenze.
+In questo caso però, le API vengono definite dai messaggi disponibili per un dato attore, invece che dall'attore stesso.
 
 Design delle dipendenze tra attori:
 
