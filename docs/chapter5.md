@@ -152,7 +152,7 @@ typeOfEntity(Temp, _, asteroid).
 ```
 A loro volta le Star vengono identificate in _BlackHole, Supernova, Red Super Giant_ e _Massive Star_ in base alla loro massa.
 ```prolog
-minMass(10**40, blackHole).
+minMass(10**30, blackHole).
 minMass(10**20, supernova).
 minMass(10**10, redSuperGiant).
 minMass(0, massiveStar).
@@ -280,7 +280,7 @@ Per capirlo vengono utilizzati calcoli inerenti all'astrodinamica.
 Infine mi sono occupata d'implementare nella schermata principale della simulazione un'area composta da tabs in cui si potessero vedere le informazioni dei vari corpi presenti e un logger che mostra gli eventi principali avvenuti.
 Il pannello logger e l'area delle informazioni sono state implementate rispettivamente nelle classi `LoggerPanel` e `InformationPanel`, mentre le tabs sono state aggiunte dentro a `SwingGUI`.
 
-Mentre, per quanto riguarda il testing dei componenti sopra elencati, mi sono occupata d'implementare:
+Per quanto riguarda il testing dei componenti sopra elencati, mi sono occupata d'implementare:
 - `TestPhysicsFormulas`: classe di testing per i singoli calcoli che compongono le formule;
 - `TestGravitationLaws`: classe di testing per le vere e proprie formule gravitazionali applicate ai corpi;
 - `TestEntityDetector`: classe di testing per l'ottenimento del riferimento di un'entità
