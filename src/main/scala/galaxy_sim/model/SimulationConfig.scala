@@ -11,6 +11,8 @@ object SimulationConfig:
   val windowSize = 90
   /** Time between two requests of the simulation state. */
   val frameRate = 33
+  /** Used to maintain stable the speed of the iterations */
+  val iterationInterval = 1
   val bounds: Boundary = Boundary(0, lightYear * 3, 0, lightYear * 3)
 //  val solarSystemBounds: Boundary = Boundary(0, astronomicUnit * 50, 0, astronomicUnit * 50)
   val blackHoleDistance: Double = astronomicUnit * 5

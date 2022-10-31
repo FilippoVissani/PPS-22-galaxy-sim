@@ -10,7 +10,7 @@ import galaxy_sim.actors.ControllerActor.ControllerActorCommand
 import galaxy_sim.model.{CelestialBody, CelestialBodyType, Simulation, emptyGalaxy}
 import scala.concurrent.duration.DurationInt
 import scala.util.{Failure, Success}
-import galaxy_sim.model.SimulationConfig.frameRate
+import galaxy_sim.model.SimulationConfig.iterationInterval
 import galaxy_sim.actors.SimulationManagerActor.IterationState.*
 
 /** In this object is defined the behaviour of simulation manager actor.
@@ -85,7 +85,7 @@ object SimulationManagerActor:
             }
             case IterationStep => {
               iterationState.head match
-                case Start => timer.startSingleTimer(IterationStep, frameRate.milliseconds)
+                case Start => timer.startSingleTimer(IterationStep, iterationInterval.milliseconds)
                 case TimerTicked => celestialBodyActors.foreach(x => x ! UpdateCelestialBodyType(ctx.self))
                 case TypeUpdated => celestialBodyActors.foreach(x => x ! MoveToNextPosition(tmpGalaxy, ctx.self))
                 case PositionsUpdated => celestialBodyActors.foreach(x => x ! SolveCollisions(tmpGalaxy, ctx.self))
