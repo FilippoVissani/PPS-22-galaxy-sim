@@ -26,17 +26,7 @@ Il tipo di CelestialBody è dato dalla sua _massa_ e dalla sua _temperatura_. Le
 
 La classe `EntityIdentifier` permette di interfacciarsi con prolog e controllare quindi il tipo di CelestialBody.
 
-La classe `Lifecycle` fornisce il metodo `entityOneStep`, il quale si occupa di apportare delle modifiche alle proprietà di un dato CelestialBody. Le modifiche variano in base al tipo di CelestialBody, come riportato nella seguente tabella:
-<table>
-<tr><th>Tipo</th><th>Modifica apportata</th></tr>
-<tr><td>Planet</td><td>Nessuna modifica</td></tr>
-<tr><td>Asteroid</td><td>Riduzione massa dell'1%</td></tr>
-<tr><td>Interstellar Cloud</td><td>Aumento massa e temperatura dell'1%</td></tr>
-<tr><td>Massive Star</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
-<tr><td>Red Super Giant</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
-<tr><td>Supernova</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
-<tr><td>Black Hole</td><td>Aumento o riduzione massa di un valore prefissato</td></tr>
-</table>
+La classe `Lifecycle` fornisce il metodo `entityOneStep`, il quale si occupa di apportare delle modifiche alle proprietà di un dato CelestialBody. Le modifiche variano in base al tipo di CelestialBody.
 
 Di seguito il diagramma delle classi coinvolte con il ciclo di vita:
 
