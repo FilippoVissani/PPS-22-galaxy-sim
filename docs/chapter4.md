@@ -47,7 +47,7 @@ Diagramma delle classi che gestiscono la _View_:
 
 ![View class diagram](./images/view_class_diagram.svg)
 
-## Paradigma di programmazione basato sugli attori
+## Attori
 
 Sono presenti cinque tipi di attori, che comunicano tra loro tramite scambio di messaggi.
 Ogni attore ha uno scopo specifico e dispone di un set di comandi che gli possono essere impartiti.

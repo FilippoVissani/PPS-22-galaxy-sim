@@ -10,7 +10,7 @@ Il concetto di ricorsione si riferisce ad un metodo di risoluzione di un problem
       case h +: t => val a1 = impact(a, h) ; impactMany(a1, t)
       case Seq() => a
 ```
-In questo caso la ricorsione è tail, poichè l'ultima istruzione della funzione è una chiamata ricorsiva alla funzione stessa, senza mettere in pila ulteriori operazioni "deferred". Questo tipo di ricorsione è particolarmente utile nell'algoritmica in quanto facilmente ottimizzabile tramite loop. In scala, possiamo forzare l'ottimizzazione di una funzione tail recursive tramite l'annotazionwe @tailrec.
+In questo caso la ricorsione è tail, poichè l'ultima istruzione della funzione è una chiamata ricorsiva alla funzione stessa, senza mettere in pila ulteriori operazioni "deferred". Questo tipo di ricorsione è particolarmente utile nell'algoritmica in quanto facilmente ottimizzabile tramite loop. In scala, possiamo forzare l'ottimizzazione di una funzione tail recursive tramite l'annotazione @tailrec.
 
 ### For comprehension
 
