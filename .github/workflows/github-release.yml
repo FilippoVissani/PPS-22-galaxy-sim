@@ -22,7 +22,7 @@ jobs:
       - name: Create Artifact
         run: sbt assembly
 
-      - uses: actions/upload-artifact@v3.1.0
+      - uses: actions/upload-artifact@v3.1.2
         with:
           name: release
           path: target/scala-3.2.0/galaxy-sim.jar
