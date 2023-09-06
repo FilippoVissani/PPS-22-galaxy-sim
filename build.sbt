@@ -8,7 +8,7 @@ lazy val root = (project in file("."))
   .settings(
     name := "PPS-22-galaxy-sim",
     libraryDependencies ++= Seq(
-    "org.scalatest" %% "scalatest" % "3.2.14" % Test,
+    "org.scalatest" %% "scalatest" % "3.2.16" % Test,
     "it.unibo.alice.tuprolog" % "2p-core" % "4.1.1",
     "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
     "com.typesafe.akka" %% "akka-actor-testkit-typed" % AkkaVersion % Test,
